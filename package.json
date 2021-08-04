@@ -2,7 +2,7 @@
   "name": "nuxt-delay-hydration",
   "version": "0.1.0",
   "main": "dist/index.js",
-  "description": "Improve your Nuxt.js apps Google Ligthouse score by delaying the hydration",
+  "description": "Improve your Nuxt.js Google Ligthouse score by delaying hydration ⚡️",
   "keywords": [
     "nuxt",
     "nuxt-module",
@@ -11,6 +11,12 @@
     "page speed",
     "performance"
   ],
+  "homepage": "https://github.com/harlan-zw/nuxt-delay-hydration",
+  "bugs": "https://github.com/harlan-zw/nuxt-delay-hydration/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harlan-zw/nuxt-delay-hydration"
+  },
   "author": "Harlan Wilton <harlan@harlanzw.com>",
   "license": "MIT",
   "files": [

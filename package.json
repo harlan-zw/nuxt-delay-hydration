@@ -24,7 +24,7 @@
     ".runtime"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsup src/index.ts --dts",
+    "build": "rm -rf dist && tsup src/index.ts --dts && tsup src/hydrationRace.ts",
     "dev:basic": "nuxt test/fixtures/basic",
     "build:basic": "nuxt generate test/fixtures/basic",
     "start:basic": "export NODE_ENV=production && nuxt start test/fixtures/basic",

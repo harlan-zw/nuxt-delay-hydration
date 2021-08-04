@@ -38,7 +38,7 @@ const nuxtDelayHydration: Module<ModuleOptions> = function(config) {
       { templateVars, templatesFiles }:
       { templateVars: Record<string, any>; templatesFiles: { src: string; custom: boolean }[] },
     ) => {
-      templateVars.hydrationRacePath = join(__dirname, 'promises', 'race')
+      templateVars.hydrationRacePath = join(__dirname, 'hydrationRace')
       templateVars.hydrationConfig = resolvedConfig
       // replace the contents of App.js
       templatesFiles

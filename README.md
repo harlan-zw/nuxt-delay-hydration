@@ -1,9 +1,6 @@
-![nuxt-windicss](https://repository-images.githubusercontent.com/343991410/68f83b80-811f-11eb-9638-51aed75785c4)
+<h1 align='center'>nuxt-delay-hydration</h1>
 
-<h1 align='center'>nuxt-windicss</h1>
-
-<p align='center'><a href="https://windicss.org/">Windi CSS</a> for Nuxt.js! ⚡️<br>
-<sup><em>Next generation utility-first CSS framework.</em></sup>
+<p align='center'>Improve your Nuxt.js Google Ligthouse score by delaying hydration ⚡️<br>
 </p>
 
 <p align='center'>
@@ -16,12 +13,12 @@
 
 ## Features
 
-- ⚡️ **It's FAST** - 20~100x times faster than [@nuxtjs/tailwindcss](https://github.com/nuxt-community/tailwindcss-module)
-- 🧩 On-demand CSS utilities (Compatible with Tailwind CSS v2) and native elements style resetting
-- 🍃 Load configurations from `tailwind.config.js`
-- 📄 Use `@apply` / `@screen` directives in any file: Vue SFC, Less, SCSS, SASS, PostCSS, Stylus
-- 🎳 Support Utility Groups - e.g. `bg-gray-200 hover:(bg-gray-100 text-red-300)`
-- 🧑‍🤝‍🧑 Works with [@nuxt/vite](https://github.com/nuxt/vite) & [@nuxt/content](https://content.nuxtjs.org/)
+- ⚡️ Unlock perfect 100 Google Lighthouse performance
+- 🧩 Choose your own mode: aggressive, opt-in, manual
+- 🍃 Pre-configured to maximise score and minimise user issues
+- 📄 
+- 🎳 
+- 🧑‍🤝‍🧑 
 
 ## Install
 

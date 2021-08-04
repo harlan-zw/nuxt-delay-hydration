@@ -36,7 +36,7 @@
     "start:pokemon": "export NODE_ENV=development && nuxt start test/fixtures/pokemon",
     "up:pokemon": "yarn run build:pokemon && yarn run start:pokemon",
     "lint": "eslint --fix --ext .ts,.js,.vue .",
-    "release": "dotenv release-it --",
+    "release": "dotenv release-it",
     "test": "jest --verbose ",
     "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/master/templates/changelog-compact.hbs"
   },
@@ -48,6 +48,7 @@
     "@sumup/performance-observer": "^1.0.2",
     "@types/jest": "^26.0.24",
     "chrome-launcher": "^0.14.0",
+    "dotenv-cli": "^4.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-jest": "^24.4.0",
     "jest": "^27.0.6",
@@ -55,6 +56,7 @@
     "nuxt": "^2.15.7",
     "nuxt-build-optimisations": "^1.0.5",
     "nuxt-windicss": "^1.2.1",
+    "release-it": "^14.10.1",
     "tsup": "^4.12.5",
     "web-vitals": "^2.1.0"
   },

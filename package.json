@@ -1,0 +1,59 @@
+{
+  "name": "nuxt-delay-hydration",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "description": "Improve your Nuxt.js apps Google Ligthouse score by delaying the hydration",
+  "keywords": [
+    "nuxt",
+    "nuxt-module",
+    "hydration",
+    "lighthouse",
+    "page speed",
+    "performance"
+  ],
+  "author": "Harlan Wilton <harlan@harlanzw.com>",
+  "license": "MIT",
+  "files": [
+    "dist",
+    ".runtime"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsup src/index.ts --dts && mkdist --src src/template --dist dist/template",
+    "dev:basic": "nuxt test/fixtures/basic",
+    "build:basic": "nuxt generate test/fixtures/basic",
+    "start:basic": "export NODE_ENV=production && nuxt start test/fixtures/basic",
+    "dev:countries": "nuxt test/fixtures/countries",
+    "build:countries": "nuxt generate test/fixtures/countries",
+    "start:countries": "export NODE_ENV=production && nuxt start test/fixtures/countries",
+    "dev:pokemon": "nuxt test/fixtures/pokemon",
+    "build:pokemon": "export NODE_ENV=development && rm -rf test/fixtures/pokemon/node_modules/.cache && nuxt build test/fixtures/pokemon && nuxt generate test/fixtures/pokemon",
+    "start:pokemon": "export NODE_ENV=development && nuxt start test/fixtures/pokemon",
+    "up:pokemon": "yarn run build:pokemon && yarn run start:pokemon",
+    "lint": "eslint --fix --ext .ts,.js,.vue .",
+    "release": "dotenv release-it --",
+    "test": "jest --verbose ",
+    "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/master/templates/changelog-compact.hbs"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.7.0",
+    "@nuxt/test-utils": "^0.2.2",
+    "@nuxt/types": "^2.15.7",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@sumup/performance-observer": "^1.0.2",
+    "@types/jest": "^26.0.24",
+    "chrome-launcher": "^0.14.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-jest": "^24.4.0",
+    "jest": "^27.0.6",
+    "lighthouse": "^8.1.0",
+    "nuxt": "^2.15.7",
+    "nuxt-build-optimisations": "^1.0.5",
+    "nuxt-windicss": "^1.2.1",
+    "tsup": "^4.12.5",
+    "web-vitals": "^2.1.0"
+  },
+  "dependencies": {
+    "defu": "^5.0.0",
+    "upath": "^2.0.1"
+  }
+}

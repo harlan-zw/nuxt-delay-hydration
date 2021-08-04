@@ -10,7 +10,7 @@ const nuxtDelayHydration: Module<ModuleOptions> = function(config) {
   const resolvedConfig = defu.arrayFn(config, nuxt.options.hydration,
     // default configuration
     {
-      delayHydrationMode: MODE_AGGRESSIVE,
+      mode: MODE_AGGRESSIVE,
       hydrateOnEvents: [
         'mousemove',
         'scroll',

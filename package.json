@@ -24,7 +24,7 @@
     ".runtime"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsup src/index.ts --dts && tsup src/hydrationRace.ts",
+    "build": "rm -rf dist && tsup src/index.ts --dts && tsup src/hydrationRace.ts && mkdist --src src/template --dist dist/template --ext=js",
     "dev:basic": "nuxt test/fixtures/basic",
     "build:basic": "nuxt generate test/fixtures/basic",
     "start:basic": "export NODE_ENV=production && nuxt start test/fixtures/basic",
@@ -53,6 +53,7 @@
     "eslint-plugin-jest": "^24.4.0",
     "jest": "^27.0.6",
     "lighthouse": "^8.1.0",
+    "mkdist": "^0.3.3",
     "nuxt": "^2.15.7",
     "nuxt-build-optimisations": "^1.0.5",
     "nuxt-windicss": "^1.2.1",

@@ -16,7 +16,8 @@
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@types/jest"
+      "@types/jest",
+      "@types/lodash"
     ]
   },
   "include": [

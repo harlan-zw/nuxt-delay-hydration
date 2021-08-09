@@ -3,7 +3,7 @@
   <header>
     <h1 class="text-3xl font-bold bg-blue-700 text-yellow-500 p-5 text-center">
       <nuxt-link to="/">
-        Pokédex
+        Pokédex - {{ $isServer ? 'Not Hydrated' : 'Hydrated'}}
       </nuxt-link>
     </h1>
   </header>

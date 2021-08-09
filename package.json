@@ -24,7 +24,8 @@
     ".runtime"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsup src/index.ts --dts && tsup src/hydrationRace.ts && mkdist --src src/template --dist dist/template --ext=js",
+    "cache:clear": "rm -rf dist && rm -rf node_modules/.cache && rm -rf test/fixtures/pokemon/node_modules && rm -rf test/fixtures/pokemon/.nuxt",
+    "build": "yarn run cache:clear && tsup src/index.ts --dts && tsup src/hydrationRace.ts && mkdist --src src/template --dist dist/template --ext=js",
     "dev:basic": "nuxt test/fixtures/basic",
     "build:basic": "nuxt generate test/fixtures/basic",
     "start:basic": "export NODE_ENV=production && nuxt start test/fixtures/basic",
@@ -47,6 +48,7 @@
     "@nuxt/typescript-build": "^2.1.0",
     "@sumup/performance-observer": "^1.0.2",
     "@types/jest": "^26.0.24",
+    "@types/lodash": "^4.14.172",
     "chrome-launcher": "^0.14.0",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.32.0",
@@ -63,6 +65,7 @@
   },
   "dependencies": {
     "defu": "^5.0.0",
+    "lodash": "^4.17.21",
     "upath": "^2.0.1"
   }
 }

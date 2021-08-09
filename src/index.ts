@@ -1,9 +1,10 @@
-import fs from 'fs'
 import type { Module } from '@nuxt/types'
-import { join, dirname } from 'upath'
+import { dirname, join } from 'upath'
 import defu from 'defu'
 import { ModuleOptions } from './interfaces'
-import { MODE_AGGRESSIVE } from './constants'
+import { MODE_AGGRESSIVE, MODE_NONE } from './constants'
+import type { NuxtTemplate } from './util/template'
+import templateUtils from './util/template'
 
 const nuxtDelayHydration: Module<ModuleOptions> = function(config) {
   const nuxt = this.nuxt
@@ -20,8 +21,8 @@ const nuxtDelayHydration: Module<ModuleOptions> = function(config) {
         'wheel',
       ],
       idleDelay: {
-        mobile: 3000,
-        desktop: 500,
+        mobile: 4000,
+        desktop: 2500,
       },
     },
   )
@@ -30,35 +31,33 @@ const nuxtDelayHydration: Module<ModuleOptions> = function(config) {
     nuxt.options.render.asyncScripts = true
   })
 
-  if (resolvedConfig.mode === MODE_AGGRESSIVE) {
+  const utils = templateUtils({ publishPath: join(dirname(__dirname), '.runtime') })
+
+  if (resolvedConfig.mode === MODE_AGGRESSIVE || resolvedConfig.mode === MODE_NONE) {
     /**
      * Hook into the template builder, inject the hydration delayer module.
      */
     nuxt.hook('build:templates', (
       { templateVars, templatesFiles }:
-      { templateVars: Record<string, any>; templatesFiles: { src: string; custom: boolean }[] },
+      { templateVars: Record<string, any>; templatesFiles: NuxtTemplate[] },
     ) => {
+      const clientTemplate = utils.matchTemplate(templatesFiles, 'client')
+      if (!clientTemplate)
+        return
+
       templateVars.hydrationRacePath = join(__dirname, 'hydrationRace')
       templateVars.hydrationConfig = resolvedConfig
-      // replace the contents of App.js
-      templatesFiles
-        .map((template) => {
-          if (!template.src.endsWith('/client.js'))
-            return template
-
-          // we need to replace the App.js template..
-          const file = fs.readFileSync(template.src, { encoding: 'utf-8' })
-          const templateToInject = fs.readFileSync(join(__dirname, 'template', 'mountAppDelayer.js'), { encoding: 'utf-8' })
-          // regex replace the css loader
-          const regex = /(async function mountApp \(__app\) {)/gm
-          const subst = `$1\n${templateToInject}`
-          const appTemplate = file.replace(regex, subst)
-          const newPath = join(dirname(__dirname), '.runtime', 'client.js')
-          fs.writeFileSync(newPath, appTemplate)
-          template.custom = true
-          template.src = newPath
-          return template
-        })
+      // import statement
+      clientTemplate.injectFileContents(
+        join(__dirname, 'template', 'delayHydrationImport.js'),
+        'import Vue from \'vue\'',
+      )
+      // actual delayer
+      clientTemplate.injectFileContents(
+        join(__dirname, 'template', 'delayHydrationRace.js'),
+        'async function mountApp (__app) {',
+      )
+      clientTemplate.publish()
     })
   }
 }

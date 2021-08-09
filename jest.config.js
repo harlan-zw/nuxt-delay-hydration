@@ -1,7 +1,7 @@
 module.exports = {
   preset: '@nuxt/test-utils',
   roots: [
-    '<rootDir>/test/fixtures',
+    '<rootDir>/test/unit',
   ],
   testTimeout: 1000000,
 }

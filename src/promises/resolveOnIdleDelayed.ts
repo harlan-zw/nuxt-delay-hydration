@@ -5,9 +5,11 @@ const waitForIdleAndWait = (options: ModuleOptions, resolve: (event: string) => 
     return resolve('timeout-na')
 
   const isMobile = window.innerWidth < 640
+  const timeout = isMobile ? options.idleDelay.mobile : options.idleDelay.desktop
   const timeoutDelay = setTimeout(() => {
-    resolve('timeout')
-  }, isMobile ? options.idleDelay.mobile : options.idleDelay.desktop)
+    const debugId = `${isMobile ? 'mobile' : 'desktop'}:timeout:${timeout}`
+    resolve(debugId)
+  }, timeout)
   // @ts-ignore
   window.requestIdleCallback(() => {
     requestAnimationFrame(

@@ -1,7 +1,7 @@
 <template>
 <div>
-  <header>
-    <h1 class="text-3xl font-bold bg-blue-700 text-yellow-500 p-5 text-center">
+  <header >
+    <h1 class="text-3xl font-bold p-5 text-center" @click="invert = !invert" :class="invert ? ['text-blue-700', 'bg-yellow-300'] : ['bg-blue-700 text-yellow-500']">
       <nuxt-link to="/">
         Pokédex - {{ $isServer ? 'Not Hydrated' : 'Hydrated'}}
       </nuxt-link>
@@ -14,3 +14,12 @@
   </main>
 </div>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      invert: false,
+    }
+  }
+}
+</script>

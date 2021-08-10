@@ -5,3 +5,9 @@ declare module '@nuxt/types' {
     hydration?: ModuleOptions
   }
 }
+
+declare global {
+  interface Window {
+    onNuxtReadyCbs?: Function[]
+  }
+}

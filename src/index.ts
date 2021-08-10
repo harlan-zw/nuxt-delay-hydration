@@ -24,6 +24,9 @@ const nuxtDelayHydration: Module<ModuleOptions> = function(config) {
         mobile: 4000,
         desktop: 2500,
       },
+      debug: false,
+      replayLastPointerEvent: true,
+      replayEventMaxAge: 2000,
     },
   )
   nuxt.hook('build:before', (nuxt: any) => {

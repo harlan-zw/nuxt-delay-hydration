@@ -1,9 +1,6 @@
 import defu from "defu";
 
 const config = defu.arrayFn(require('../shared/nuxt.config').default, {
-  hydration: {
-    mode: 'none'
-  },
   generate: {
     async routes() {
       const getPokedex = () => import('./pokedex.json').then(m => m.default || m)

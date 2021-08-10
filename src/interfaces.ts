@@ -31,4 +31,17 @@ export type ModuleOptions = {
     mobile: number
     desktop: number
   }
+  /**
+   * When an interaction event triggered the hydration, you can replay it. For example if a user clicks a hamburger icon
+   * and hydration is required to open the menu, it would replay the click once hydration.
+   */
+  replayLastPointerEvent: boolean
+  /**
+   * How long after an event occurs should we consider it valid.
+   */
+  replayEventMaxAge: number
+  /**
+   * Log details in the console on when hydration is blocked and when and why it becomes unblocked.
+   */
+  debug: boolean
 }

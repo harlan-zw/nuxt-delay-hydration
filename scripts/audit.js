@@ -6,6 +6,7 @@ const runPerformanceAudit = async() => {
   const results = []
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] })
   for (let i = 0; i < 20; i++) {
+    console.log(`Iteration: ${i + 1}`)
     const options = { /* logLevel: 'info', output: 'html', */onlyCategories: ['performance'], port: chrome.port }
     const runnerResult = await lighthouse('http://localhost:3000', options)
     results.push(runnerResult.lhr)

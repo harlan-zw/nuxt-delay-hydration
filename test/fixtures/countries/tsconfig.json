@@ -9,6 +9,7 @@
       "dom"
     ],
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "baseUrl": "..",

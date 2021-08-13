@@ -18,9 +18,6 @@ const config = {
     'nuxt-build-optimisations',
     hydration,
   ],
-  hydration: {
-    debug: true,
-  },
   plugins: [
     '../shared/plugins/webVitals.client',
   ],

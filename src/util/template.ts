@@ -2,9 +2,13 @@ import { readFileSync, writeFileSync } from 'fs'
 import { basename, dirname, join } from 'upath'
 import escapeRegExp from 'lodash/escapeRegExp'
 
-export type TemplateId = 'client' | 'App'
+export type TemplateId = 'client' | 'App' | 'index'
 
-export type NuxtTemplate = { src: string; custom: boolean }
+export type NuxtTemplate = {
+  originalSrc: string
+  src: string
+  custom: boolean
+}
 
 export type Template = {
   template: NuxtTemplate
@@ -45,6 +49,7 @@ const templateUtils = (options: Record<string, any> = {}) => {
       const newPath = join(options.publishPath, basename(r.src))
       writeFileSync(newPath, content)
       r.custom = true
+      r.originalSrc = r.src
       r.src = newPath
       return r
     }
@@ -57,7 +62,7 @@ const templateUtils = (options: Record<string, any> = {}) => {
   }
 
   const matchTemplate = (templates: NuxtTemplate[], id: TemplateId) => {
-    const match = templates.find(template => template.src.endsWith(`/${id}.js`))
+    const match = templates.find(template => template.src.endsWith(join('vue-app', 'template', `${id}.js`)))
     if (!match)
       return null
     return template(match)

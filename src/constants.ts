@@ -1,2 +1,5 @@
-export const MODE_AGGRESSIVE = 'aggressive'
-export const MODE_NONE = 'none'
+export const NAME = 'nuxt-delay-hydration'
+
+export const MODE_DELAY_APP_INIT = 'init'
+export const MODE_DELAY_APP_MOUNT = 'mount'
+export const MODE_DELAY_MANUAL = 'manual'

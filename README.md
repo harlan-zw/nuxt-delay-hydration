@@ -1,30 +1,50 @@
-<h1 align='center'>nuxt-delay-hydration</h1>
+_<h1 align='center'>nuxt-delay-hydration</h1>
 
 <p align='center'>Improve your Nuxt.js Google Ligthouse score by delaying hydration ⚡️<br>
 </p>
 
 <p align='center'>
-<a href='https://www.npmjs.com/package/nuxt-windicss'>
-<img src='https://img.shields.io/npm/v/nuxt-windicss?color=0EA5E9&label='>
-<img src='https://github.com/windicss/nuxt-windicss-module/actions/workflows/test.yml/badge.svg' >
+<a href='https://www.npmjs.com/package/nuxt-delay-hydration'>
+<img src='https://img.shields.io/npm/v/nuxt-delay-hydration?color=0EA5E9&label='>
+<img src='https://github.com/windicss/nuxt-delay-hydration/actions/workflows/test.yml/badge.svg' >
 </a>
 </p>
 
 
 ## Features
 
-- ⚡️ Unlock perfect 100 Google Lighthouse performance
-- 🧩 Choose your own mode: aggressive, opt-in, manual
-- 🍃 Pre-configured to maximise score and minimise user issues
-- 📄 
-- 🎳 
-- 🧑‍🤝‍🧑 
+- ⚡️ Unlock perfect Google Lighthouse scores
+- 🍃 Pre-configured to minimise user experience issues
+- 🧩 Multiple implementation options
+- 🔁 Replay pre-hydration pointer events
+
+## Motivation
+
+Hydrating Vue apps, specifically Vue 2 server side generated (SSG - full static) apps
+is expensive. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".
+
+While this is unavoidable in some apps, for mostly static sites which rely on minimal javascript interactivity, it is possible
+to delay the hydration to reduce the penalty. 
+
+The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which does the job, however it can 
+ require a bit of tinkering to find a sweet spot.
+
+This package aims to provide higher google page speed scores with  minimal tinkering by making the following assumptions:
+- Hydration is always either trigger immediately with any user interaction or a minimal idle delay timeout.
+- The entire app should be rehydrated quickly as possible once hydration trigger is fired
+- Critical above-the-fold functionality _should_ work without javascript
+
+### Benchmarks
+
+**Mode Init**: 91% blocking time reduction
+
+**Mode Mount**: 73% blocking time reduction
 
 ## Install
 
 ```bash
-yarn add nuxt-windicss -D
-# npm i nuxt-windicss -D
+yarn add nuxt-delay-hydration -D
+# npm i nuxt-delay-hydration -D
 ```
 
 ## Usage
@@ -35,63 +55,76 @@ Within your `nuxt.config.js` add the following.
 // nuxt.config.js
 export default {
   buildModules: [
-    'nuxt-windicss',
+    'nuxt-delay-hydration',
   ],
 }
 ```
 
-### Ordering (optional)
+⚠️ This module is currently experimental. Please see [testing your app](#testing-your-app).
 
-By default, this module will load all of the windi layers togethor beyond your CSS.
+## Configuration
 
-If you'd like to change the layout ordering you can manually include the layers where you want them. 
+All configuration is provided on the `delayHydration` key within your nuxt config.
 
-For example, you had a `main.css` which had `h1 { margin-bottom: 30px; }`, you might do something like this:
+### Mode
+
+*Type:* `init` | `mount` | `manual`
+
+*Default:* `mount`
+
+#### Init Mode
+
+Delays hydration before the Nuxt app is created. This means your entire app, including plugins, will be delayed. 
+This will provide the biggest blocking time improvements however is the riskiest and may increase
+other metrics with delayed network requests.
 
 ```js
-// nuxt.config.js
 export default {
-  // ...
-  css: [
-    // windi preflight
-    'virtual:windi-base.css',
-    // your stylesheets which overrides the preflight
-    '@/css/main.css', 
-    // windi extras
-    'virtual:windi-components.css',
-    'virtual:windi-utilities.css',
-  ],
+  delayHydration: {
+    mode: 'init'
+  }
 }
 ```
 
-Note: if you're adding any of the virtual modules yourself, it will disable all the automatic imports.
+Use case: Zero or minimal plugins / modules.
 
-## Migrating from tailwind
+#### Mount Mode
 
-This module won't work with `@nuxtjs/tailwindcss`, you will need to remove it.
+Delays hydration once the nuxt app is created (all plugins and dependencies loaded) and is about to be mounted. This blocks
+your layout from being loaded.
 
-```diff
-buildModules: [
--  '@nuxtjs/tailwindcss',
-],
+```js
+export default {
+  delayHydration: {
+    mode: 'mount'
+  }
+}
 ```
 
-If you have a `tailwind.config.js`, please rename it to `windi.config.js` or `windi.config.ts`.
+Use case: Minimal non-critical plugins and third-party plugins.
 
-Follow the [migration guide](https://windicss.org/guide/migration.html) for other change details.
+#### Manual Mode
 
+Only delays the hydration of template code where it's used. Useful for when you need some part of the
+page to always hydrate immediately, such as a navigation drawer.
 
-## Documentation
+```js
+export default {
+  delayHydration: {
+    mode: 'manual'
+  }
+}
+```
 
-Read the [documentation](https://windicss.org/integrations/nuxt.html) for more details.
+Use case: All other apps.
+
 
 ## Credits
 
-- Windy team
-- [@antfu](https://github.com/antfu) Based on his Rollup / Vite implementation & his util package
+- [Markus Oberlehner](https://github.com/maoberlehner). Great articles on Vue hydration and vue-lazy-hydration 
 
 
 ## License
 
-MIT License © 2021 [Harlan Wilton](https://github.com/harlan-zw)
+MIT License © 2021 [Harlan Wilton](https://github.com/harlan-zw)_
 

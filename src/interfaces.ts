@@ -1,12 +1,12 @@
-export type Mode = 'aggressive' | 'opt-in' | 'none'
+export type Mode = 'init' | 'mount' | 'manual'
 export type EventTypes = 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart' | string
 
 export type ModuleOptions = {
   /**
    * Which mode to use for delaying the hydration:
    *
-   * - 'aggressive': Will inject a script which will delay the entire Vue app from mounting until the browser is idle and
-   * after the `idleDelay` time.
+   * - 'mount': Will inject a script which will delay the entire Vue app from mounting until the browser is idle and
+   * after the `idleCallback` time.
    */
   mode: Mode
   /**
@@ -22,12 +22,12 @@ export type ModuleOptions = {
    *
    * By default it's 7000ms.
    */
-  maxTimeToRunIdleCallback: number
+  idleCallbackTimeout: number
   /**
    * For specific devices we can tinker with how many ms after the idle callback we should wait before we run the
    * hydration. Mobile should always be higher then desktop, desktop can remain fairly low.
    */
-  idleDelay: {
+  idleCallback: {
     mobile: number
     desktop: number
   }
@@ -42,6 +42,14 @@ export type ModuleOptions = {
   replayEventMaxAge: number
   /**
    * Log details in the console on when hydration is blocked and when and why it becomes unblocked.
+   *
+   * Default: false
    */
   debug: boolean
+  /**
+   * Run the delay forever, useful for testing your app without scripts.
+   *
+   * Default: false
+   */
+  forever: boolean
 }

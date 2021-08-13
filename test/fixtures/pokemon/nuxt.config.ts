@@ -1,6 +1,11 @@
 import defu from "defu";
 
 const config = defu.arrayFn(require('../shared/nuxt.config').default, {
+  delayHydration: {
+    mode: 'mount',
+    debug: true,
+    replayLastPointerEvent: true,
+  },
   generate: {
     async routes() {
       const getPokedex = () => import('./pokedex.json').then(m => m.default || m)

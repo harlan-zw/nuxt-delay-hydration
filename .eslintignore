@@ -5,6 +5,4 @@ test
 coverage
 inspo
 .runtime
-src/template/*
-src/plugin/*
-src/templateInjects/*
+src/runtime/*

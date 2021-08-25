@@ -50,14 +50,14 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
     const replayPointerEventPath = join('hydration', 'replayPointerEvent.js')
 
     addTemplate({
-      src: join(resolve(__dirname, 'template', 'delayHydration.js')),
+      src: join(resolve(__dirname, 'runtime', 'template', 'delayHydration.js')),
       fileName: delayHydrationPath,
       options: config,
     })
 
     if (config.replayLastPointerEvent) {
       addTemplate({
-        src: join(resolve(__dirname, 'template', 'replayPointerEvent.js')),
+        src: resolve(join(__dirname, 'runtime', 'template', 'replayPointerEvent.js')),
         fileName: replayPointerEventPath,
         options: config,
       })
@@ -72,7 +72,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
 
     if (config.mode === MODE_DELAY_MANUAL) {
       addPlugin({
-        src: resolve(__dirname, 'plugin/injectDelayHydrationApi.js'),
+        src: resolve(join(__dirname, 'runtime', 'plugin', 'injectDelayHydrationApi.js')),
         fileName: join('hydration', 'pluginDelayHydration.client.js'),
         options: config,
       })
@@ -96,12 +96,12 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
-            join(__dirname, 'templateInjects', 'import.js'),
+            join(__dirname, 'runtime', 'templateInjects', 'import.js'),
             'import Vue from \'vue\'',
           )
           // actual delayer
           template.injectFileContents(
-            join(__dirname, 'templateInjects', 'delayHydrationRace.js'),
+            join(__dirname, 'runtime', 'templateInjects', 'delayHydrationRace.js'),
             'async function mountApp (__app) {',
           )
           template.publish()
@@ -119,12 +119,12 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
-            join(__dirname, 'templateInjects', 'import.js'),
+            join(__dirname, 'runtime', 'templateInjects', 'import.js'),
             'import Vue from \'vue\'',
           )
           // actual delayer
           template.injectFileContents(
-            join(__dirname, 'templateInjects', 'delayHydrationRace.js'),
+            join(__dirname, 'runtime', 'templateInjects', 'delayHydrationRace.js'),
             'async function createApp(ssrContext, config = {}) {',
           )
           template.publish()

@@ -1,4 +1,4 @@
-_<h1 align='center'>nuxt-delay-hydration</h1>
+<h1 align='center'>nuxt-delay-hydration</h1>
 
 <p align='center'>
 Improve your Nuxt.js Google Ligthouse score by delaying hydration ⚡️<br>
@@ -15,7 +15,6 @@ Improve your Nuxt.js Google Ligthouse score by delaying hydration ⚡️<br>
 ## Features
 
 - ⚡️ Instantly reduce your "Blocking Time" by over 90%
-- ️🔥 @todo Does not break HMR
 - 🍃 Pre-configured to minimise user experience issues
 - 🧩 Multiple implementation options
 - 🔁 Optionally replay pre-hydration click
@@ -35,7 +34,7 @@ While this is unavoidable in most apps, for static sites which depend on minimal
 to delay the hydration to avoid this penalty.
 
 The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
-However, it can require a lot of tinkering and may add complexity.
+However, it can require a lot of tinkering, may break your HMR and add avoidable complexity.
 
 This module has been built as a quick and painless way to increase performance scores.
 </details>

@@ -1,5 +1,4 @@
 import VueLazyHydration from 'vue-lazy-hydration'
-import logger from '../../logger'
 
 export default {
   data() {
@@ -24,7 +23,7 @@ export default {
 
     const style = 'background: #e2f8e5; color: #2e9127;'
     if (this.forever || this.$delayHydration.config.forever)
-      logger.info('%c[NuxtDelayHydration] Running with the "forever" enabled, will never hydrate.', style)
+      console.info('%c[NuxtDelayHydration] Running with the "forever" enabled, will never hydrate.', style)
 
     try {
       if (this.$delayHydration.config.debug) {

@@ -1,5 +1,5 @@
 import VueLazyHydration from 'vue-lazy-hydration'
-import logger from '../logger'
+import logger from '../../logger'
 
 export default {
   data() {

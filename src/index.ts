@@ -65,7 +65,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
 
     nuxt.hook('components:dirs', (dirs: {path: string; isAsync: boolean }[]) => {
       dirs.push({
-        path: join(__dirname, 'components'),
+        path: join(__dirname, 'runtime', 'components'),
         isAsync: true,
       })
     })

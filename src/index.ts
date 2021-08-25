@@ -9,7 +9,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
   name: NAME,
   configKey: 'delayHydration',
   defaults: {
-    mode: MODE_DELAY_APP_INIT,
+    mode: MODE_DELAY_APP_MOUNT,
     hydrateOnEvents: [
       'mousemove',
       'scroll',

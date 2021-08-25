@@ -5,7 +5,7 @@ const chromeLauncher = require('chrome-launcher')
 const runPerformanceAudit = async() => {
   const results = []
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] })
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 7; i++) {
     // eslint-disable-next-line no-console
     console.log(`Iteration: ${i + 1}`)
     const options = { /* logLevel: 'info', output: 'html', */onlyCategories: ['performance'], port: chrome.port }

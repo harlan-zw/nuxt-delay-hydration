@@ -28,15 +28,19 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
     replayLastPointerEvent: false,
     replayEventMaxAge: 2000,
   },
-  setup(config) {
+  setup: (config: ModuleOptions) => {
     if (!config.mode) {
       logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
+      return
+    }
+    if (config.debug && !nuxt.options.dev) {
+      logger.info(`\`${NAME}\` has debug enabled in a non-development environment.`)
       return
     }
 
     nuxt.hook('build:before', () => {
       if (process.env.NODE_ENV !== 'test')
-        logger.info(`\`${NAME}\` enabled with \`${config.mode}\` mode.`)
+        logger.info(`\`${NAME}\` enabled with \`${config.mode}\` mode ${config.debug ? '[Debug enabled]' : ''}`)
       // enable asyncScripts
       // @ts-ignore
       nuxt.options.render.asyncScripts = true
@@ -46,14 +50,14 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
     const replayPointerEventPath = join('hydration', 'replayPointerEvent.js')
 
     addTemplate({
-      src: resolve(__dirname, 'template/hydrationRace.js'),
+      src: join(resolve(__dirname, 'template', 'delayHydration.js')),
       fileName: delayHydrationPath,
       options: config,
     })
 
     if (config.replayLastPointerEvent) {
       addTemplate({
-        src: resolve(__dirname, 'template/replayPointerEvent.js'),
+        src: join(resolve(__dirname, 'template', 'replayPointerEvent.js')),
         fileName: replayPointerEventPath,
         options: config,
       })
@@ -87,7 +91,8 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
           if (!template)
             return
 
-          templateVars.hydrationRacePath = hydrationRacePath
+          templateVars.delayHydrationPath = delayHydrationPath
+          templateVars.replayPointerEventPath = replayPointerEventPath
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
@@ -109,16 +114,17 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
           if (!template)
             return
 
-          templateVars.hydrationRacePath = hydrationRacePath
+          templateVars.delayHydrationPath = delayHydrationPath
+          templateVars.replayPointerEventPath = replayPointerEventPath
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
-            join(__dirname, 'template', 'import.js'),
+            join(__dirname, 'templateInjects', 'import.js'),
             'import Vue from \'vue\'',
           )
           // actual delayer
           template.injectFileContents(
-            join(__dirname, 'template', 'delayHydrationRace.js'),
+            join(__dirname, 'templateInjects', 'delayHydrationRace.js'),
             'async function createApp(ssrContext, config = {}) {',
           )
           template.publish()
@@ -130,6 +136,6 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
 }))
 
 // @ts-ignore
-nuxtDelayHydration.meta = { name: 'nuxt-delay-hydration' }
+nuxtDelayHydration.meta = { name: NAME }
 
 export default nuxtDelayHydration

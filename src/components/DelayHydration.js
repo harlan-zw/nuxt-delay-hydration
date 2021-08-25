@@ -1,4 +1,5 @@
 import VueLazyHydration from 'vue-lazy-hydration'
+import logger from '../logger'
 
 export default {
   data() {
@@ -17,51 +18,35 @@ export default {
     },
   },
   async mounted() {
-    if (!this.triggerHydration && this.$delayHydration && !this.forever) {
-      try {
-        // create the hydration race
-        const hydrationEvent = await this.$delayHydration.hydrationRace()
-        const hydrationStartTime = new Date()
-        if (this.replayClick && hydrationEvent instanceof PointerEvent) {
-          let event = hydrationEvent
-          const resolver = (e) => {
-            event = e
-          }
-          // if the user clicks multiple times
-          document.body.addEventListener('click', resolver)
-          // stop the event
-          // this is a special nuxt hook ran once everything is mounted
-          this.$nextTick(() => {
-            window.requestIdleCallback(() => {
-              setTimeout(() => {
-                document.body.removeEventListener('click', resolver)
-                const eventAge = new Date() - hydrationStartTime
-                if (eventAge < this.$delayHydration.config.replayEventMaxAge) {
-                  const eventToDispatch = new event.constructor(event.type, {
-                    view: window,
-                    bubbles: true,
-                    cancelable: true,
-                  })
-                  event.target?.dispatchEvent(eventToDispatch)
-                }
-              },
-              /**
-               * 100ms is completely arbitrary, we need some delay as we won't know exactly when all of the children,
-               * because we have an idle callback this should only be called once the network requests for async components
-               * are resolved, assuming they are nested.
-               */
-              100,
-              )
-            }, { timeout: this.$delayHydration.config.idleCallbackTimeout })
-          })
-        }
+    // already mounted or missing plugin api for some reason
+    if (this.triggerHydration || !this.$delayHydration)
+      return
+
+    const style = 'background: #e2f8e5; color: #2e9127;'
+    if (this.forever || this.$delayHydration.config.forever)
+      logger.info('%c[NuxtDelayHydration] Running with the "forever" enabled, will never hydrate.', style)
+
+    try {
+      if (this.$delayHydration.config.debug) {
+        // eslint-disable-next-line no-console
+        console.time('[NuxtDelayHydration] Hydration time')
+        logger.log('%c[NuxtDelayHydration] Started delaying hydration via DelayHydration component.', style)
       }
-      catch (e) {
-        console.error(e)
+      // create the hydration race
+      const hydrationEvent = await this.$delayHydration.hydrationRace()
+      if (this.$delayHydration.config.debug) {
+        logger.log(`%c[NuxtDelayHydration] Finished delaying hydration with trigger: "${hydrationEvent}"`, style)
+        // eslint-disable-next-line no-console
+        console.timeEnd('[NuxtDelayHydration] Hydration time')
       }
-      finally {
-        this.triggerHydration = true
-      }
+      if (this.replayClick)
+        this.$delayHydration.replayPointerEvent(hydrationEvent, true)
+    }
+    catch (e) {
+      logger.error(e)
+    }
+    finally {
+      this.triggerHydration = true
     }
   },
   render(h) {

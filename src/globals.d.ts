@@ -7,7 +7,8 @@ declare module '@nuxt/types' {
 }
 
 type delayHydration = {
-  hydrationRace: () => Promise<void>
+  hydrationRace: () => Promise<Event>
+  replayPointerEvent: (event: Event, isReady: boolean) => void
   config: ModuleOptions
 }
 

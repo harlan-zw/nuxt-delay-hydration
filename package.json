@@ -60,8 +60,8 @@
     "nuxt": "^2.15.8",
     "nuxt-build-optimisations": "^1.0.6",
     "nuxt-windicss": "^1.2.3",
-    "release-it": "^14.11.3",
-    "tsup": "^4.13.1",
+    "release-it": "^14.11.5",
+    "tsup": "^4.14.0",
     "web-vitals": "^2.1.0"
   },
   "dependencies": {

@@ -1,8 +1,11 @@
-const config = {
-  ...require('../shared/nuxt.config').default,
+import defu from "defu";
+
+const config = defu.arrayFn({
   delayHydration: {
-    mode: 'manual'
+    mode: 'manual',
+    debug: true
   }
-}
+}, require('../shared/nuxt.config').default)
 
 export default config
+

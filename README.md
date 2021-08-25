@@ -1,6 +1,7 @@
 _<h1 align='center'>nuxt-delay-hydration</h1>
 
-<p align='center'>Improve your Nuxt.js Google Ligthouse score by delaying hydration ⚡️<br>
+<p align='center'>
+Improve your Nuxt.js Google Ligthouse score by delaying hydration ⚡️<br>
 </p>
 
 <p align='center'>
@@ -13,32 +14,41 @@ _<h1 align='center'>nuxt-delay-hydration</h1>
 
 ## Features
 
-- ⚡️ Unlock perfect Google Lighthouse scores
+- ⚡️ Instantly reduce your "Blocking Time" by over 90%
+- ️🔥 @todo Does not break HMR
 - 🍃 Pre-configured to minimise user experience issues
 - 🧩 Multiple implementation options
-- 🔁 Replay pre-hydration pointer events
+- 🔁 Optionally replay pre-hydration click
 
-## Motivation
+Nuxt Delay Hydration aims to provide optimisations with  minimal tinkering, by making the following assumptions:
+- **Pre-optimised** Your app has already been optimised for [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/).
+- **Full App Hydration** The complexity of partially hydrating different parts of your app is not worth it verse a full hydration ASAP.
+- **Non-Critical Above-the-fold Javascript** Interactivity provided above the page fold only uses JS for enhancement and not function.
+- **Async Scripts Only** All JS is loaded async
 
-Hydrating Vue apps, specifically Vue 2 server side generated (SSG - full static) apps
-is expensive. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".
+<details>
+  <summary><h2 style="display:inline-block">Motivation</h2></summary>
 
-While this is unavoidable in some apps, for mostly static sites which rely on minimal javascript interactivity, it is possible
-to delay the hydration to reduce the penalty. 
+Hydrating Vue apps is expensive, especially with Vue 2. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".
 
-The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which does the job, however it can 
- require a bit of tinkering to find a sweet spot.
+While this is unavoidable in most apps, for static sites which depend on minimal interactivity, it is possible and safe
+to delay the hydration to avoid this penalty.
 
-This package aims to provide higher google page speed scores with  minimal tinkering by making the following assumptions:
-- Hydration is always either trigger immediately with any user interaction or a minimal idle delay timeout.
-- The entire app should be rehydrated quickly as possible once hydration trigger is fired
-- Critical above-the-fold functionality _should_ work without javascript
+The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
+However, it can require a lot of tinkering and may add complexity.
 
-### Benchmarks
+This module has been built as a quick and painless way to increase performance scores.
+</details>
 
-**Mode Init**: 91% blocking time reduction
+<details>
+  <summary><h2 style="display:inline-block">How it works</h2></summary>
+A promise is injected into your app, depending on which mode you pick, depends on where it's injected. 
+The promise is resolved as soon as either of these events are fired:
 
-**Mode Mount**: 73% blocking time reduction
+- an interaction event (scroll, click, etc)
+- an idle callback with a fixed timeout
+</details>
+
 
 ## Install
 
@@ -62,6 +72,29 @@ export default {
 
 ⚠️ This module is currently experimental. Please see [testing your app](#testing-your-app).
 
+
+<details>
+  <summary><h3 style="display:inline-block">Benchmarking</h3></summary>
+It's important to measure the performance changes this module and any configuration changes you make.
+
+The simplest way to benchmark is to use the Google Lighthouse tool within Google Chrome.
+
+I recommend generating your static app completely in production mode and start it. `nuxt geneeate && nuxt start`
+
+Open a private window and begin the performance tests. You will want to look at the score overall and the Total Blocking Time.
+</details>
+
+<details>
+  <summary><h3 style="display:inline-block">Choosing a mode</h3></summary>
+It's important to measure the performance changes this module and any configuration changes you make.
+
+The simplest way to benchmark is to use the Google Lighthouse tool within Google Chrome.
+
+I recommend generating your static app completely in production mode and start it. `nuxt geneeate && nuxt start`
+
+Open a private window and begin the performance tests. You will want to look at the score overall and the Total Blocking Time.
+</details>
+
 ## Configuration
 
 All configuration is provided on the `delayHydration` key within your nuxt config.
@@ -74,7 +107,7 @@ All configuration is provided on the `delayHydration` key within your nuxt confi
 
 #### Init Mode
 
-Delays hydration before the Nuxt app is created. This means your entire app, including plugins, will be delayed. 
+Delays hydration before the Nuxt app is created. Your entire app, including plugins, will be delayed. 
 This will provide the biggest blocking time improvements however is the riskiest and may increase
 other metrics with delayed network requests.
 
@@ -90,7 +123,7 @@ Use case: Zero or minimal plugins / modules.
 
 #### Mount Mode
 
-Delays hydration once the nuxt app is created (all plugins and dependencies loaded) and is about to be mounted. This blocks
+Delays hydration once your app is created (all plugins and vendor bundle loaded) and is about to be mounted. This blocks
 your layout from being loaded.
 
 ```js
@@ -124,7 +157,14 @@ Use case: All other apps.
 - [Markus Oberlehner](https://github.com/maoberlehner). Great articles on Vue hydration and vue-lazy-hydration 
 
 
+### Benchmarks
+
+**Mode Init**: 91% blocking time reduction
+
+**Mode Mount**: 73% blocking time reduction
+
+
 ## License
 
-MIT License © 2021 [Harlan Wilton](https://github.com/harlan-zw)_
+MIT License © 2021 [Harlan Wilton](https://github.com/harlan-zw)
 

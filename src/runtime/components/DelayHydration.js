@@ -7,6 +7,10 @@ export default {
     }
   },
   props: {
+    debug: {
+      type: Boolean,
+      default: false,
+    },
     forever: {
       type: Boolean,
       default: false,
@@ -22,19 +26,23 @@ export default {
       return
 
     const style = 'background: #e2f8e5; color: #2e9127;'
-    if (this.forever || this.$delayHydration.config.forever)
+    if (this.forever || this.$delayHydration.config.forever) {
       console.info('%c[NuxtDelayHydration] Running with the "forever" enabled, will never hydrate.', style)
+      return
+    }
+
+    const debug = this.debug || this.$delayHydration.config.debug
 
     try {
-      if (this.$delayHydration.config.debug) {
+      if (debug) {
         // eslint-disable-next-line no-console
         console.time('[NuxtDelayHydration] Hydration time')
-        logger.log('%c[NuxtDelayHydration] Started delaying hydration via DelayHydration component.', style)
+        console.info('%c[NuxtDelayHydration] Started delaying hydration via DelayHydration component.', style)
       }
       // create the hydration race
       const hydrationEvent = await this.$delayHydration.hydrationRace()
-      if (this.$delayHydration.config.debug) {
-        logger.log(`%c[NuxtDelayHydration] Finished delaying hydration with trigger: "${hydrationEvent}"`, style)
+      if (debug) {
+        console.log(`%c[NuxtDelayHydration] Finished delaying hydration with trigger: "${hydrationEvent}"`, style)
         // eslint-disable-next-line no-console
         console.timeEnd('[NuxtDelayHydration] Hydration time')
       }
@@ -42,7 +50,7 @@ export default {
         this.$delayHydration.replayPointerEvent(hydrationEvent, true)
     }
     catch (e) {
-      logger.error(e)
+      console.error(e)
     }
     finally {
       this.triggerHydration = true

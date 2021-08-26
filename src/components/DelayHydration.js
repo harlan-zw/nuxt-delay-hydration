@@ -57,11 +57,11 @@ export default {
     }
   },
   render(h) {
-    return h(VueLazyHydration, {
+    console.log(this.$slots)
       props: {
         never: true,
         triggerHydration: this.triggerHydration,
       },
-    }, this.$slots.default)
+    }, [ this.$slots.default ])
   },
 }

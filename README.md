@@ -215,32 +215,104 @@ _replayClick_: `boolean:false` Toggle the click replay
 
 <details>
   <summary>Debug mode</summary>
+
+  It's recommended that you do thorough testing on your app with the module before deploying it into production. 
+
+  To make sure the module is doing what you expect, there is a `debug` mode, which when enabled will log behaviour
+in the console.
+
+```js
+export default {
+    delayHydration: {
+        debug: process.env.NODE_ENV === 'development',
+    },
+}
+```
 </details>
 
 <details>
   <summary>Delay hydration forever</summary>
+
+Since the hydration will trigger instantly when you interact with the page, it can be useful
+to manually delay the hydration forever so you can test the functionality of your app in its non-hydrated state.
+
+```js
+export default {
+    delayHydration: {
+        forever: true
+    },
+}
+```
 </details>
 
 <details>
   <summary>Visualising the hydration status</summary>
+
+It can be unclear at times whether your app has been hydrated or not if it's quite static, this can make debugging hard.
+
+To make things easier, there is a component `HydrationStatus` which will tell you what's going on. 
+
+```js
+<template>
+<div>
+    <my-header />
+    <delay-hydration>
+        <div>
+            <!-- Show the hydration status, only for debugging -->
+            <hydration-status />
+            <main>
+                <nuxt />
+            </main>
+            <my-footer />
+        </div>
+    </delay-hydration>
+</div>
+</template>
+```
 </details>
 
 
-### Benchmarking
+### Performance Auditing
 
 <details>
-  <summary>How to benchmark your app</summary>
+  <summary>How to audit your app</summary>
+
 It's important to measure the performance changes this module and any configuration changes you make.
 
 The simplest way to benchmark is to use the Google Lighthouse tool within Google Chrome.
 
-I recommend generating your static app completely in production mode and start it. `nuxt geneeate && nuxt start`
+However, due to unpredictable results, it's recommended to run numerous iterations of the audit. To make that
+easier this module provides a script to run a performance audit with 10 iterations:
+1. Install dependencies: `npm add -G lighthouse chrome-launcher`
+2. Build and start your nuxt up `nuxt geneeate && nuxt start`
+3. Run the audit script `./node_modules/nuxt-delay-hydration/scripts/audit.js`
 
-Open a private window and begin the performance tests. You will want to look at the score overall and the Total Blocking Time.
 </details>
 
 ### Replaying hydration click
 
+<details>
+  <summary>What is this and how to enable</summary>
+
+One of the issues with delaying hydration is that a user interaction event can occur before your scripts are loaded, leading
+to a user having to click on something multiple times for it to do what they expect. Think of a hamburger which is triggered using Javascript, if your 
+app isn't hydrated then clicking it won't do anything.
+
+The best fix for this is to write your [HTML in a way that it doesn't need Javascript](https://css-tricks.com/the-checkbox-hack/) to be interactive. 
+
+However, there are use cases where you need to use Javascript and responding to the first click is important. In those instances you can enable
+the replay of the click.
+
+```js
+export default {
+    delayHydration: {
+        replayClick: true
+    },
+}
+```
+
+This is an experimental configuration, you should test this option yourself before implementing into your production app.
+</details>
 
 ## Advanced Configuration
 

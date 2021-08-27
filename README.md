@@ -26,11 +26,11 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
 
 <details>
   <summary><b>Requirements</b></summary>
-
+<br>
 The module is tested on simple full-static Nuxt.js (SSG) apps, such as
 documentation, blogs and misc content sites. If you aren't running this mode, look into [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration).
 
-The following optimisations should be done prior to using this module in production:
+The following optimisations should ideally be done prior to using this module in production:
 - [LCP](https://web.dev/lcp/)
 - [CLS](https://web.dev/cls/)
 - Non-hydrated functionality, see [debugging](#debugging)
@@ -277,7 +277,7 @@ To make things easier, there is a component `HydrationStatus` which will tell yo
 
 <details>
   <summary>How to audit your app</summary>
-
+<br>
 It's important to measure the performance changes this module and any configuration changes you make.
 
 The simplest way to benchmark is to use the Google Lighthouse tool within Google Chrome.
@@ -294,7 +294,7 @@ easier this module provides a script to run a performance audit with 10 iteratio
 
 <details>
   <summary>What is this and how to enable</summary>
-
+<br>
 One of the issues with delaying hydration is that a user interaction event can occur before your scripts are loaded, leading
 to a user having to click on something multiple times for it to do what they expect. Think of a hamburger which is triggered using Javascript, if your 
 app isn't hydrated then clicking it won't do anything.
@@ -320,7 +320,7 @@ This is an experimental configuration, you should test this option yourself befo
 
 <details>
   <summary>Load heavy components async</summary>
-
+<br>
 When you load in a heavy component synchronously, the javascript will be bundled in with the main application payload.
 
 This will decrease all of your perfomance metrics. It's recommend you use async imports for these components.

@@ -26,6 +26,35 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
 
 <br>
 
+
+<details>
+  <summary><b>Motivation</b></summary>
+
+Hydrating Vue apps is expensive, especially with Vue 2. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".
+
+While this is unavoidable in most apps, for static sites which depend on minimal interactivity, it is possible and safe
+to delay the hydration to avoid this penalty.
+
+The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
+However, it can require a lot of tinkering, may break your HMR and add avoidable complexity.
+
+Nuxt Delay Hydration aims to provide optimisations with  minimal tinkering, by making certain assumptions on trade-offs.
+
+Keep in mind, **this is a hacky solution**. Until Google can recognise which scripts are truly blocking, we'll need to rely on this approach.
+</details>
+
+<br>
+
+## Install
+
+```bash
+yarn add nuxt-delay-hydration -D
+# npm i nuxt-delay-hydration -D
+```
+
+⚠️ This module is beta, use with caution.
+
+
 <details>
   <summary><b>Requirements</b></summary>
 <br>
@@ -41,45 +70,6 @@ It's also recommended that you [benchmark](#performance-auditing) your app befor
 </details>
 
 <br>
-
-<details>
-  <summary><b>Motivation</b></summary>
-
-Hydrating Vue apps is expensive, especially with Vue 2. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".
-
-While this is unavoidable in most apps, for static sites which depend on minimal interactivity, it is possible and safe
-to delay the hydration to avoid this penalty.
-
-The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
-However, it can require a lot of tinkering, may break your HMR and add avoidable complexity.
-
-Nuxt Delay Hydration aims to provide optimisations with  minimal tinkering, by making certain assumptions on trade-offs.
-</details>
-
-<br>
-
-<details>
-  <summary><b>How it works</b></summary>
-
-A promise is injected into your app. 
-The promise is resolved as soon as either of these events have fired:
-
-- an interaction event (mouse move, scroll, click, etc)
-- an idle callback with a fixed timeout
-
-Depending on which mode you pick, depends on where in your apps lifecycle the promise is awaited and how much
-performance improvements you'll get.
-</details>
-
-
-## Install
-
-```bash
-yarn add nuxt-delay-hydration -D
-# npm i nuxt-delay-hydration -D
-```
-
-⚠️ This module is beta, use with caution.
 
 ## Usage
 
@@ -213,6 +203,19 @@ _debug_: `boolean:false` Toggle the debug logging
 _replayClick_: `boolean:false` Toggle the click replay
 
 ## Guides
+
+### General
+<details>
+  <summary><b>How delaying hydration works</b></summary>
+
+The process of delaying hydration is quite straight forward. A promise is injected into your app.
+The promise is resolved as soon as either of these events have fired:
+
+- an interaction event (mouse move, scroll, click, etc)
+- an idle callback with a fixed timeout
+
+The idle CPU time tells Google that these scripts are not blocking, as far as I can gather.
+</details>
 
 ### Debugging
 

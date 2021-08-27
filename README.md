@@ -421,6 +421,17 @@ Log details in the console on when hydration is blocked and when and why it beco
 
 Run the delay forever, useful for testing your app in a non-hydrated state.
 
+## Benchmarks
+
+- [Pokemon](https://github.com/harlan-zw/nuxt-delay-hydration/blob/master/test/fixtures/pokemon/benchmarks.md)
+- [Countries](https://github.com/harlan-zw/nuxt-delay-hydration/blob/master/test/fixtures/countries/benchmarks.md)
+- [Manual](https://github.com/harlan-zw/nuxt-delay-hydration/blob/master/test/fixtures/manual/benchmarks.md)
+
+Live examples
+
+- https://www.odysseytraveller.com/
+- https://massivemonster.co/
+
 ## Credits
 
 - [Markus Oberlehner](https://github.com/maoberlehner). Pioneer of the lazy hydration in Vue 

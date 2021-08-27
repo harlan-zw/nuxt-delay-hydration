@@ -1,4 +1,4 @@
-![nuxt-delay-hydration](https://repository-images.githubusercontent.com/343991410/68f83b80-811f-11eb-9638-51aed75785c4)
+![nuxt-delay-hydration](https://repository-images.githubusercontent.com/392525648/e8fad899-c221-48ca-bb3e-bf5bde92bfd0)
 
 
 <h1 align='center'>nuxt-delay-hydration</h1>

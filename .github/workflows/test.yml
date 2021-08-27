@@ -39,5 +39,14 @@ jobs:
       - name: Run tests
         run: yarn test
 
+      - name: Build fixture - pokemon
+        run: yarn build:pokemon
+
+      - name: Build fixture - countries
+        run: yarn build:countries
+
+      - name: Build fixture - manual
+        run: yarn build:manual
+
       - name: Coverage
         uses: codecov/codecov-action@v1

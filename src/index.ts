@@ -11,6 +11,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
   defaults: {
     mode: false,
     hydrateOnEvents: [
+      'mousemove',
       'scroll',
       'keydown',
       'click',
@@ -69,7 +70,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
      */
     nuxt.hook('components:dirs', (dirs: {path: string; ignore?: string[]}[]) => {
       dirs.push({
-        path: join(__dirname, 'components'),
+        path: resolve(join(__dirname, 'components')),
         ignore: ['index.js'],
       })
     })

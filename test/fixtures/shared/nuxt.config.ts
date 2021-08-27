@@ -3,7 +3,6 @@ import {NuxtConfig} from '@nuxt/kit'
 
 const config : NuxtConfig = {
   target: 'static',
-  ssr: false,
   head: {
     // @ts-ignore
     htmlAttrs: {

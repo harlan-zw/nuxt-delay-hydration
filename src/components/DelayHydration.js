@@ -46,7 +46,7 @@ export default {
         // eslint-disable-next-line no-console
         console.timeEnd('[NuxtDelayHydration] Hydration time')
       }
-      if (this.replayClick)
+      if (this.$delayHydration.config.replayLastPointerEvent && this.replayClick)
         this.$delayHydration.replayPointerEvent(hydrationEvent, true)
     }
     catch (e) {

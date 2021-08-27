@@ -26,9 +26,10 @@
   "scripts": {
     "cache:clear": "rm -rf dist && rm -rf node_modules/.cache && rm -rf test/fixtures/pokemon/node_modules && rm -rf test/fixtures/pokemon/.nuxt",
     "build": "yarn run cache:clear && tsup src/index.ts --dts && mkdist --src src/components --dist dist/components --format=cjs --ext=js && mkdist --src src/runtime --dist dist/runtime --ext=js",
-    "dev:opt-in": "nuxt test/fixtures/opt-in",
-    "build:opt-in": "nuxt generate test/fixtures/opt-in",
-    "start:opt-in": "export NODE_ENV=production && nuxt start test/fixtures/opt-in",
+    "dev:manual": "nuxt test/fixtures/manual",
+    "build:manual": "nuxt generate test/fixtures/manual",
+    "start:manual": "export NODE_ENV=production && nuxt start test/fixtures/manual",
+    "up:manual": "yarn run build && yarn run build:manual && yarn run start:manual",
     "dev:countries": "nuxt test/fixtures/countries",
     "build:countries": "nuxt generate test/fixtures/countries",
     "start:countries": "export NODE_ENV=production && nuxt start test/fixtures/countries",

@@ -9,7 +9,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
   name: NAME,
   configKey: CONFIG_KEY,
   defaults: {
-    mode: MODE_DELAY_APP_MOUNT,
+    mode: false,
     hydrateOnEvents: [
       'scroll',
       'keydown',
@@ -32,10 +32,12 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
       logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
       return
     }
-    if (config.debug && !nuxt.options.dev) {
-      logger.info(`\`${NAME}\` has debug enabled in a non-development environment.`)
+    if (nuxt.options.target !== 'static' || !nuxt.options.ssr) {
+      logger.warn(`\`${NAME}\` currently only supports full-static (SSG) apps, disabling module.`)
       return
     }
+    if (config.debug && !nuxt.options.dev)
+      logger.warn(`\`${NAME}\` debug enabled in a non-development environment.`)
 
     nuxt.hook('build:before', () => {
       if (process.env.NODE_ENV !== 'test')
@@ -62,10 +64,13 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
       })
     }
 
-    nuxt.hook('components:dirs', (dirs: {path: string; isAsync: boolean }[]) => {
+    /**
+     * Extend Nuxt components, add our component directory.
+     */
+    nuxt.hook('components:dirs', (dirs: {path: string; ignore?: string[]}[]) => {
       dirs.push({
         path: join(__dirname, 'components'),
-        isAsync: true,
+        ignore: ['index.js'],
       })
     })
 

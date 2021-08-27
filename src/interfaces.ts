@@ -1,4 +1,4 @@
-export type Mode = 'init' | 'mount' | 'manual'
+export type Mode = 'init' | 'mount' | 'manual' | false
 export type EventTypes = 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart' | string
 
 export type ModuleOptions = {

@@ -20,7 +20,7 @@ export default {
     }
     const countries = await getCountries()
     return {
-      country: countries.find(c => c.name.common.toLowerCase().replaceAll(' ', '-') === params.country)
+      country: countries.find(c => c.name.common.toLowerCase().replace(' ', '-') === params.country)
     }
   },
 }

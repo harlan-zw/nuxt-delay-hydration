@@ -13,7 +13,7 @@ const config = defu.arrayFn({
       // @ts-ignore
       return countries.map((country, index) => {
         return {
-          route: '/' + country.name.common.toLowerCase().replaceAll(' ', '-'),
+          route: '/' + country.name.common.toLowerCase().replace(' ', '-'),
           payload: {
             country,
           }

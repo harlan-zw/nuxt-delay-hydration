@@ -393,7 +393,7 @@ Run the delay forever, useful for testing your app in a non-hydrated state.
 
 ## Credits
 
-- [Markus Oberlehner](https://github.com/maoberlehner). Great articles on Vue hydration and vue-lazy-hydration 
+- [Markus Oberlehner](https://github.com/maoberlehner). Pioneer of the lazy hydration in Vue 
 
 
 ## License

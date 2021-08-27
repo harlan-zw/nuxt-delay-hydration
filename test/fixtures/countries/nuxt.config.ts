@@ -4,7 +4,7 @@ const config = defu.arrayFn({
   delayHydration: {
     mode: 'init',
     debug: true,
-    replayLastPointerEvent: true,
+    replayClick: true,
   },
   generate: {
     async routes() {

@@ -1,4 +1,4 @@
 import delayHydration from './<%= delayHydrationPath %>'
-<% if (hydrationConfig.replayLastPointerEvent) { %>
+<% if (hydrationConfig.replayClick) { %>
 import replayPointerEvent from './<%= replayPointerEventPath %>'
 <% } %>

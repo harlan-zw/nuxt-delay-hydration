@@ -27,7 +27,7 @@ const replayPointerEvent = (() => {
     const replayEvent = () => {
       document.body.removeEventListener('click', resolver)
       const eventAge = new Date() - hydrationStartTime
-      if (eventAge < <%= options.replayEventMaxAge %>) {
+      if (eventAge < <%= options.replayClickMaxEventAge %>) {
         const eventToDispatch = new e.constructor(e.type, {
             view: window,
             bubbles: true,

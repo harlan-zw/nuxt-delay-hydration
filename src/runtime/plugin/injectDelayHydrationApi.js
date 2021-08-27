@@ -1,12 +1,12 @@
 import hydrationRace from './hydrationRace.js'
-<% if (options.replayLastPointerEvent) { %>
+<% if (options.replayClick) { %>
 import replayPointerEvent from './replayPointerEvent.js'
 <% } %>
 
 const injectDelayHydrationApi = (ctx, inject) => {
   inject('delayHydration', {
     hydrationRace,
-  <% if (options.replayLastPointerEvent) { %>
+  <% if (options.replayClick) { %>
     replayPointerEvent,
   <% } %>
   config: <%= JSON.stringify(options) %>

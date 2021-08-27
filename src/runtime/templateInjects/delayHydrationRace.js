@@ -8,7 +8,7 @@ if (typeof window !== 'undefined') {
     // never resolves
     console.log(`%c[NuxtDelayHydration] Running with the "forever" enabled, will never hydrate.`, style)
     await new Promise(resolve => {})
-    <% } else if (hydrationConfig.debug || hydrationConfig.replayLastPointerEvent) { %>
+    <% } else if (hydrationConfig.debug || hydrationConfig.replayClick) { %>
     const hydrationEvent = await delayHydration()
       <% if (hydrationConfig.debug) { %>
     console.log(`%c[NuxtDelayHydration] Finished delaying hydration with trigger: "${hydrationEvent}"`, style)
@@ -17,7 +17,7 @@ if (typeof window !== 'undefined') {
     <% } else { %>
     await delayHydration()
     <% } %>
-<% if (hydrationConfig.replayLastPointerEvent) { %>
+<% if (hydrationConfig.replayClick) { %>
     replayPointerEvent(hydrationEvent)
     <% } %>
 }

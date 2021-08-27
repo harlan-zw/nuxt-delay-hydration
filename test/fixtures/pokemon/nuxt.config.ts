@@ -4,7 +4,7 @@ const config = defu.arrayFn(require('../shared/nuxt.config').default, {
   delayHydration: {
     mode: 'mount',
     debug: true,
-    replayLastPointerEvent: true,
+    replayClick: true,
   },
   generate: {
     async routes() {

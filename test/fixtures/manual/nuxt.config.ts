@@ -4,7 +4,7 @@ const config = defu.arrayFn({
   delayHydration: {
     mode: 'manual',
     debug: true,
-    replayLastPointerEvent: true
+    replayClick: true
   }
 }, require('../shared/nuxt.config').default)
 

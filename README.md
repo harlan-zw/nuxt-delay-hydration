@@ -27,12 +27,15 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
 <details>
   <summary><b>Should I use this module</b></summary>
 
-⚠️ This module is beta. It is tested on simple full-static Nuxt.js (SSG) apps, such as
+The module is tested on simple full-static Nuxt.js (SSG) apps, such as
 documentation, blogs and misc content sites. It will not run in any other mode at this stage.
 
-- **Full Static** You are building your app as full static (SSG)
-- **JS Enhancements only** The core function of your app works without JavaScript.
-- **Pre-optimised** Your app has been optimised for [LCP](https://web.dev/lcp/) and [CLS](https://web.dev/cls/).
+The following optimisations should be done prior to using this module:
+- [LCP](https://web.dev/lcp/)
+- [CLS](https://web.dev/cls/)
+- Non-hydrated functionality, see [testing](#testing)
+
+It's also recommended that you [benchmark](#benchmark) your app in Google Lighthouse before starting.
 </details>
 
 <br>
@@ -48,8 +51,7 @@ to delay the hydration to avoid this penalty.
 The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
 However, it can require a lot of tinkering, may break your HMR and add avoidable complexity.
 
-Nuxt Delay Hydration aims to provide optimisations with  minimal tinkering, by making certain assumptions on trade-offs
-you're willing to make.
+Nuxt Delay Hydration aims to provide optimisations with  minimal tinkering, by making certain assumptions on trade-offs.
 </details>
 
 <br>
@@ -60,7 +62,7 @@ you're willing to make.
 A promise is injected into your app. 
 The promise is resolved as soon as either of these events have fired:
 
-- an interaction event (scroll, click, etc)
+- an interaction event (mouse move, scroll, click, etc)
 - an idle callback with a fixed timeout
 
 Depending on which mode you pick, depends on where in your apps lifecycle the promise is awaited.
@@ -73,6 +75,8 @@ Depending on which mode you pick, depends on where in your apps lifecycle the pr
 yarn add nuxt-delay-hydration -D
 # npm i nuxt-delay-hydration -D
 ```
+
+⚠️ This module is beta, use with caution.
 
 ## Usage
 
@@ -87,20 +91,10 @@ export default {
 }
 ```
 
-<details>
-  <summary><h3 style="display:inline-block">Benchmarking</h3></summary>
-It's important to measure the performance changes this module and any configuration changes you make.
-
-The simplest way to benchmark is to use the Google Lighthouse tool within Google Chrome.
-
-I recommend generating your static app completely in production mode and start it. `nuxt geneeate && nuxt start`
-
-Open a private window and begin the performance tests. You will want to look at the score overall and the Total Blocking Time.
-</details>
 
 ## Choosing a mode
 
-By default, no mode is selected. You will need to select how you would like to delay the hydration for the module to work.
+By default, no mode is selected, you will need to select how you would the module to work.
 
 *Type:* `init` | `mount` | `manual` | `false`
 
@@ -174,24 +168,120 @@ export default {
 }
 ```
 
-## Further App Optimisations
+#### DelayHydration component
 
-### Reducing JavaScript payloads
 
-#### Avoid bundling some plugins to server & app
 
-For certain scripts, mostly third-party, we want to avoid having them pre-rendered in your app.
 
-For example if you use a chat widget  or Google Tag Manager on your site, you will want to make sure this plugin is _client only_ 
-to reduce th
+## Guides
 
+### Debugging
+
+<details>
+  <summary>Debug mode</summary>
+</details>
+
+<details>
+  <summary>Delay hydration forever</summary>
+</details>
+
+<details>
+  <summary>Visualising the hydration status</summary>
+</details>
+
+
+### Benchmarking
+
+<details>
+  <summary>How to benchmark your app</summary>
+It's important to measure the performance changes this module and any configuration changes you make.
+
+The simplest way to benchmark is to use the Google Lighthouse tool within Google Chrome.
+
+I recommend generating your static app completely in production mode and start it. `nuxt geneeate && nuxt start`
+
+Open a private window and begin the performance tests. You will want to look at the score overall and the Total Blocking Time.
+</details>
+
+### Replaying hydration click
 
 
 ## Advanced Configuration
 
 Configuration should be provided on the `delayHydration` key within your nuxt config.
 
+If you're finding the lab or [field data](https://web.dev/lab-and-field-data-differences/) is not performing, you may want to
+tinker with this advanced configuration.
 
+### Event Hydration
+
+**hydrateOnEvents**
+
+- Type: `string[]`
+- Default: `[ 'mousemove', 'scroll', 'keydown', 'click', 'touchstart', 'wheel' ]`
+
+Controls which browser events should trigger the hydration to resume. By default, it is quite aggressive to avoid
+possible user experience issues.
+
+**replayClick**
+
+- Type: `boolean`
+- Default: `false`
+
+If the trigger for hydration was a click, you can replay it. Replaying it will re-execute the event when it is presumed your 
+app is hydrated. 
+
+For example, if a user clicks a hamburger icon and hydration is required to open the menu, it would replay the click once hydrated.
+
+⚠️ This is experimental, use with caution.
+
+**replayClickMaxEventAge**
+
+- Type: `number` (milliseconds)
+- Default: `1000`
+
+The replay click event will not run if the hydration takes more than the limit specified.
+
+This limit is designed to avoid possible user experience issues.
+
+
+### Idle Hydration
+
+**idleCallbackTimeout**
+
+- Type: `number` (milliseconds)
+- Default: `7000`
+
+When waiting for an idle callback, it's possible to define a max amount of time to wait in milliseconds. This is
+ useful when there are a lot of network requests happening.
+
+**postIdleTimeout**
+
+- Type: `{ mobile: number, desktop: number }` (milliseconds)
+- Default: `{ mobile: 6000, desktop: 5000, }`
+
+How many to wait (in milliseconds) after the idle callback before we resume the hydration. This extra timeout is required
+to avoid the standard "blocking", we need to provide real idle time to lighthouse.
+
+Mobile should always be higher than desktop as the CPU capacity will generally be a lot less than a desktop.
+
+_Note: The default will likely be customised in the future based on further benchmarking._
+
+### Debugging
+
+**debug**
+
+- Type: `boolean`
+- Default: `false`
+
+Log details in the console on when hydration is blocked and when and why it becomes unblocked.
+
+**forever**
+
+- Type: `boolean`
+- Default: `false`
+
+Run the delay forever, useful for testing your app in a non-hydrated state.
 
 ## Credits
 

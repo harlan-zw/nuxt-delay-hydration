@@ -25,8 +25,8 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
     idleCallbackTimeout: 7000,
     forever: false,
     debug: false,
-    replayLastPointerEvent: false,
-    replayEventMaxAge: 2000,
+    replayClick: false,
+    replayClickMaxEventAge: 1000,
   } as ModuleOptions,
   setup: (config: ModuleOptions) => {
     if (!config.mode) {
@@ -57,7 +57,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
       options: config,
     })
 
-    if (config.replayLastPointerEvent) {
+    if (config.replayClick) {
       addTemplate({
         src: resolve(join(__dirname, 'runtime', 'template', 'replayPointerEvent.js')),
         fileName: replayPointerEventPath,

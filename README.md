@@ -10,6 +10,8 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
 <p align='center'>
 <a href='https://www.npmjs.com/package/nuxt-delay-hydration'>
 <img src='https://img.shields.io/npm/v/nuxt-delay-hydration?color=0EA5E9&label='>
+</a>
+<a href='https://github.com/harlan-zw/nuxt-delay-hydration/actions/workflows/test.yml'>
 <img src='https://github.com/harlan-zw/nuxt-delay-hydration/actions/workflows/test.yml/badge.svg' >
 </a>
 </p>

@@ -25,17 +25,17 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
 <br>
 
 <details>
-  <summary><b>Should I use this module</b></summary>
+  <summary><b>Requirements</b></summary>
 
 The module is tested on simple full-static Nuxt.js (SSG) apps, such as
 documentation, blogs and misc content sites. If you aren't running this mode, look into [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration).
 
-The following optimisations should be done prior to using this module:
+The following optimisations should be done prior to using this module in production:
 - [LCP](https://web.dev/lcp/)
 - [CLS](https://web.dev/cls/)
-- Non-hydrated functionality, see [testing](#testing)
+- Non-hydrated functionality, see [debugging](#debugging)
 
-It's also recommended that you [benchmark](#benchmark) your app in Google Lighthouse before starting.
+It's also recommended that you [benchmark](#performance-auditing) your app before starting.
 </details>
 
 <br>
@@ -65,7 +65,8 @@ The promise is resolved as soon as either of these events have fired:
 - an interaction event (mouse move, scroll, click, etc)
 - an idle callback with a fixed timeout
 
-Depending on which mode you pick, depends on where in your apps lifecycle the promise is awaited.
+Depending on which mode you pick, depends on where in your apps lifecycle the promise is awaited and how much
+performance improvements you'll get.
 </details>
 
 

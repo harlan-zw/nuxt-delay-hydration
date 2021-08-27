@@ -216,8 +216,8 @@ _replayClick_: `boolean:false` Toggle the click replay
 
 <details>
   <summary>Debug mode</summary>
-
-  It's recommended that you do thorough testing on your app with the module before deploying it into production. 
+<br>
+It's recommended that you do thorough testing on your app with the module before deploying it into production. 
 
   To make sure the module is doing what you expect, there is a `debug` mode, which when enabled will log behaviour
 in the console.
@@ -230,10 +230,11 @@ export default {
 }
 ```
 </details>
+<br>
 
 <details>
   <summary>Delay hydration forever</summary>
-
+<br>
 Since the hydration will trigger instantly when you interact with the page, it can be useful
 to manually delay the hydration forever so you can test the functionality of your app in its non-hydrated state.
 
@@ -245,10 +246,10 @@ export default {
 }
 ```
 </details>
-
+<br>
 <details>
   <summary>Visualising the hydration status</summary>
-
+<br>
 It can be unclear at times whether your app has been hydrated or not if it's quite static, this can make debugging hard.
 
 To make things easier, there is a component `HydrationStatus` which will tell you what's going on. 
@@ -271,7 +272,6 @@ To make things easier, there is a component `HydrationStatus` which will tell yo
 </template>
 ```
 </details>
-
 
 ### Performance Auditing
 

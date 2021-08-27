@@ -1,6 +1,6 @@
 {
   "name": "nuxt-delay-hydration",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "main": "dist/index.js",
   "description": "Improve your Nuxt.js Google Ligthouse score by delaying hydration ⚡️",
   "keywords": [

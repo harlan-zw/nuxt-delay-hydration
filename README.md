@@ -286,9 +286,9 @@ The simplest way to benchmark is to use the Google Lighthouse tool within Google
 
 However, due to unpredictable results, it's recommended to run numerous iterations of the audit. To make that
 easier this module provides a script to run a performance audit with 10 iterations:
-1. Install dependencies: `npm add -G lighthouse chrome-launcher`
-2. Build and start your nuxt up `nuxt geneeate && nuxt start`
-3. Run the audit script `./node_modules/nuxt-delay-hydration/scripts/audit.js`
+1. Install dependencies: `yarn add -D lighthouse chrome-launcher`
+2. Build and start your Nuxt app `nuxt generate && nuxt start`
+3. Run the audit script `node ./node_modules/nuxt-delay-hydration/scripts/audit.js`
 
 </details>
 
@@ -346,7 +346,7 @@ export default {
 
 ## Advanced Configuration
 
-Configuration should be provided on the `delayHydration` key within your nuxt config.
+Configuration should be provided on the `delayHydration` key within your Nuxt config.
 
 If you're finding the lab or [field data](https://web.dev/lab-and-field-data-differences/) is not performing, you may want to
 tinker with this advanced configuration.

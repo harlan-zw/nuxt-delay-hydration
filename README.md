@@ -131,8 +131,8 @@ export default {
 
 ### Mount Mode
 
-Delays hydration once your app is created (all plugins and vendor bundle loaded) and is about to be mounted. This blocks
-your layout from being loaded.
+Delays hydration once your app is created (all plugins and vendor bundle loaded) and is about to be mounted. This delays
+your layout and page components.
 
 _Pros:_ Safer and still provides significant good optimisation
 
@@ -151,14 +151,13 @@ export default {
 
 ### Manual Mode
 
-Only delays the hydration of template code where it's used. Useful for when you need some part of the
+Using the manual mode, you manually specify what part of your app you'd like to delay. Useful for when you need some part of the
 page to always hydrate immediately, such as a navigation drawer.
 
 _Pros:_ Safest way to optimise 
 
-_Cons:_ May not provide significant improvements
+_Cons:_ May not provide significant improvements, depends on how you use it
 
-_Benchmark:_ ?% reduction
 
 ```js
 export default {
@@ -170,8 +169,45 @@ export default {
 
 #### DelayHydration component
 
+Once you have set the mode, you need to use the component. It's recommended you use the component within
+your layout file.
 
+```vue
+<template>
+<div>
+    <my-header />
+    <delay-hydration>
+        <!-- You must have a single child node as the slot -->
+        <div>
+            <main>
+                <nuxt />
+            </main>
+            <my-footer />
+        </div>
+    </delay-hydration>
+</div>
+</template>
+```
 
+This component is a wrapper for a pre-configured [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) component.
+
+If you're using [nuxt/components](https://github.com/nuxt/components) then no import is required. Otherwise you can import 
+the component as:
+
+```js
+import { DelayHydration } from 'nuxt-delay-hydration/dist/components'
+```
+
+The behaviour of the component should be controlled by the [advanced configuration](#advanced-configuration), however props 
+are provided for convenience. 
+
+**Props**
+
+_forever_: `boolean:false` Toggle the hydration delay to last forever
+
+_debug_: `boolean:false` Toggle the debug logging
+
+_replayClick_: `boolean:false` Toggle the click replay
 
 ## Guides
 

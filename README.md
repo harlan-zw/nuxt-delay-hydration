@@ -28,7 +28,7 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
   <summary><b>Should I use this module</b></summary>
 
 The module is tested on simple full-static Nuxt.js (SSG) apps, such as
-documentation, blogs and misc content sites. It will not run in any other mode at this stage.
+documentation, blogs and misc content sites. If you aren't running this mode, look into [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration).
 
 The following optimisations should be done prior to using this module:
 - [LCP](https://web.dev/lcp/)
@@ -312,6 +312,33 @@ export default {
 ```
 
 This is an experimental configuration, you should test this option yourself before implementing into your production app.
+</details>
+
+### Further Optimisations
+
+
+<details>
+  <summary>Load heavy components async</summary>
+
+When you load in a heavy component synchronously, the javascript will be bundled in with the main application payload.
+
+This will decrease all of your perfomance metrics. It's recommend you use async imports for these components.
+
+[Analyze](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-build#analyze) your components and load the big ones async. If you're using nuxt/components, you can 
+easily prefix them with `Lazy` to do so, otherwise you can use the following syntax.
+
+```js
+<script>
+export default {
+  components: {
+    AdSlider: () => import('./AdSlider.vue'),
+    ArticleContent: () => import('./ArticleContent.vue'),
+    CommentForm: () => import('./CommentForm.vue'),
+    ImageSlider: () => import('./ImageSlider.vue'),
+  },
+};
+</script>
+```
 </details>
 
 ## Advanced Configuration

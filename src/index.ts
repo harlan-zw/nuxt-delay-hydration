@@ -33,12 +33,23 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
       logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
       return
     }
-    if (nuxt.options.target !== 'static' || !nuxt.options.ssr) {
-      logger.warn(`\`${NAME}\` currently only supports full-static (SSG) apps, disabling module.`)
+    if (!nuxt.options.ssr) {
+      logger.warn(`\`${NAME}\` will only work for SSR apps, disabling module.`)
+      return
+    }
+    // @ts-ignore
+    if (nuxt.options.vite && !nuxt.options.vite?.ssr) {
+      logger.warn(`\`${NAME}\` only works with vite with SSR enabled, disabling module.`)
+      return
+    }
+    if (!config.debug && nuxt.options.dev) {
+      logger.info(`\`${NAME}\` only runs in dev with \`debug\` enabled, disabling module.`)
       return
     }
     if (config.debug && !nuxt.options.dev)
       logger.warn(`\`${NAME}\` debug enabled in a non-development environment.`)
+    if (nuxt.options.target !== 'static')
+      logger.warn(`\`${NAME}\` is untested in a non-static mode, use with caution.`)
 
     nuxt.hook('build:before', () => {
       if (process.env.NODE_ENV !== 'test')

@@ -9,7 +9,7 @@ const config = defu.arrayFn({
     'nuxt-vite'
   ],
   vite: {
-    test: true
+    ssr: true
   }
 }, require('../shared/nuxt.config').default)
 

@@ -125,7 +125,7 @@ By default, no mode is selected, you will need to select how you would the modul
 | [mount](#mount-mode) _recommended_ | Delays Nuxt after creation and before mounting. Plugins and some third-party scripts will work. |   Minimal non-critical plugins and third-party plugins. |
 | [manual](#manual-mode) | Delay is provided by the `DelayHydration` component. Extends `vue-lazy-hydration` |  All other apps |
 
-Regardless of the mode you choose, please read [further app optimisations](#further-app-optimisations).
+Regardless of the mode you choose, please read [further optimisations](#further-optimisations).
 
 ### Init Mode
 

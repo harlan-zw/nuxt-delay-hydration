@@ -29,7 +29,7 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
 
 <details>
   <summary><b>Motivation</b></summary>
-
+<br>
 Hydration is the process of hooking up static HTML with your Nuxt app to provide reactivity, used in SSR and SSG.
 
 This hydration process is expensive, especially with Nuxt 2. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".

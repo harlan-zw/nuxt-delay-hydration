@@ -38,12 +38,12 @@ While this is unavoidable in most apps, for static sites which depend on minimal
 to delay the hydration to avoid this penalty.
 
 The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
-However, it can require a lot of tinkering, may break your HMR and add avoidable complexity.
+However, it can require a lot of tinkering, may break your HMR and not solve the performance issues. 
+
+In `mount` and `init` mode, this module delays Nuxt core code to squeeze out maximum performance, specifically around large payload executions.
 
 Nuxt Delay Hydration aims to provide optimisations with minimal tinkering, by making certain assumptions on trade-offs.
 This module isn't built to replace vue-lazy-hydration, but as an abstraction layer on top of it.
-
-Keep in mind, **this is a hacky solution**. Until Google can recognise which scripts are truly blocking, we'll need to rely on this approach.
 </details>
 
 <br>
@@ -51,7 +51,7 @@ Keep in mind, **this is a hacky solution**. Until Google can recognise which scr
 <details>
   <summary><b>How this module works</b></summary>
 <br>
-A promise is injected into your app, depending on the mode depends on where it's blocked. The promise is resolved as soon as either of these events has fired:
+A promise is injected into your app, the location is based on the mode. The promise is resolved as soon as either of these events has fired:
 
 - an interaction event (mouse move, scroll, click, etc)
 - an idle callback with a fixed timeout
@@ -63,6 +63,8 @@ For example:
   idle callback + 6 seconds
 - if a user visits the page and moves their cursor or scrolls, the hydration will be triggered immediately. The chance of interacting with the
   non-hydration app will be minimised
+
+Keep in mind, **this is a hacky solution**. Until Google can recognise which scripts are truly blocking, we'll need to rely on this approach.
 </details>
 
 <br>

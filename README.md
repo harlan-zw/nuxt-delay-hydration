@@ -48,11 +48,30 @@ Keep in mind, **this is a hacky solution**. Until Google can recognise which scr
 
 <br>
 
+<details>
+  <summary><b>How this module works</b></summary>
+<br>
+A promise is injected into your app, depending on the mode depends on where it's blocked. The promise is resolved as soon as either of these events has fired:
+
+- an interaction event (mouse move, scroll, click, etc)
+- an idle callback with a fixed timeout
+
+The idle CPU time tells Google that these scripts are not blocking.
+
+For example:
+- if a Google bot visits the page and has no interaction, out of the box the hydration won't occur until the browser
+  idle callback + 6 seconds
+- if a user visits the page and moves their cursor or scrolls, the hydration will be triggered immediately. The chance of interacting with the
+  non-hydration app will be minimised
+</details>
+
+<br>
+
 ## Install
 
 ```bash
-yarn add nuxt-delay-hydration -D
-# npm i nuxt-delay-hydration -D
+yarn add nuxt-delay-hydration
+# npm i nuxt-delay-hydration
 ```
 
 ⚠️ This module is beta, use with caution.
@@ -207,18 +226,6 @@ _debug_: `boolean:false` Toggle the debug logging
 _replayClick_: `boolean:false` Toggle the click replay
 
 ## Guides
-
-### General
-<details>
-  <summary><b>How delaying hydration works</b></summary>
-
-A promise is injected into your app. The promise is resolved as soon as either of these events has fired:
-
-- an interaction event (mouse move, scroll, click, etc)
-- an idle callback with a fixed timeout
-
-The idle CPU time tells Google that these scripts are not blocking.
-</details>
 
 ### Debugging
 

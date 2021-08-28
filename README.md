@@ -93,7 +93,7 @@ _Note: The module will not run in development unless you have enabled [debug](#d
 
 By default, no mode is selected, you will need to select how you would the module to work.
 
-*Type:* `init` | `mount` | `manual` | `false`
+*Type:* `init` | `mount`| `manual` | `false`
 
 *Default:* `false`
 
@@ -101,7 +101,7 @@ By default, no mode is selected, you will need to select how you would the modul
 |----------|:-------------|------:|
 | `false` _default_ |  Disable the module | Testing |
 | [init](#init-mode) | Delays Nuxt app creation. All code is delayed including plugins and third-party scripts. |  Zero or minimal plugins/modules. |
-| [mount](#mount-mode) | Delays Nuxt after creation and before mounting. Plugins and some third-party scripts will work. |   Minimal non-critical plugins and third-party plugins. |
+| [mount](#mount-mode) _recommended_ | Delays Nuxt after creation and before mounting. Plugins and some third-party scripts will work. |   Minimal non-critical plugins and third-party plugins. |
 | [manual](#manual-mode) | Delay is provided by the `DelayHydration` component. Extends `vue-lazy-hydration` |  All other apps |
 
 Regardless of the mode you choose, please read [further app optimisations](#further-app-optimisations).
@@ -116,7 +116,7 @@ _Pros:_ Provides the biggest blocking time reduction
 
 _Cons:_ Risky if you have critical third party scripts
 
-_Benchmark:_ ~90% reduction
+_Benchmark:_ ~90-100% reduction
 
 ```js
 export default {

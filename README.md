@@ -19,9 +19,9 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
 
 ## Features
 
-- ⚡️ Instantly increase your Google Lighthouse score by reducing "Blocking Time"
+- ⚡️ Instantly increase your Google Lighthouse score
+- 🔥 Reduce your "Blocking Time" by as much as 100%
 - 🍃 Pre-configured to minimise user experience issues
-- 🧩 Multiple implementation options
 - 🔁 (optional) Replay pre-hydration clicks
 
 <br>
@@ -30,7 +30,9 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
 <details>
   <summary><b>Motivation</b></summary>
 
-Hydrating Vue apps is expensive, especially with Vue 2. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".
+Hydration is the process of hooking up static HTML with your Nuxt app to provide reactivity, used in SSR and SSG.
+
+This hydration process is expensive, especially with Nuxt 2. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".
 
 While this is unavoidable in most apps, for static sites which depend on minimal interactivity, it is possible and safe
 to delay the hydration to avoid this penalty.
@@ -38,7 +40,8 @@ to delay the hydration to avoid this penalty.
 The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
 However, it can require a lot of tinkering, may break your HMR and add avoidable complexity.
 
-Nuxt Delay Hydration aims to provide optimisations with  minimal tinkering, by making certain assumptions on trade-offs.
+Nuxt Delay Hydration aims to provide optimisations with minimal tinkering, by making certain assumptions on trade-offs.
+This module isn't built to replace vue-lazy-hydration, but as an abstraction layer on top of it.
 
 Keep in mind, **this is a hacky solution**. Until Google can recognise which scripts are truly blocking, we'll need to rely on this approach.
 </details>
@@ -58,10 +61,10 @@ yarn add nuxt-delay-hydration -D
 <details>
   <summary><b>Requirements</b></summary>
 <br>
-The module is tested on simple full-static Nuxt.js (SSG) apps, such as
-documentation, blogs and misc content sites. If you aren't running this mode, look into [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration).
+The module requires SSR. It has been tested in production on simple full-static Nuxt.js (SSG) apps, such as
+documentation, blogs and misc content sites.
 
-The following optimisations should ideally be done prior to using this module in production:
+The following optimisations should ideally be done before using this module in production:
 - [LCP](https://web.dev/lcp/)
 - [CLS](https://web.dev/cls/)
 - Non-hydrated functionality, see [debugging](#debugging)
@@ -84,6 +87,7 @@ export default {
 }
 ```
 
+_Note: The module will not run in development unless you have enabled [debug](#debugging)._
 
 ## Choosing a mode
 
@@ -96,7 +100,7 @@ By default, no mode is selected, you will need to select how you would the modul
 | Type   |      Description    | Use Case |
 |----------|:-------------|------:|
 | `false` _default_ |  Disable the module | Testing |
-| [init](#init-mode) | Delays Nuxt app creation. All code is delayed including plugins and third-party scripts. |  Zero or minimal plugins / modules. |
+| [init](#init-mode) | Delays Nuxt app creation. All code is delayed including plugins and third-party scripts. |  Zero or minimal plugins/modules. |
 | [mount](#mount-mode) | Delays Nuxt after creation and before mounting. Plugins and some third-party scripts will work. |   Minimal non-critical plugins and third-party plugins. |
 | [manual](#manual-mode) | Delay is provided by the `DelayHydration` component. Extends `vue-lazy-hydration` |  All other apps |
 
@@ -127,7 +131,7 @@ export default {
 Delays hydration once your app is created (all plugins and vendor bundle loaded) and is about to be mounted. This delays
 your layout and page components.
 
-_Pros:_ Safer and still provides significant good optimisation
+_Pros:_ Safer and still provides good improvements
 
 _Cons:_ May still break certain layouts if they are js dependent.
 
@@ -149,7 +153,7 @@ page to always hydrate immediately, such as a navigation drawer.
 
 _Pros:_ Safest way to optimise 
 
-_Cons:_ May not provide significant improvements, depends on how you use it
+_Cons:_ Speed improvement based on usage
 
 
 ```js
@@ -184,7 +188,7 @@ your layout file.
 
 This component is a wrapper for a pre-configured [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) component.
 
-If you're using [nuxt/components](https://github.com/nuxt/components) then no import is required. Otherwise you can import 
+If you're using [nuxt/components](https://github.com/nuxt/components) then no import is required. Otherwise, you can import 
 the component as:
 
 ```js
@@ -208,13 +212,12 @@ _replayClick_: `boolean:false` Toggle the click replay
 <details>
   <summary><b>How delaying hydration works</b></summary>
 
-The process of delaying hydration is quite straight forward. A promise is injected into your app.
-The promise is resolved as soon as either of these events have fired:
+A promise is injected into your app. The promise is resolved as soon as either of these events has fired:
 
 - an interaction event (mouse move, scroll, click, etc)
 - an idle callback with a fixed timeout
 
-The idle CPU time tells Google that these scripts are not blocking, as far as I can gather.
+The idle CPU time tells Google that these scripts are not blocking.
 </details>
 
 ### Debugging
@@ -224,8 +227,9 @@ The idle CPU time tells Google that these scripts are not blocking, as far as I 
 <br>
 It's recommended that you do thorough testing on your app with the module before deploying it into production. 
 
-  To make sure the module is doing what you expect, there is a `debug` mode, which when enabled will log behaviour
-in the console.
+To make sure the module is doing what you expect, there is a `debug` mode, which when enabled will log behaviour in the console.
+
+It might be a good idea to always debug on your local environment, in that instance you could do:
 
 ```js
 export default {
@@ -276,6 +280,13 @@ To make things easier, there is a component `HydrationStatus` which will tell yo
 </div>
 </template>
 ```
+
+If you're using [nuxt/components](https://github.com/nuxt/components) then no import is required. Otherwise, you can import
+the component as:
+
+```js
+import { HydrationStatus } from 'nuxt-delay-hydration/dist/components'
+```
 </details>
 
 ### Performance Auditing
@@ -283,7 +294,7 @@ To make things easier, there is a component `HydrationStatus` which will tell yo
 <details>
   <summary>How to audit your app</summary>
 <br>
-It's important to measure the performance changes this module and any configuration changes you make.
+It's important to measure the performance changes in this module and any configuration changes you make.
 
 The simplest way to benchmark is to use the Google Lighthouse tool within Google Chrome.
 
@@ -301,12 +312,12 @@ easier this module provides a script to run a performance audit with 10 iteratio
   <summary>What is this and how to enable</summary>
 <br>
 One of the issues with delaying hydration is that a user interaction event can occur before your scripts are loaded, leading
-to a user having to click on something multiple times for it to do what they expect. Think of a hamburger which is triggered using Javascript, if your 
+to a user having to click on something multiple times for it to do what they expect. Think of a hamburger that is triggered using Javascript, if your
 app isn't hydrated then clicking it won't do anything.
 
-The best fix for this is to write your [HTML in a way that it doesn't need Javascript](https://css-tricks.com/the-checkbox-hack/) to be interactive. 
+The best fix for this is to write your [HTML in a way that doesn't need Javascript](https://css-tricks.com/the-checkbox-hack/) to be interactive. 
 
-However, there are use cases where you need to use Javascript and responding to the first click is important. In those instances you can enable
+However, there are use cases where you need to use Javascript and responding to the first click is important. In those instances, you can enable
 the replay of the click.
 
 ```js
@@ -317,7 +328,7 @@ export default {
 }
 ```
 
-This is an experimental configuration, you should test this option yourself before implementing into your production app.
+This is an experimental configuration, you should test this option yourself before implementing it into your production app.
 </details>
 
 ### Further Optimisations
@@ -328,10 +339,10 @@ This is an experimental configuration, you should test this option yourself befo
 <br>
 When you load in a heavy component synchronously, the javascript will be bundled in with the main application payload.
 
-This will decrease all of your perfomance metrics. It's recommend you use async imports for these components.
+This will decrease all of your performance metrics. It's recommended you use async imports for these components.
 
 [Analyze](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-build#analyze) your components and load the big ones async. If you're using nuxt/components, you can 
-easily prefix them with `Lazy` to do so, otherwise you can use the following syntax.
+easily prefix them with `Lazy` to do so, otherwise, you can use the following syntax.
 
 ```js
 <script>
@@ -369,8 +380,7 @@ possible user experience issues.
 - Type: `boolean`
 - Default: `false`
 
-If the trigger for hydration was a click, you can replay it. Replaying it will re-execute the event when it is presumed your 
-app is hydrated. 
+If the trigger for hydration was a click, you can replay it. Replaying it will re-execute the event when it is presumed your app is hydrated. 
 
 For example, if a user clicks a hamburger icon and hydration is required to open the menu, it would replay the click once hydrated.
 

@@ -51,20 +51,21 @@ const replayPointerEvent = (() => {
       })
       return
     }
-
-    // otherwise we need to use some arbitrary delays
-    window.requestIdleCallback(() => {
-      setTimeout(() => {
-          replayEvent()
-        },
-        /**
-         * 100ms is completely arbitrary, we need some delay as we won't know exactly when all of the children,
-         * because we have an idle callback this should only be called once the network requests for async components
-         * are resolved, assuming they are nested.
-         */
-        100,
-      )
-    }, { timeout: <%= options.idleCallbackTimeout %> })
+    if ('requestIdleCallback' in window) {
+      // otherwise we need to use some arbitrary delays
+      window.requestIdleCallback(() => {
+        setTimeout(() => {
+            replayEvent()
+          },
+          /**
+           * 100ms is completely arbitrary, we need some delay as we won't know exactly when all of the children,
+           * because we have an idle callback this should only be called once the network requests for async components
+           * are resolved, assuming they are nested.
+           */
+          100,
+        )
+      }, { timeout: <%= options.idleCallbackTimeout %> })
+    }
   }
 
 })()

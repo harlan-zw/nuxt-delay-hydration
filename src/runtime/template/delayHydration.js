@@ -40,8 +40,10 @@ const delayHydration = (() => {
 
   const idleCallbackThenTimeout = (resolve) => {
     // will never resolve via idle if it's not supported
-    if (!('requestIdleCallback' in window) || !('requestAnimationFrame' in window))
+    if (!('requestIdleCallback' in window) || !('requestAnimationFrame' in window)) {
+      resolve('na')
       return
+    }
 
     const isMobile = window.innerWidth < 640
     const timeout = isMobile ? <%= options.postIdleTimeout.mobile %> : <%= options.postIdleTimeout.desktop %>

@@ -1,4 +1,4 @@
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
   <% if (hydrationConfig.debug) { %>
     console.time('[NuxtDelayHydration] Hydration time')
     const style = 'background: #e2f8e5; color: #2e9127;'

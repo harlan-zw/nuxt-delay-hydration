@@ -25,7 +25,12 @@ export default {
     if (this.triggerHydration || !this.$delayHydration)
       return
 
-    const style = 'background: #e2f8e5; color: #2e9127;'
+    if (typeof window === 'undefined' || !('requestIdleCallback' in window)) {
+      this.triggerHydration = true
+      return
+    }
+
+      const style = 'background: #e2f8e5; color: #2e9127;'
     if (this.forever || this.$delayHydration.config.forever) {
       console.info('%c[NuxtDelayHydration] Running with the "forever" enabled, will never hydrate.', style)
       return

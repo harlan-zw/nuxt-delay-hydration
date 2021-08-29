@@ -71,26 +71,29 @@ Keep in mind, **this is a hacky solution**. Until Google can recognise which scr
 
 ## Install
 
+⚠️ This module is beta, use with caution.
+
 ```bash
 yarn add nuxt-delay-hydration
 # npm i nuxt-delay-hydration
 ```
 
-⚠️ This module is beta, use with caution.
-
+_Requirement: SSR, full-static (SSG) is highly recommended._
 
 <details>
-  <summary><b>Requirements</b></summary>
+  <summary><b>Further Requirements</b></summary>
 <br>
-The module requires SSR. It has been tested in production on simple full-static Nuxt.js (SSG) apps, such as
-documentation, blogs and misc content sites.
+Your scripts should not be required to use your website, this is what we're hinting to Google.
 
-The following optimisations should ideally be done before using this module in production:
-- [LCP](https://web.dev/lcp/)
-- [CLS](https://web.dev/cls/)
-- Non-hydrated functionality, see [debugging](#debugging)
+To do that you can ensure:
+- Full HTML is returned on the initial response
+- Scripts don't trigger a [CLS](https://web.dev/cls/)
+- Scripts shouldn't be required for a user to interact with your site
+- Avoid using scripts to set images, will effect the [LCP](https://web.dev/lcp/)
 
-It's also recommended that you [benchmark](#performance-auditing) your app before starting.
+Please [benchmark](#performance-auditing) your app before starting.
+
+This module has been tested on documentation sites, blogs and misc content sites.
 </details>
 
 <br>

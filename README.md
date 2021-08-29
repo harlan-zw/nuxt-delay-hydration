@@ -56,7 +56,7 @@ A promise is injected into your app, the location is based on the mode. The prom
 - an interaction event (mouse move, scroll, click, etc)
 - an idle callback with a fixed timeout
 
-The idle CPU time tells Google that these scripts are not blocking.
+The idle CPU time hints to Google that these scripts are not required for your app to run.
 
 For example:
 - if a Google bot visits the page and has no interaction, out of the box the hydration won't occur until the browser

@@ -86,10 +86,10 @@ _Requirement: SSR, full-static (SSG) is highly recommended._
 Your scripts should not be required to use your website, this is what we're hinting to Google.
 
 To do that you can ensure:
-- Full HTML is returned on the initial response
+- Full HTML served on the initial response
 - Scripts don't trigger a [CLS](https://web.dev/cls/)
 - Scripts shouldn't be required for a user to interact with your site
-- Avoid using scripts to set images, will effect the [LCP](https://web.dev/lcp/)
+- Avoid using scripts to set images, will affect the [LCP](https://web.dev/lcp/)
 
 Please [benchmark](#performance-auditing) your app before starting.
 

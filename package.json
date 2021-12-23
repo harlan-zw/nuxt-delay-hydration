@@ -73,7 +73,7 @@
     "web-vitals": "^2.1.2"
   },
   "dependencies": {
-    "@nuxt/kit": "^0.8.1-edge",
+    "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
     "defu": "^5.0.0",
     "lodash": "^4.17.21",
     "upath": "^2.0.1",

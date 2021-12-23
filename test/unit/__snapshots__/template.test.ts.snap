@@ -2,6 +2,9 @@
 
 exports[`template utils 1`] = `
 "import Vue from 'vue'
+// imported by test utils
+import 'my-custom-import'
+
 <% if (fetch.client) { %>import fetch from 'unfetch'<% } %>
 <% if (features.middleware) { %>import middleware from './middleware.js'<% } %>
 import {

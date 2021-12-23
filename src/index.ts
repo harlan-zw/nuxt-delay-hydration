@@ -1,17 +1,15 @@
 import { dirname, join, resolve } from 'upath'
-import { defineNuxtModule, addTemplate } from '@nuxt/kit'
+import { defineNuxtModule, addTemplate, addPlugin, LegacyNuxtModule } from '@nuxt/kit'
 import { ModuleOptions } from './interfaces'
-import { MODE_DELAY_APP_INIT, MODE_DELAY_APP_MOUNT, MODE_DELAY_MANUAL, NAME } from './constants'
+import { CONFIG_KEY, MODE_DELAY_APP_INIT, MODE_DELAY_APP_MOUNT, MODE_DELAY_MANUAL, NAME } from './constants'
 import templateUtils from './util/template'
 import logger from './logger'
 
-export default defineNuxtModule<ModuleOptions>({
-  meta: {
-    name: NAME,
-    configKey: 'delayHydration',
-  },
+const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nuxt => ({
+  name: NAME,
+  configKey: CONFIG_KEY,
   defaults: {
-    mode: MODE_DELAY_APP_INIT,
+    mode: false,
     hydrateOnEvents: [
       'mousemove',
       'scroll',
@@ -27,18 +25,35 @@ export default defineNuxtModule<ModuleOptions>({
     idleCallbackTimeout: 7000,
     forever: false,
     debug: false,
-    replayLastPointerEvent: false,
-    replayEventMaxAge: 2000,
-  },
-  setup(config, nuxt) {
+    replayClick: false,
+    replayClickMaxEventAge: 1000,
+  } as ModuleOptions,
+  setup: (config: ModuleOptions) => {
     if (!config.mode) {
       logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
       return
     }
+    if (!nuxt.options.ssr) {
+      logger.warn(`\`${NAME}\` will only work for SSR apps, disabling module.`)
+      return
+    }
+    // @ts-ignore
+    if (nuxt.options.vite && !nuxt.options.vite?.ssr) {
+      logger.warn(`\`${NAME}\` only works with vite with SSR enabled, disabling module.`)
+      return
+    }
+    if (!config.debug && nuxt.options.dev) {
+      logger.info(`\`${NAME}\` only runs in dev with \`debug\` enabled, disabling module.`)
+      return
+    }
+    if (config.debug && !nuxt.options.dev)
+      logger.warn(`\`${NAME}\` debug enabled in a non-development environment.`)
+    if (nuxt.options.target !== 'static')
+      logger.warn(`\`${NAME}\` is untested in a non-static mode, use with caution.`)
 
     nuxt.hook('build:before', () => {
       if (process.env.NODE_ENV !== 'test')
-        logger.info(`\`${NAME}\` enabled with \`${config.mode}\` mode.`)
+        logger.info(`\`${NAME}\` enabled with \`${config.mode}\` mode ${config.debug ? '[Debug enabled]' : ''}`)
       // enable asyncScripts
       // @ts-ignore
       nuxt.options.render.asyncScripts = true
@@ -48,29 +63,32 @@ export default defineNuxtModule<ModuleOptions>({
     const replayPointerEventPath = join('hydration', 'replayPointerEvent.js')
 
     addTemplate({
-      src: resolve(__dirname, 'template/hydrationRace.js'),
+      src: join(resolve(__dirname, 'runtime', 'template', 'delayHydration.js')),
       fileName: delayHydrationPath,
       options: config,
     })
 
-    if (config.replayLastPointerEvent) {
+    if (config.replayClick) {
       addTemplate({
-        src: resolve(__dirname, 'template/replayPointerEvent.js'),
+        src: resolve(join(__dirname, 'runtime', 'template', 'replayPointerEvent.js')),
         fileName: replayPointerEventPath,
         options: config,
       })
     }
 
-    nuxt.hook('components:dirs', (dirs: {path: string; isAsync: boolean }[]) => {
+    /**
+     * Extend Nuxt components, add our component directory.
+     */
+    nuxt.hook('components:dirs', (dirs: {path: string; ignore?: string[]}[]) => {
       dirs.push({
-        path: join(__dirname, 'components'),
-        isAsync: true,
+        path: resolve(join(__dirname, 'components')),
+        ignore: ['index.js'],
       })
     })
 
     if (config.mode === MODE_DELAY_MANUAL) {
-      addTemplate({
-        src: resolve(__dirname, 'plugin/injectDelayHydrationApi.js'),
+      addPlugin({
+        src: resolve(join(__dirname, 'runtime', 'plugin', 'injectDelayHydrationApi.js')),
         fileName: join('hydration', 'pluginDelayHydration.client.js'),
         options: config,
       })
@@ -82,7 +100,6 @@ export default defineNuxtModule<ModuleOptions>({
       /**
        * Hook into the template builder, inject the hydration delayer module.
        */
-      // @ts-ignore
       nuxt.hook('build:templates', ({ templateVars, templatesFiles }) => {
         if (config.mode === MODE_DELAY_APP_MOUNT) {
           // @ts-ignore
@@ -90,15 +107,17 @@ export default defineNuxtModule<ModuleOptions>({
           if (!template)
             return
 
+          templateVars.delayHydrationPath = delayHydrationPath
+          templateVars.replayPointerEventPath = replayPointerEventPath
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
-            join(__dirname, 'templateInjects', 'import.js'),
+            join(__dirname, 'runtime', 'templateInjects', 'import.js'),
             'import Vue from \'vue\'',
           )
           // actual delayer
           template.injectFileContents(
-            join(__dirname, 'templateInjects', 'delayHydrationRace.js'),
+            join(__dirname, 'runtime', 'templateInjects', 'delayHydrationRace.js'),
             'async function mountApp (__app) {',
           )
           template.publish()
@@ -111,15 +130,17 @@ export default defineNuxtModule<ModuleOptions>({
           if (!template)
             return
 
+          templateVars.delayHydrationPath = delayHydrationPath
+          templateVars.replayPointerEventPath = replayPointerEventPath
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
-            join(__dirname, 'template', 'import.js'),
+            join(__dirname, 'runtime', 'templateInjects', 'import.js'),
             'import Vue from \'vue\'',
           )
           // actual delayer
           template.injectFileContents(
-            join(__dirname, 'template', 'delayHydrationRace.js'),
+            join(__dirname, 'runtime', 'templateInjects', 'delayHydrationRace.js'),
             'async function createApp(ssrContext, config = {}) {',
           )
           template.publish()
@@ -128,4 +149,9 @@ export default defineNuxtModule<ModuleOptions>({
     }
   },
 
-})
+}))
+
+// @ts-ignore
+nuxtDelayHydration.meta = { name: NAME }
+
+export default nuxtDelayHydration

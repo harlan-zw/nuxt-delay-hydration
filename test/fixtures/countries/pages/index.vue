@@ -3,9 +3,10 @@
   <div class="container mx-auto">
     <div class="mx-5 mt-5">
       <input type="search" placeholder="Find country" v-model="query" @input="filter" class="mb-5 w-full py-3 text-3xl px-5 border-gray-200 border-2 rounded">
-      <div class="grid grid-cols-2 sm:grid-cols-8 gap-8 w-full">
-        <nuxt-link v-for="(country, key) in filtered" :key="key" :to="'/' + country.name.common.toLowerCase().replaceAll(' ', '-')" class="p-3 bg-white rounded text-center">
-          <h2 class="text-lg mb-2">{{ country.flag }} {{ country.name.common }}</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-7 gap-8 w-full">
+        <nuxt-link v-for="(country, key) in filtered" :key="key" :to="'/' + country.name.common.toLowerCase().replace(' ', '-')" class="p-2 bg-gray-100 rounded text-center">
+          <div class="text-5xl mb-3">{{ country.flag }}</div>
+          <h2 class="text-base font-semibold mb-2"> {{ country.name.common }}</h2>
           <h3 class="text-sm text-gray-800">Capital: {{ country.capital[0] }}</h3>
           <p class="text-sm text-gray-800">Phone: {{ country.callingCodes[0] }}</p>
         </nuxt-link>

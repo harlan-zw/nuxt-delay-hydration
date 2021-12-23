@@ -1,8 +1,10 @@
 import hydration from '../../../src'
+import {NuxtConfig} from '@nuxt/kit'
 
-const config = {
+const config : NuxtConfig = {
   target: 'static',
   head: {
+    // @ts-ignore
     htmlAttrs: {
       lang: 'en',
       dir: 'ltr',

@@ -8,7 +8,7 @@
       </nuxt-link>
     </h1>
   </header>
-  <main class="bg-gray-50 py-15">
+  <main class="bg-green-700 py-15">
     <div class=" mx-auto container">
       <Nuxt />
     </div>

@@ -1,17 +1,14 @@
-export type Mode = 'init' | 'mount' | 'manual'
+export type Mode = 'init' | 'mount' | 'manual' | false
 export type EventTypes = 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart' | string
 
 export type ModuleOptions = {
   /**
-   * Which mode to use for delaying the hydration:
-   *
-   * - 'mount': Will inject a script which will delay the entire Vue app from mounting until the browser is idle and
-   * after the `idleCallback` time.
+   * Which mode to use for delaying the hydration.
    */
   mode: Mode
   /**
-   * Events to listen for which will trigger hydration. These should be events that a normal user would trigger and not
-   * ligthouse.
+   * Controls which browser events should trigger the hydration to resume. By default, it is quite aggressive to avoid
+   * possible user experience issues.
    *
    * By default it uses the events: 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart'
    */
@@ -35,11 +32,11 @@ export type ModuleOptions = {
    * When an interaction event triggered the hydration, you can replay it. For example if a user clicks a hamburger icon
    * and hydration is required to open the menu, it would replay the click once hydration.
    */
-  replayLastPointerEvent: boolean
+  replayClick: boolean
   /**
    * How long after an event occurs should we consider it valid.
    */
-  replayEventMaxAge: number
+  replayClickMaxEventAge: number
   /**
    * Log details in the console on when hydration is blocked and when and why it becomes unblocked.
    *

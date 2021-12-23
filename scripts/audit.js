@@ -2,14 +2,18 @@ const { computeMedianRun } = require('lighthouse/lighthouse-core/lib/median-run.
 const lighthouse = require('lighthouse')
 const chromeLauncher = require('chrome-launcher')
 
+const host = 'http://localhost:3000'
+
 const runPerformanceAudit = async() => {
   const results = []
+  // eslint-disable-next-line no-console
+  console.log(`Running performance audit at: ${host}`)
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] })
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 10; i++) {
     // eslint-disable-next-line no-console
     console.log(`Iteration: ${i + 1}`)
     const options = { /* logLevel: 'info', output: 'html', */onlyCategories: ['performance'], port: chrome.port }
-    const runnerResult = await lighthouse('http://localhost:3000', options)
+    const runnerResult = await lighthouse(host, options)
     results.push(runnerResult.lhr)
   }
   await chrome.kill()

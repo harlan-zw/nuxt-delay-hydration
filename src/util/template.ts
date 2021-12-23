@@ -5,7 +5,7 @@ import escapeRegExp from 'lodash/escapeRegExp'
 export type TemplateId = 'client' | 'App' | 'index'
 
 export type NuxtTemplate = {
-  originalSrc: string
+  originalSrc?: string
   src: string
   custom: boolean
 }

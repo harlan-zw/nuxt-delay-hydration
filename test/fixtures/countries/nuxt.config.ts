@@ -1,8 +1,10 @@
 import defu from "defu";
 
-const config = defu.arrayFn(require('../shared/nuxt.config').default, {
+const config = defu.arrayFn({
   delayHydration: {
-    mode: false
+    mode: 'init',
+    debug: true,
+    replayClick: true,
   },
   generate: {
     async routes() {
@@ -11,7 +13,7 @@ const config = defu.arrayFn(require('../shared/nuxt.config').default, {
       // @ts-ignore
       return countries.map((country, index) => {
         return {
-          route: '/' + country.name.common.toLowerCase().replaceAll(' ', '-'),
+          route: '/' + country.name.common.toLowerCase().replace(' ', '-'),
           payload: {
             country,
           }
@@ -19,6 +21,6 @@ const config = defu.arrayFn(require('../shared/nuxt.config').default, {
       })
     }
   }
-})
+}, require('../shared/nuxt.config').default)
 
 export default config

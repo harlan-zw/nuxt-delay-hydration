@@ -62,6 +62,7 @@ const templateUtils = (options: Record<string, any> = {}) => {
   }
 
   const matchTemplate = (templates: NuxtTemplate[], id: TemplateId) => {
+    console.log(templates)
     const match = templates.find(template => template.src.endsWith(join('vue-app', 'template', `${id}.js`)))
     if (!match)
       return null

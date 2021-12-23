@@ -1,4 +1,4 @@
-import templateUtils from '../../src/util/template'
+import templateUtils, {NuxtTemplate} from '../../src/util/template'
 import {dirname, join} from "upath";
 import {existsSync} from "fs";
 
@@ -6,14 +6,16 @@ test('template utils', () => {
 
   const templates = [
     {
-      src: join(dirname(__dirname), 'template', 'client.js'),
+      src: join(dirname(__dirname), 'vue-app', 'template', 'client.js'),
       custom: false,
     },
-  ]
+  ] as NuxtTemplate[]
 
   const utils = templateUtils({ publishPath: join(dirname(dirname(__dirname)), '.runtime') })
 
   const template = utils.matchTemplate(templates, 'client')
+
+  console.log(template)
 
   if (!template) {
     return

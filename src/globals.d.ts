@@ -6,6 +6,12 @@ declare module '@nuxt/types' {
   }
 }
 
+declare module '@nuxt/schema' {
+  interface NuxtConfig {
+    $delayHydration: ModuleOptions
+  }
+}
+
 type delayHydration = {
   hydrationRace: () => Promise<void>
   config: ModuleOptions

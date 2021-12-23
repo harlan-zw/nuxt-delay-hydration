@@ -62,10 +62,11 @@
     "nuxt-windicss": "^1.2.3",
     "release-it": "^14.11.3",
     "tsup": "^4.13.1",
-    "web-vitals": "^2.1.0"
+    "web-vitals": "^2.1.0",
+    "@nuxt/schema": "npm:@nuxt/schema-edge@latest"
   },
   "dependencies": {
-    "@nuxt/kit": "^0.6.4",
+    "@nuxt/kit": "^0.8.1-edge",
     "defu": "^5.0.0",
     "lodash": "^4.17.21",
     "upath": "^2.0.1",

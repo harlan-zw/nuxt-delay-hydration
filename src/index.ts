@@ -1,13 +1,15 @@
 import { dirname, join, resolve } from 'upath'
-import { defineNuxtModule, addTemplate, addPlugin, LegacyNuxtModule } from '@nuxt/kit'
+import { defineNuxtModule, addTemplate } from '@nuxt/kit'
 import { ModuleOptions } from './interfaces'
 import { MODE_DELAY_APP_INIT, MODE_DELAY_APP_MOUNT, MODE_DELAY_MANUAL, NAME } from './constants'
 import templateUtils from './util/template'
 import logger from './logger'
 
-const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nuxt => ({
-  name: NAME,
-  configKey: 'delayHydration',
+export default defineNuxtModule<ModuleOptions>({
+  meta: {
+    name: NAME,
+    configKey: 'delayHydration',
+  },
   defaults: {
     mode: MODE_DELAY_APP_INIT,
     hydrateOnEvents: [
@@ -28,7 +30,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
     replayLastPointerEvent: false,
     replayEventMaxAge: 2000,
   },
-  setup(config) {
+  setup(config, nuxt) {
     if (!config.mode) {
       logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
       return
@@ -67,7 +69,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
     })
 
     if (config.mode === MODE_DELAY_MANUAL) {
-      addPlugin({
+      addTemplate({
         src: resolve(__dirname, 'plugin/injectDelayHydrationApi.js'),
         fileName: join('hydration', 'pluginDelayHydration.client.js'),
         options: config,
@@ -80,6 +82,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
       /**
        * Hook into the template builder, inject the hydration delayer module.
        */
+      // @ts-ignore
       nuxt.hook('build:templates', ({ templateVars, templatesFiles }) => {
         if (config.mode === MODE_DELAY_APP_MOUNT) {
           // @ts-ignore
@@ -87,7 +90,6 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
           if (!template)
             return
 
-          templateVars.hydrationRacePath = hydrationRacePath
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
@@ -109,7 +111,6 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
           if (!template)
             return
 
-          templateVars.hydrationRacePath = hydrationRacePath
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
@@ -127,9 +128,4 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
     }
   },
 
-}))
-
-// @ts-ignore
-nuxtDelayHydration.meta = { name: 'nuxt-delay-hydration' }
-
-export default nuxtDelayHydration
+})

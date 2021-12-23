@@ -11,6 +11,8 @@ _<h1 align='center'>nuxt-delay-hydration</h1>
 </p>
 
 
+**Note: `@nuxt/bridge` and `nuxt3` are not supported yet.** 
+
 ## Features
 
 - ⚡️ Unlock perfect Google Lighthouse scores

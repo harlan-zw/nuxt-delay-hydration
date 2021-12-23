@@ -25,9 +25,9 @@ export type ModuleOptions = {
   idleCallbackTimeout: number
   /**
    * For specific devices we can tinker with how many ms after the idle callback we should wait before we run the
-   * hydration. Mobile should always be higher then desktop, desktop can remain fairly low.
+   * hydration. Mobile should always be higher than desktop, desktop can remain fairly low.
    */
-  idleCallback: {
+  postIdleTimeout: {
     mobile: number
     desktop: number
   }

@@ -1,4 +1,4 @@
-import { ModuleOptions } from './interfaces'
+import type { ModuleOptions } from './interfaces'
 
 declare module '@nuxt/types' {
   interface NuxtConfig {

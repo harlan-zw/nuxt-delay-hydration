@@ -1,6 +1,6 @@
 import templateUtils from '../../src/util/template'
 import {dirname, join} from "upath";
-import {existsSync, readFileSync, readSync} from "fs";
+import {existsSync, readFileSync} from "fs";
 
 test('template utils', () => {
 

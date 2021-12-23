@@ -1,13 +1,15 @@
 import { dirname, join, resolve } from 'upath'
-import { defineNuxtModule, addTemplate, addPlugin, LegacyNuxtModule } from '@nuxt/kit'
-import { ModuleOptions } from './interfaces'
+import { addTemplate, defineNuxtModule } from '@nuxt/kit'
+import type { ModuleOptions } from './interfaces'
 import { CONFIG_KEY, MODE_DELAY_APP_INIT, MODE_DELAY_APP_MOUNT, MODE_DELAY_MANUAL, NAME } from './constants'
 import templateUtils from './util/template'
 import logger from './logger'
 
-const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nuxt => ({
-  name: NAME,
-  configKey: CONFIG_KEY,
+const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
+  meta: {
+    name: NAME,
+    configKey: CONFIG_KEY,
+  },
   defaults: {
     mode: false,
     hydrateOnEvents: [
@@ -28,7 +30,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
     replayClick: false,
     replayClickMaxEventAge: 1000,
   } as ModuleOptions,
-  setup: (config: ModuleOptions) => {
+  setup: (config: ModuleOptions, nuxt) => {
     if (!config.mode) {
       logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
       return
@@ -87,7 +89,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
     })
 
     if (config.mode === MODE_DELAY_MANUAL) {
-      addPlugin({
+      addTemplate({
         src: resolve(join(__dirname, 'runtime', 'plugin', 'injectDelayHydrationApi.js')),
         fileName: join('hydration', 'pluginDelayHydration.client.js'),
         options: config,
@@ -100,6 +102,7 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
       /**
        * Hook into the template builder, inject the hydration delayer module.
        */
+      // @ts-ignore
       nuxt.hook('build:templates', ({ templateVars, templatesFiles }) => {
         if (config.mode === MODE_DELAY_APP_MOUNT) {
           // @ts-ignore
@@ -148,10 +151,6 @@ const nuxtDelayHydration: LegacyNuxtModule = defineNuxtModule<ModuleOptions>(nux
       })
     }
   },
-
-}))
-
-// @ts-ignore
-nuxtDelayHydration.meta = { name: NAME }
+})
 
 export default nuxtDelayHydration

@@ -10,6 +10,11 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
     name: NAME,
     configKey: CONFIG_KEY,
   },
+  // support @nuxt/kit legacy
+  // @ts-ignore
+  configKey: CONFIG_KEY,
+  // @ts-ignore
+  name: NAME,
   defaults: {
     mode: false,
     hydrateOnEvents: [

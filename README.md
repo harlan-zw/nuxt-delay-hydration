@@ -4,7 +4,7 @@
 <h1 align='center'>nuxt-delay-hydration</h1>
 
 <p align='center'>
-Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
+Improve your Nuxt.js v2 Google Lighthouse score by delaying hydration ⚡️<br>
 </p>
 
 <p align='center'>
@@ -17,7 +17,7 @@ Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️<br>
 </p>
 
 
-**Note: `@nuxt/bridge` and `nuxt3` are not supported yet.** 
+**Note: For Nuxt v2 only, `@nuxt/bridge` and `nuxt3` are not supported.** 
 
 ## Features
 
@@ -463,6 +463,13 @@ Live examples
 
 - [Markus Oberlehner](https://github.com/maoberlehner). Pioneer of the lazy hydration in Vue 
 
+## Sponsors
+
+<p align="center">
+  <a href="https://cdn.jsdelivr.net/gh/harlan-zw/static/sponsors.svg">
+    <img src='https://cdn.jsdelivr.net/gh/harlan-zw/static/sponsors.svg'/>
+  </a>
+</p>
 
 ## License
 

@@ -1,23 +1,31 @@
 ![nuxt-delay-hydration](https://repository-images.githubusercontent.com/392525648/e8fad899-c221-48ca-bb3e-bf5bde92bfd0)
 
-
-<h1 align='center'>nuxt-delay-hydration</h1>
-
-<p align='center'>
-Improve your Nuxt.js v2 Google Lighthouse score by delaying hydration ⚡️<br>
-</p>
-
 <p align='center'>
 <a href='https://www.npmjs.com/package/nuxt-delay-hydration'>
 <img src='https://img.shields.io/npm/v/nuxt-delay-hydration?color=0EA5E9&label='>
 </a>
+<a href="https://www.npmjs.com/package/nuxt-delay-hydration" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/nuxt-delay-hydration?color=0EA5E9&label="></a>
 <a href='https://github.com/harlan-zw/nuxt-delay-hydration/actions/workflows/test.yml'>
 <img src='https://github.com/harlan-zw/nuxt-delay-hydration/actions/workflows/test.yml/badge.svg' >
 </a>
 </p>
 
+<p align='center'>Delay Hydration for Nuxt.js! ⚡️<br>
+<sup><em>Improve your Nuxt.js v2 Google Lighthouse score by delaying hydration ⚡️</em></sup>
+</p>
 
-**Note: For Nuxt v2 only, `@nuxt/bridge` and `nuxt3` are not supported.** 
+<p align="center">
+<table>
+<tbody>
+<td align="center">
+<img width="2000" height="0" /><br>
+<i>Status:</i> <b>Stable v2 ✅ , bridge ❌ , v3 ❌️</b><br>
+<sub>Made possible by my <a href="https://github.com/sponsors/harlan-zw">Sponsor Program 💖</a><br> Follow me <a href="https://twitter.com/harlan_zw">@harlan_zw</a> 🐦</sub><br>
+<img width="2000" height="0" />
+</td>
+</tbody>
+</table>
+</p>
 
 ## Features
 
@@ -72,8 +80,6 @@ Keep in mind, **this is a hacky solution**. Until Google can recognise which scr
 <br>
 
 ## Install
-
-⚠️ This module is beta, use with caution.
 
 ```bash
 yarn add nuxt-delay-hydration

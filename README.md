@@ -479,5 +479,5 @@ Live examples
 
 ## License
 
-MIT License © 2021 [Harlan Wilton](https://github.com/harlan-zw)
+MIT License © 2022 - Present [Harlan Wilton](https://github.com/harlan-zw)
 

@@ -99,7 +99,7 @@ To do that you can ensure:
 - Scripts shouldn't be required for a user to interact with your site
 - Avoid using scripts to set images, will affect the [LCP](https://web.dev/lcp/)
 
-Please [benchmark](#performance-auditing) your app before starting.
+Please [benchmark](https://unlighthouse.dev/) your app before starting.
 
 This module has been tested on documentation sites, blogs and misc content sites.
 </details>
@@ -311,20 +311,7 @@ import { HydrationStatus } from 'nuxt-delay-hydration/dist/components'
 
 ### Performance Auditing
 
-<details>
-  <summary>How to audit your app</summary>
-<br>
-It's important to measure the performance changes in this module and any configuration changes you make.
-
-The simplest way to benchmark is to use the Google Lighthouse tool within Google Chrome.
-
-However, due to unpredictable results, it's recommended to run numerous iterations of the audit. To make that
-easier this module provides a script to run a performance audit with 10 iterations:
-1. Install dependencies: `yarn add -D lighthouse chrome-launcher`
-2. Build and start your Nuxt app `nuxt generate && nuxt start`
-3. Run the audit script `node ./node_modules/nuxt-delay-hydration/scripts/audit.js`
-
-</details>
+Use my audit tool: https://unlighthouse.dev/
 
 ### Replaying hydration click
 

@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
-    "defu": "^5.0.0",
+    "defu": "^5.0.1",
     "lodash": "^4.17.21",
     "upath": "^2.0.1",
     "vue-lazy-hydration": "^2.0.0-beta.4"

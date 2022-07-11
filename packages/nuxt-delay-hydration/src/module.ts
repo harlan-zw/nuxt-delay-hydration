@@ -104,7 +104,6 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
        */
       nuxt.hook('build:templates', ({ templateVars, templatesFiles }) => {
         if (config.mode === MODE_DELAY_APP_MOUNT) {
-          // @ts-expect-error nuxt2 type mismatch
           const template = utils.matchTemplate(templatesFiles, 'client')
           if (!template)
             return
@@ -127,7 +126,6 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
         }
 
         if (config.mode === MODE_DELAY_APP_INIT) {
-          // @ts-expect-error nuxt2 type mismatch
           const template = utils.matchTemplate(templatesFiles, 'index')
           if (!template)
             return

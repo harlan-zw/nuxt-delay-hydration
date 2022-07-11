@@ -1,4 +1,4 @@
-import { addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
+import {addComponentsDir, addPluginTemplate, addTemplate, createResolver, defineNuxtModule} from '@nuxt/kit'
 import type { ModuleOptions } from './interfaces'
 import { CONFIG_KEY, MODE_DELAY_APP_INIT, MODE_DELAY_APP_MOUNT, MODE_DELAY_MANUAL, NAME } from './constants'
 import templateUtils from './util/template'
@@ -86,7 +86,7 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
     })
 
     if (config.mode === MODE_DELAY_MANUAL) {
-      addTemplate({
+      addPluginTemplate({
         src: resolve('runtime/plugin/injectDelayHydrationApi.mjs'),
         fileName: 'hydration/pluginDelayHydration.client.mjs',
         options: config,

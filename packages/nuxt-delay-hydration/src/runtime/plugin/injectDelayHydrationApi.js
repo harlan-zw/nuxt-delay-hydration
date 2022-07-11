@@ -1,6 +1,6 @@
-import hydrationRace from './hydrationRace.js'
+import hydrationRace from './hydrationRace.mjs'
 <% if (options.replayClick) { %>
-import replayPointerEvent from './replayPointerEvent.js'
+import replayPointerEvent from './replayPointerEvent.mjs'
 <% } %>
 
 const injectDelayHydrationApi = (ctx, inject) => {

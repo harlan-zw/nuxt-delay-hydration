@@ -10,14 +10,14 @@ export interface ModuleOptions {
    * Controls which browser events should trigger the hydration to resume. By default, it is quite aggressive to avoid
    * possible user experience issues.
    *
-   * By default it uses the events: 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart'
+   * @default 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart'
    */
   hydrateOnEvents: EventTypes[]
   /**
    * When waiting for an idle callback, it's possible to define a max amount of time to wait in milliseconds. This is
    * useful when there are a lot of network requests happening.
    *
-   * By default it's 7000ms.
+   * @default 7000ms
    */
   idleCallbackTimeout: number
   /**
@@ -40,13 +40,13 @@ export interface ModuleOptions {
   /**
    * Log details in the console on when hydration is blocked and when and why it becomes unblocked.
    *
-   * Default: false
+   * @default false
    */
   debug: boolean
   /**
    * Run the delay forever, useful for testing your app without scripts.
    *
-   * Default: false
+   * @default false
    */
   forever: boolean
 }

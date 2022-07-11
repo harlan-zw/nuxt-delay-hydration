@@ -1,3 +1,4 @@
+<script>
 import VueLazyHydration from 'vue-lazy-hydration'
 
 export default {
@@ -70,3 +71,4 @@ export default {
     }, this.$slots.default)
   },
 }
+</script>

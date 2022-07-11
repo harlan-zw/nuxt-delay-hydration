@@ -1,3 +1,4 @@
+<script>
 export default {
   name: 'HydrationStatus',
   render(h) {
@@ -9,3 +10,4 @@ export default {
     }, this.$parent._isMounted ? 'hydrated' : 'unhydrated')
   },
 }
+</script>

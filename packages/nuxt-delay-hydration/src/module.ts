@@ -29,7 +29,7 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
     replayClick: false,
     replayClickMaxEventAge: 1000,
   } as ModuleOptions,
-  setup: (config: ModuleOptions, nuxt) => {
+  async setup(config: ModuleOptions, nuxt) {
     if (!config.mode) {
       logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
       return
@@ -78,14 +78,11 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
       })
     }
 
-    /**
-     * Extend Nuxt components, add our component directory.
-     */
-    nuxt.hook('components:dirs', (dirs) => {
-      dirs.push({
-        path: resolve('runtime/components'),
-        ignore: ['index.mjs'],
-      })
+    nuxt.options.build.transpile.push('runtime/components')
+    await addComponentsDir({
+      path: resolve('runtime/components'),
+      extensions: ['vue'],
+      transpile: true,
     })
 
     if (config.mode === MODE_DELAY_MANUAL) {

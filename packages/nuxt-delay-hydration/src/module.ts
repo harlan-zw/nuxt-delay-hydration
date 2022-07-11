@@ -1,4 +1,4 @@
-import {addTemplate, createResolver, defineNuxtModule} from '@nuxt/kit'
+import { addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import type { ModuleOptions } from './interfaces'
 import { CONFIG_KEY, MODE_DELAY_APP_INIT, MODE_DELAY_APP_MOUNT, MODE_DELAY_MANUAL, NAME } from './constants'
 import templateUtils from './util/template'

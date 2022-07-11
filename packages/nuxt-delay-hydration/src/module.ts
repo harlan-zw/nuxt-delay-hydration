@@ -1,5 +1,4 @@
-import { dirname, join, resolve } from 'upath'
-import { addTemplate, defineNuxtModule } from '@nuxt/kit'
+import {addTemplate, createResolver, defineNuxtModule} from '@nuxt/kit'
 import type { ModuleOptions } from './interfaces'
 import { CONFIG_KEY, MODE_DELAY_APP_INIT, MODE_DELAY_APP_MOUNT, MODE_DELAY_MANUAL, NAME } from './constants'
 import templateUtils from './util/template'
@@ -10,11 +9,6 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
     name: NAME,
     configKey: CONFIG_KEY,
   },
-  // support @nuxt/kit legacy
-  // @ts-ignore
-  configKey: CONFIG_KEY,
-  // @ts-ignore
-  name: NAME,
   defaults: {
     mode: false,
     hydrateOnEvents: [
@@ -44,7 +38,6 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
       logger.warn(`\`${NAME}\` will only work for SSR apps, disabling module.`)
       return
     }
-    // @ts-ignore
     if (nuxt.options.vite && !nuxt.options.vite?.ssr) {
       logger.warn(`\`${NAME}\` only works with vite with SSR enabled, disabling module.`)
       return
@@ -62,22 +55,24 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
       if (process.env.NODE_ENV !== 'test')
         logger.info(`\`${NAME}\` enabled with \`${config.mode}\` mode ${config.debug ? '[Debug enabled]' : ''}`)
       // enable asyncScripts
-      // @ts-ignore
+      // @ts-expect-error nuxt type issue
       nuxt.options.render.asyncScripts = true
     })
 
-    const delayHydrationPath = join('hydration', 'hydrationRace.js')
-    const replayPointerEventPath = join('hydration', 'replayPointerEvent.js')
+    const { resolve } = createResolver(import.meta.url)
+
+    const delayHydrationPath = 'hydration/hydrationRace.mjs'
+    const replayPointerEventPath = 'hydration/replayPointerEvent.mjs'
 
     addTemplate({
-      src: join(resolve(__dirname, 'runtime', 'template', 'delayHydration.js')),
+      src: resolve('runtime/template/delayHydration.mjs'),
       fileName: delayHydrationPath,
       options: config,
     })
 
     if (config.replayClick) {
       addTemplate({
-        src: resolve(join(__dirname, 'runtime', 'template', 'replayPointerEvent.js')),
+        src: resolve('runtime/template/replayPointerEvent.mjs'),
         fileName: replayPointerEventPath,
         options: config,
       })
@@ -86,31 +81,30 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
     /**
      * Extend Nuxt components, add our component directory.
      */
-    nuxt.hook('components:dirs', (dirs: {path: string; ignore?: string[]}[]) => {
+    nuxt.hook('components:dirs', (dirs) => {
       dirs.push({
-        path: resolve(join(__dirname, 'components')),
-        ignore: ['index.js'],
+        path: resolve('runtime/components'),
+        ignore: ['index.mjs'],
       })
     })
 
     if (config.mode === MODE_DELAY_MANUAL) {
       addTemplate({
-        src: resolve(join(__dirname, 'runtime', 'plugin', 'injectDelayHydrationApi.js')),
-        fileName: join('hydration', 'pluginDelayHydration.client.js'),
+        src: resolve('runtime/plugin/injectDelayHydrationApi.mjs'),
+        fileName: 'hydration/pluginDelayHydration.client.mjs',
         options: config,
       })
     }
 
-    const utils = templateUtils({ publishPath: join(dirname(__dirname), '.runtime') })
+    const utils = templateUtils({ publishPath: resolve('../.runtime') })
 
     if (config.mode === MODE_DELAY_APP_INIT || config.mode === MODE_DELAY_APP_MOUNT) {
       /**
        * Hook into the template builder, inject the hydration delayer module.
        */
-      // @ts-ignore
       nuxt.hook('build:templates', ({ templateVars, templatesFiles }) => {
         if (config.mode === MODE_DELAY_APP_MOUNT) {
-          // @ts-ignore
+          // @ts-expect-error nuxt2 type mismatch
           const template = utils.matchTemplate(templatesFiles, 'client')
           if (!template)
             return
@@ -120,12 +114,12 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
-            join(__dirname, 'runtime', 'templateInjects', 'import.js'),
+            resolve('runtime/templateInjects/import.mjs'),
             'import Vue from \'vue\'',
           )
           // actual delayer
           template.injectFileContents(
-            join(__dirname, 'runtime', 'templateInjects', 'delayHydrationRace.js'),
+            resolve('runtime/templateInjects/delayHydrationRace.mjs'),
             'async function mountApp (__app) {',
           )
           template.publish()
@@ -133,7 +127,7 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
         }
 
         if (config.mode === MODE_DELAY_APP_INIT) {
-          // @ts-ignore
+          // @ts-expect-error nuxt2 type mismatch
           const template = utils.matchTemplate(templatesFiles, 'index')
           if (!template)
             return
@@ -143,12 +137,12 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
           templateVars.hydrationConfig = config
           // import statement
           template.injectFileContents(
-            join(__dirname, 'runtime', 'templateInjects', 'import.js'),
+            resolve('runtime/templateInjects/import.mjs'),
             'import Vue from \'vue\'',
           )
           // actual delayer
           template.injectFileContents(
-            join(__dirname, 'runtime', 'templateInjects', 'delayHydrationRace.js'),
+            resolve('runtime/templateInjects/delayHydrationRace.mjs'),
             'async function createApp(ssrContext, config = {}) {',
           )
           template.publish()

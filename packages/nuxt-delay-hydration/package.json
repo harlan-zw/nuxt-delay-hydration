@@ -1,0 +1,49 @@
+{
+  "name": "nuxt-delay-hydration",
+  "version": "0.3.2",
+  "description": "Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️",
+  "author": "Harlan Wilton <harlan@harlanzw.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/harlan-zw/nuxt-delay-hydration",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harlan-zw/nuxt-delay-hydration"
+  },
+  "bugs": "https://github.com/harlan-zw/nuxt-delay-hydration/issues",
+  "keywords": [
+    "nuxt",
+    "nuxt-module",
+    "hydration",
+    "lighthouse",
+    "page speed",
+    "performance"
+  ],
+  "exports": {
+    "require": "./dist/module.cjs",
+    "import": "./dist/module.mjs"
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/module.d.ts",
+  "files": [
+    "dist",
+    "scripts",
+    ".runtime"
+  ],
+  "scripts": {
+    "stub": "nuxt-module-build --stub",
+    "build": "nuxt-module-build"
+  },
+  "dependencies": {
+    "@nuxt/kit": "3.0.0-rc.4",
+    "consola": "^2.15.3",
+    "fs-extra": "^10.1.0",
+    "lodash": "^4.17.21",
+    "pathe": "0.3.2",
+    "vue-lazy-hydration": "^2.0.0-beta.4"
+  },
+  "devDependencies": {
+    "@nuxt/module-builder": "^0.1.7",
+    "@nuxt/schema": "3.0.0-rc.4",
+    "@nuxt/types": "^2.15.8"
+  }
+}

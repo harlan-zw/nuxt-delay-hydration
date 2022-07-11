@@ -13,16 +13,19 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "paths": {
+      "nuxt-delay-hydration": [
+        "./packages/nuxt-delay-hydration/src/module.ts"
+      ]
+    },
     "types": [
-      "@types/node",
       "@nuxt/types",
-      "@types/jest",
-      "@types/lodash",
       "@nuxt/schema"
     ]
   },
-  "include": [
-    "src",
-    "test"
+  "exclude": [
+    "**/dist/**",
+    "**/.output/**",
+    "playground/**"
   ]
 }

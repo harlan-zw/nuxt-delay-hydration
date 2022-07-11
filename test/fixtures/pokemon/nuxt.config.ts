@@ -1,6 +1,7 @@
-import defu from "defu";
+import { defuArrayFn } from "defu";
+import sharedNuxtConfig from '../shared/nuxt.config'
 
-const config = defu.arrayFn(require('../shared/nuxt.config').default, {
+const config = defuArrayFn(sharedNuxtConfig, {
   delayHydration: {
     mode: 'mount',
     debug: true,

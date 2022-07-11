@@ -1,7 +1,4 @@
-import hydration from '../../../src'
-import {NuxtConfig} from '@nuxt/kit'
-
-const config : NuxtConfig = {
+const config = {
   target: 'static',
   head: {
     // @ts-ignore
@@ -17,8 +14,8 @@ const config : NuxtConfig = {
   buildModules: [
     '@nuxt/typescript-build',
     'nuxt-windicss',
-    'nuxt-build-optimisations',
-    hydration,
+    'nuxt-webpack-optimisations',
+    'nuxt-delay-hydration'
   ],
   plugins: [
     '../shared/plugins/webVitals.client',

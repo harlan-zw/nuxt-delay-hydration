@@ -12,7 +12,7 @@ declare module '@nuxt/schema' {
   }
 }
 
-type delayHydration = {
+interface delayHydration {
   hydrationRace: () => Promise<Event>
   replayPointerEvent: (event: Event, isReady: boolean) => void
   config: ModuleOptions

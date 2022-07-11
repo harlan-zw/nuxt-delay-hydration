@@ -1,7 +1,7 @@
 export type Mode = 'init' | 'mount' | 'manual' | false
 export type EventTypes = 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart' | string
 
-export type ModuleOptions = {
+export interface ModuleOptions {
   /**
    * Which mode to use for delaying the hydration.
    */

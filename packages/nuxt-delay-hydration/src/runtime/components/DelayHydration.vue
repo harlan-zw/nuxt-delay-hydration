@@ -2,11 +2,6 @@
 import VueLazyHydration from 'vue-lazy-hydration'
 
 export default {
-  data() {
-    return {
-      triggerHydration: false,
-    }
-  },
   props: {
     debug: {
       type: Boolean,
@@ -21,6 +16,11 @@ export default {
       default: false,
     },
   },
+  data() {
+    return {
+      triggerHydration: false,
+    }
+  },
   async mounted() {
     // already mounted or missing plugin api for some reason
     if (this.triggerHydration || !this.$delayHydration)
@@ -31,7 +31,7 @@ export default {
       return
     }
 
-      const style = 'background: #e2f8e5; color: #2e9127;'
+    const style = 'background: #e2f8e5; color: #2e9127;'
     if (this.forever || this.$delayHydration.config.forever) {
       console.info('%c[NuxtDelayHydration] Running with the "forever" enabled, will never hydrate.', style)
       return

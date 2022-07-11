@@ -5,5 +5,4 @@ test
 coverage
 inspo
 .runtime
-src/runtime/*
-src/components/*
+packages/nuxt-delay-hydration/src/runtime/*

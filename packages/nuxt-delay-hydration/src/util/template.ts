@@ -1,14 +1,9 @@
 import fse from 'fs-extra'
 import { basename, dirname, join } from 'pathe'
 import escapeRegExp from 'lodash/escapeRegExp.js'
+import type { NuxtTemplate } from '@nuxt/schema'
 
 export type TemplateId = 'client' | 'App' | 'index'
-
-export interface NuxtTemplate {
-  originalSrc?: string
-  src: string
-  custom: boolean
-}
 
 export interface Template {
   template: NuxtTemplate

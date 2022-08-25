@@ -44,6 +44,7 @@
   "devDependencies": {
     "@nuxt/module-builder": "^0.1.7",
     "@nuxt/schema": "3.0.0-rc.8",
-    "@nuxt/types": "^2.15.8"
+    "@nuxt/types": "^2.15.8",
+    "@types/fs-extra": "^9.0.13"
   }
 }

@@ -24,5 +24,8 @@
     "sass-loader": "^10.2.0",
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2"
+  },
+  "resolutions": {
+    "unctx": "^2.0.1"
   }
 }

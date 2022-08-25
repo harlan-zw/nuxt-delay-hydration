@@ -38,6 +38,7 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
       logger.warn(`\`${NAME}\` will only work for SSR apps, disabling module.`)
       return
     }
+    // @ts-expect-error deprecated config
     if (nuxt.options.vite && !nuxt.options.vite?.ssr) {
       logger.warn(`\`${NAME}\` only works with vite with SSR enabled, disabling module.`)
       return

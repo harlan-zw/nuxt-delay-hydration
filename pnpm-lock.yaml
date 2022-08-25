@@ -30,6 +30,7 @@ importers:
       '@nuxt/module-builder': ^0.1.7
       '@nuxt/schema': 3.0.0-rc.8
       '@nuxt/types': ^2.15.8
+      '@types/fs-extra': ^9.0.13
       consola: ^2.15.3
       fs-extra: ^10.1.0
       lodash: ^4.17.21
@@ -46,6 +47,7 @@ importers:
       '@nuxt/module-builder': 0.1.7
       '@nuxt/schema': 3.0.0-rc.8
       '@nuxt/types': 2.15.8
+      '@types/fs-extra': 9.0.13
 
 packages:
 
@@ -778,6 +780,12 @@ packages:
     resolution: {integrity: sha512-evodFzM0PLOXmMZy8DhPN+toP6QgJiIteF6e8iD9T0xGBUllQA/DAb1nZwCIoNh7vuLvqCGPUdsLf3GSbcHd4g==}
     dependencies:
       '@types/webpack': 4.41.28
+    dev: true
+
+  /@types/fs-extra/9.0.13:
+    resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
+    dependencies:
+      '@types/node': 18.7.13
     dev: true
 
   /@types/html-minifier/4.0.0:

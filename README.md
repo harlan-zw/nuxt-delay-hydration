@@ -224,7 +224,7 @@ If you're using [nuxt/components](https://github.com/nuxt/components) then no im
 the component as:
 
 ```js
-import { DelayHydration } from 'nuxt-delay-hydration/dist/components'
+import { DelayHydration } from 'nuxt-delay-hydration/dist/runtime/components/DelayHydration.vue'
 ```
 
 The behaviour of the component should be controlled by the [advanced configuration](#advanced-configuration), however props 

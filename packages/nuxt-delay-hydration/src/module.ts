@@ -46,10 +46,6 @@ export interface ModuleOptions {
    */
   replayClick: boolean
   /**
-   * How long after an event occurs should we consider it valid.
-   */
-  replayClickMaxEventAge: number
-  /**
    * Log details in the console on when hydration is blocked and when and why it becomes unblocked.
    *
    * @default false
@@ -82,7 +78,6 @@ export default defineNuxtModule<ModuleOptions>({
     idleCallbackTimeout: 7000,
     debug: true,
     replayClick: false,
-    replayClickMaxEventAge: 1000,
   },
   async setup(options, nuxt) {
     // avoid merging of arrays

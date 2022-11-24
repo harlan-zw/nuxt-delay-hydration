@@ -1,4 +1,4 @@
-![nuxt-delay-hydration](https://repository-images.githubusercontent.com/392525648/e8fad899-c221-48ca-bb3e-bf5bde92bfd0)
+![nuxt-delay-hydration](https://repository-images.githubusercontent.com/392525648/2875f133-bb97-4758-87fa-3fe69c3859af)
 
 <p align='center'>
 <a href='https://www.npmjs.com/package/nuxt-delay-hydration'>

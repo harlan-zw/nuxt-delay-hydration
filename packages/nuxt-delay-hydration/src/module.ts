@@ -33,6 +33,17 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
         'wheel',
       ]
     }
+
+    const { resolve } = createResolver(import.meta.url)
+
+    // always register components
+    nuxt.options.build.transpile.push('runtime/components')
+    await addComponentsDir({
+      path: resolve('runtime/components'),
+      extensions: ['vue'],
+      transpile: true,
+    })
+
     if (!config.mode) {
       logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
       return
@@ -63,8 +74,6 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
       nuxt.options.render.asyncScripts = true
     })
 
-    const { resolve } = createResolver(import.meta.url)
-
     const delayHydrationPath = 'hydration/hydrationRace.mjs'
     const replayPointerEventPath = 'hydration/replayPointerEvent.mjs'
 
@@ -81,13 +90,6 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
         options: config,
       })
     }
-
-    nuxt.options.build.transpile.push('runtime/components')
-    await addComponentsDir({
-      path: resolve('runtime/components'),
-      extensions: ['vue'],
-      transpile: true,
-    })
 
     if (config.mode === MODE_DELAY_MANUAL) {
       addPluginTemplate({

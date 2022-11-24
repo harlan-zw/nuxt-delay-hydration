@@ -11,14 +11,7 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     mode: false,
-    hydrateOnEvents: [
-      'mousemove',
-      'scroll',
-      'keydown',
-      'click',
-      'touchstart',
-      'wheel',
-    ],
+    hydrateOnEvents: [],
     postIdleTimeout: {
       mobile: 6000,
       desktop: 5000,
@@ -30,6 +23,16 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
     replayClickMaxEventAge: 1000,
   } as ModuleOptions,
   async setup(config: ModuleOptions, nuxt) {
+    if (!config.hydrateOnEvents.length) {
+      config.hydrateOnEvents = [
+        'mousemove',
+        'scroll',
+        'keydown',
+        'click',
+        'touchstart',
+        'wheel',
+      ]
+    }
     if (!config.mode) {
       logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
       return

@@ -4,7 +4,7 @@ const replayPointerEvent = (() => {
     return () => true
 
   return (e, isReady = false) => {
-    if (!(e instanceof PointerEvent) && !(e instanceof MouseEvent)) {
+    if (!(e instanceof PointerEvent) && !(e instanceof MouseEvent) && !(e instanceof TouchEvent)) {
       return
     }
     if (e instanceof MouseEvent && e.type !== 'click') {

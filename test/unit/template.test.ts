@@ -1,4 +1,4 @@
-import templateUtils from '../../packages/nuxt-delay-hydration/src/util/template'
+import templateUtils from '../../packages/nuxt-delay-hydration-v0/src/util/template'
 import {dirname, join} from "upath";
 import {existsSync, readFileSync} from "fs";
 import { test, expect } from 'vitest'

@@ -29,22 +29,26 @@
     "scripts",
     ".runtime"
   ],
+  "build": {
+    "entries": [
+      {
+        "builder": "mkdist",
+        "input": "./src/template/"
+      }
+    ]
+  },
   "scripts": {
     "stub": "nuxt-module-build --stub",
     "build": "nuxt-module-build"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.8",
+    "@nuxt/kit": "^3.0.0",
     "consola": "^2.15.3",
     "fs-extra": "^10.1.0",
-    "lodash": "^4.17.21",
-    "pathe": "^0.3.5",
+    "lodash-es": "^4.17.21",
+    "lodash.template": "^4.5.0",
+    "packrup": "^0.1.0",
+    "pathe": "^1.0.0",
     "vue-lazy-hydration": "^2.0.0-beta.4"
-  },
-  "devDependencies": {
-    "@nuxt/module-builder": "^0.1.7",
-    "@nuxt/schema": "3.0.0-rc.8",
-    "@nuxt/types": "^2.15.8",
-    "@types/fs-extra": "^9.0.13"
   }
 }

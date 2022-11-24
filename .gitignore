@@ -34,3 +34,5 @@ coverage
 **/.runtime/*.js
 
 inspo
+
+.nuxt

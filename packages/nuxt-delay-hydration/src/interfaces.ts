@@ -7,8 +7,7 @@ export interface ModuleOptions {
    */
   mode: Mode
   /**
-   * Controls which browser events should trigger the hydration to resume. By default, it is quite aggressive to avoid
-   * possible user experience issues.
+   * Specify the exact events that should trigger hydration.
    *
    * @default 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart'
    */
@@ -43,10 +42,4 @@ export interface ModuleOptions {
    * @default false
    */
   debug: boolean
-  /**
-   * Run the delay forever, useful for testing your app without scripts.
-   *
-   * @default false
-   */
-  forever: boolean
 }

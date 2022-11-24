@@ -1,31 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "outDir": "dist",
-    "declaration": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "stripInternal": true,
-    "noUnusedLocals": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "paths": {
-      "nuxt-delay-hydration": [
-        "./packages/nuxt-delay-hydration/src/module.ts"
-      ]
-    },
-    "types": [
-      "@nuxt/types",
-      "@nuxt/schema"
-    ]
-  },
-  "exclude": [
-    "**/dist/**",
-    "**/.output/**",
-    "playground/**"
-  ]
+  // https://v3.nuxtjs.org/concepts/typescript
+  "extends": "./playground/.nuxt/tsconfig.json",
 }

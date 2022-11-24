@@ -6,15 +6,23 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="display: flex; align-items: center;">
+  <div class="hydration-status" :class="{ 'hydration-status--hydrated': status === 'Hydrated', 'hydration-status--not-hydrated': status !== 'Hydrated' }">
     <div>
       {{ status }}
     </div>
-    <span class="hydration-status__icon" :class="{ 'hydration-status__icon--hydrated': status === 'Hydrated', 'hydration-status__icon--not-hydrated': status !== 'Hydrated' }" />
+    <span class="hydration-status__icon" />
   </div>
 </template>
 
 <style scoped>
+.hydration-status {
+  display: inline-flex;
+  padding: 5px 2px;
+  align-items: center;
+  justify-items: center;
+  font-weight: bold;
+  font-family: 'Roboto Mono', monospace;
+}
 .hydration-status__icon {
   width: 10px;
   height: 10px;
@@ -22,10 +30,16 @@ onMounted(() => {
   display: block;
   margin-left: 5px;
 }
-.hydration-status__icon--hydrated {
+.hydration-status--hydrated {
+  border-bottom: 2px solid #22c55e;
+}
+.hydration-status--not-hydrated {
+  border-bottom: 2px solid #ef4444;
+}
+.hydration-status--hydrated .hydration-status__icon {
   background-image: linear-gradient(90deg, #22c55e, #6ee7b7);
 }
-.hydration-status__icon--not-hydrated {
+.hydration-status--not-hydrated .hydration-status__icon {
   background-image: linear-gradient(90deg, #ef4444, #fdba74);
   animation: pulse 1s infinite ease-in-out alternate;
 }

@@ -11,7 +11,7 @@
 </p>
 
 <p align='center'>Delay Hydration for Nuxt.js! ⚡️<br>
-<sup><em>Improve your Nuxt.js v2 Google Lighthouse score by delaying hydration ⚡️</em></sup>
+<sup><em>Delay your Nuxt apps hydration for reduced blocking time and improved Google Lighthouse scores ⚡️</em></sup>
 </p>
 
 <p align="center">
@@ -19,7 +19,7 @@
 <tbody>
 <td align="center">
 <img width="2000" height="0" /><br>
-<i>Status:</i> <b>Stable v2 ✅ , bridge ❌ , v3 ❌️</b><br>
+<i>Status:</i> <b>Stable v2 (v0.x) ✅ , v3 (main) ✅</b><br>
 <sub>Made possible by my <a href="https://github.com/sponsors/harlan-zw">Sponsor Program 💖</a><br> Follow me <a href="https://twitter.com/harlan_zw">@harlan_zw</a> 🐦</sub><br>
 <img width="2000" height="0" />
 </td>
@@ -38,12 +38,15 @@
 
 
 <details>
-  <summary><b>Motivation</b></summary>
+  <summary><b>What is hydration?</b></summary>
 <br>
-Hydration is the process of hooking up static HTML with your Nuxt app to provide reactivity, used in SSR and SSG.
+Hydration is the process of converting your server-side rendered HTML into a fully interactive client-side application. 
+This is a critical step in the Nuxt.js lifecycle, but it can also be a major bottleneck for your application. This is because the browser must wait for the hydration process to complete before it can start rendering your application. This can cause a significant delay in the time it takes for your application to become interactive. This delay can be as much as 100% of your application's total load time. This is a major issue for your users, and it can also have a negative impact on your Google Lighthouse score. This module aims to reduce this delay by delaying the hydration process until the user is ready to interact with your application.
+</details>
 
-This hydration process is expensive, especially with Nuxt 2. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".
-
+<details>
+  <summary><b>Why nuxt-delay-hydration?</b></summary>
+<br>
 While this is unavoidable in most apps, for static sites which depend on minimal interactivity, it is possible and safe
 to delay the hydration to avoid this penalty.
 
@@ -82,8 +85,9 @@ Keep in mind, **this is a hacky solution**. Until Google can recognise which scr
 ## Install
 
 ```bash
-yarn add nuxt-delay-hydration
-# npm i nuxt-delay-hydration
+yarn add -D nuxt-delay-hydration
+# npm i -D nuxt-delay-hydration
+# pnpm add -D nuxt-delay-hydration
 ```
 
 _Requirement: SSR, full-static (SSG) is highly recommended._
@@ -108,12 +112,10 @@ This module has been tested on documentation sites, blogs and misc content sites
 
 ## Usage
 
-Within your `nuxt.config.js` add the following.
-
-```js
-// nuxt.config.js
+```ts
+// nuxt.config.ts
 export default {
-  buildModules: [
+  modules: [
     'nuxt-delay-hydration',
   ],
 }

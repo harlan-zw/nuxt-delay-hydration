@@ -1,21 +1,36 @@
 import type { NitroAppPlugin } from 'nitropack'
 import { packString } from 'packrup'
-import { MODE_DELAY_APP_INIT } from '../constants'
+import { MODE_DELAY_APP_INIT } from '../module'
+import { createFilter } from '../util/filter'
 import { useRuntimeConfig } from '#imports'
 
-import { mode, script } from '#delay-hydration'
+import { debug, exclude, include, mode, replayScript, script } from '#delay-hydration'
 
 const SCRIPT_REGEX = /<script(.*?)>/gm
 
 export default <NitroAppPlugin> function (nitro) {
-  nitro.hooks.hook('render:html', (htmlContext) => {
+  nitro.hooks.hook('render:html', (htmlContext, { event }) => {
+    if (include.length || exclude.length) {
+      const filter = createFilter({ include, exclude })
+      // allow opt-out
+      if (!filter(event.req.url))
+        return
+    }
+
     const isDelayingInit = mode === MODE_DELAY_APP_INIT
     let extraScripts = ''
+    let isPageSSR = true
     if (isDelayingInit) {
       const $config = useRuntimeConfig()
       const ASSET_RE = new RegExp(`<script[^>]*src="${$config.app.buildAssetsDir}[^>]+><\\/script>`)
 
       const toLoad: Record<string, any>[] = []
+      const ssrContext = htmlContext.bodyAppend.find(b => b.includes('window.__NUXT__'))
+      isPageSSR = ssrContext.includes('serverRendered:true')
+
+      if (!isPageSSR)
+        return
+
       htmlContext.bodyAppend = htmlContext.bodyAppend.filter(
         (b: string) => {
           if (b.includes('window.__NUXT__') || !ASSET_RE.test(b))
@@ -31,7 +46,7 @@ export default <NitroAppPlugin> function (nitro) {
           return false
         },
       )
-      extraScripts = `_$hydration.then(e => {
+      extraScripts = `_$delayHydration.then(e => {
   ;(${JSON.stringify(toLoad)}).forEach(s => {
     const script = document.createElement('script')
     Object.entries(s).forEach(([k, v]) => script.setAttribute(k, v))
@@ -39,11 +54,16 @@ export default <NitroAppPlugin> function (nitro) {
   })
 })`
     }
+    if (replayScript)
+      extraScripts += `;${replayScript}`
+
     // insert the hydration API, maybe insert delay script
     htmlContext.bodyAppend.push(`<script>
-window._$delayHydration = (() => {
+const w = window
+w._$delayHydration = (() => {
   ${script}}
 )();
+${debug ? 'w._$delayHydration.then((e) => { console.log(\'[nuxt-delay-hydration] Hydration event\', e) })' : ''}
 ${extraScripts}
 </script>`)
   })

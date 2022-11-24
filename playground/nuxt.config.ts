@@ -11,7 +11,8 @@ export default defineNuxtConfig({
     'nuxt-delay-hydration',
   ],
   delayHydration: {
-    mode: 'manual',
+    mode: 'init',
+    exclude: ['/not-delayed'],
   },
   app: {
     head: {

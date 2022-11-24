@@ -1,17 +1,16 @@
-interface Handler { c: () => void; p: Promise<string> }
+interface Handler { c: () => void; p: Promise<string | Event> }
 
-const w = window
 // not supported
 if (!('requestIdleCallback' in w) || !('requestAnimationFrame' in w))
   return new Promise(resolve => resolve('not supported'))
 const eventListeners = (): Handler => {
   const c = new AbortController()
-  const p = new Promise<string>((resolve) => {
+  const p = new Promise<Event>((resolve) => {
     const hydrateOnEvents = '<%= options.hydrateOnEvents %>'.split(',') as (keyof WindowEventMap)[]
     const handler = (e: Event) => {
       hydrateOnEvents.forEach(e => w.removeEventListener(e, handler))
       // hydrate on animation frame
-      requestAnimationFrame(() => resolve(e.type))
+      requestAnimationFrame(() => resolve(e))
     }
     hydrateOnEvents.forEach((e) => {
       w.addEventListener(e, handler, {
@@ -44,7 +43,7 @@ const triggers = [
   idleListener(),
   eventListeners(),
 ]
-const hydrationPromise = Promise.race<string>(
+const hydrationPromise = Promise.race<string | Event>(
   triggers.map(t => t.p),
 ).finally(() => {
   triggers.forEach(t => t.c())

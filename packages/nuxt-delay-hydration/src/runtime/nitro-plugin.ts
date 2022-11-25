@@ -1,13 +1,10 @@
 import type { NitroAppPlugin } from 'nitropack'
 import { packString } from 'packrup'
-import { MODE_DELAY_APP_INIT } from '../module'
 import { createRouter, toRouteMatcher } from 'radix3'
 import { useRuntimeConfig } from '#imports'
-
 import { debug, exclude, include, mode, replayScript, script } from '#delay-hydration'
 
 const SCRIPT_REGEX = /<script(.*?)>/gm
-
 
 export interface CreateFilterOptions {
   include?: (string | RegExp)[]
@@ -54,7 +51,7 @@ export default <NitroAppPlugin> function (nitro) {
         return
     }
 
-    const isDelayingInit = mode === MODE_DELAY_APP_INIT
+    const isDelayingInit = mode === 'init'
     let extraScripts = ''
     let isPageSSR = true
     if (isDelayingInit) {

@@ -1,5 +1,5 @@
 import { promises as fsp } from 'fs'
-import { addComponentsDir, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import {addComponentsDir, addPlugin, addTemplate, createResolver, defineNuxtModule} from '@nuxt/kit'
 // @ts-expect-error untyped
 import template from 'lodash.template'
 
@@ -121,18 +121,27 @@ export default defineNuxtModule<ModuleOptions>({
       scripts[s] = template(scriptT)({ options })
     }
 
-    nuxt.hooks.hook('nitro:config', (config) => {
-      config.externals = config.externals || {}
-      config.externals.inline = config.externals.inline || []
-      config.externals.inline.push(runtimeDir)
-      config.virtual = config.virtual || {}
-      config.virtual['#delay-hydration']
-= `export const script = ${JSON.stringify(scripts.global, null, 2)}
+    const exports = `export const script = ${JSON.stringify(scripts.global, null, 2)}
 export const replayScript = ${JSON.stringify(scripts.replay, null, 2)}
 export const mode = '${options.mode}'
 export const include = ${JSON.stringify(options.include)}
 export const exclude = ${JSON.stringify(options.exclude)}
 export const debug = ${JSON.stringify(options.debug)}`
+
+    // add alias for nuxt app
+    const dst = addTemplate({
+      filename: 'delay-hydration.mjs',
+      getContents: () => exports,
+    })
+    nuxt.options.alias['#delay-hydration'] = dst.dst
+
+    // add alias for nitro
+    nuxt.hooks.hook('nitro:config', (config) => {
+      config.externals = config.externals || {}
+      config.externals.inline = config.externals.inline || []
+      config.externals.inline.push(runtimeDir)
+      config.virtual = config.virtual || {}
+      config.virtual['#delay-hydration'] = exports
       config.plugins = config.plugins || []
       config.plugins.push(resolve(runtimeDir, 'nitro-plugin'))
     })

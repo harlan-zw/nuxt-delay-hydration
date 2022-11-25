@@ -311,6 +311,26 @@ Configuration should be provided on the `delayHydration` key within your Nuxt co
 If you're finding the lab or [field data](https://web.dev/lab-and-field-data-differences/) is not performing, you may want to
 tinker with this advanced configuration.
 
+### Filtering routes
+
+Using the `include` and `exclude` options, you can specify which routes you'd like to delay hydration on.
+
+```ts
+// nuxt.config.ts
+export default {
+  delayHydration: {
+    include: [
+      '/**',
+    ],
+    exclude: [
+      '/admin/**'
+    ],
+  },
+}
+```
+
+You can provide a glob pattern similar to route rules or a regex.
+
 ### Event Hydration
 
 **hydrateOnEvents**

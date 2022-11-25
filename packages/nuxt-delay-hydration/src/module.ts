@@ -100,6 +100,7 @@ export default defineNuxtModule<ModuleOptions>({
     await addComponentsDir({
       path: resolve('runtime/components'),
       extensions: ['vue'],
+      transpile: true,
     })
 
     if (!nuxt.options.ssr) {

@@ -39,6 +39,3 @@ jobs:
 
       - name: Build
         run: pnpm run stub && pnpm run build
-
-      - name: Run tests
-        run: pnpm run test

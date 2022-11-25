@@ -38,7 +38,7 @@ jobs:
         run: pnpm run lint
 
       - name: Build
-        run: pnpm run build
+        run: pnpm run stub && pnpm run build
 
       - name: Run tests
         run: pnpm run test

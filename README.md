@@ -36,12 +36,12 @@
   <summary><b>Why delay hydration?</b></summary>
 <br>
 
-Delaying hydration is a technique hint to Google that our scripts are required for our app to function. 
+Delaying hydration is a technique to hint to Google that our scripts are not required for our app to function. 
 
-Delaying hydration improves your Google Lighthouse score by reducing your "Blocking Time" metric.
+By delaying hydration we improve the Google Lighthouse score by reducing your "Blocking Time" metric.
 
 Previously you may have used [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
-However, it is just a more verbose way of providing hints to Google, like we're doing with this module, just with more steps.
+However, it is just a more verbose way of providing hints to Google, like we're doing with this module.
 
 </details>
 
@@ -80,7 +80,7 @@ For example:
 - if a user visits the page and moves their cursor or scrolls, the hydration will be triggered immediately. The chance of interacting with the
   non-hydration app will be minimised
 
-Keep in mind, **this is a hacky solution**. Until Google can recognise which scripts are truly blocking, we'll need to rely on this approach.
+Keep in mind, **this is a hacky solution**. Until Google can recognise progressive script enhancements, we'll need to rely on this approach.
 </details>
 
 <br>
@@ -107,6 +107,10 @@ export default {
   modules: [
     'nuxt-delay-hydration',
   ],
+  delayHydration: {
+    // enables nuxt-delay-hydration in dev mode for testing  
+    debug: process.env.NODE_ENV === 'development'
+  }  
 }
 ```
 
@@ -120,20 +124,22 @@ By default, no mode is selected, you will need to select how you would the modul
 
 *Default:* `false`
 
-| Type   |      Description    | Use Case |
-|----------|:-------------|------:|
-| `false` _default_ |  Disable the module | Testing |
-| [init](#init-mode) | Delays Nuxt app creation. All code is delayed including plugins and third-party scripts. |  Zero or minimal plugins/modules. |
-| [mount](#mount-mode) _recommended_ | Delays Nuxt after creation and before mounting. Plugins and some third-party scripts will work. |   Minimal non-critical plugins and third-party plugins. |
-| [manual](#manual-mode) | Delay is provided by the `DelayHydration` component. Extends `vue-lazy-hydration` |  All other apps |
+| Type   | Description                                                                      | Use Case |
+|----------|:---------------------------------------------------------------------------------|------:|
+| `false` _default_ | Disable the module                                                               | Testing |
+| [init](#init-mode) | Delays all scripts from loading.                                                 |  Zero or minimal plugins/modules. |
+| [mount](#mount-mode) _recommended_ | Delays Nuxt while it's mounting. Plugins and some third-party scripts will work. |   Minimal non-critical plugins and third-party plugins. |
+| [manual](#manual-mode) | Delay is provided by the `DelayHydration` component.                             |  All other apps |
 
 Regardless of the mode you choose, please read [further optimisations](#further-optimisations).
 
 ### Init Mode
 
-Delays hydration before the Nuxt app is created. Your entire app, including plugins, will be delayed. 
-This will provide the biggest speed improvements however is the riskiest and may increase
-other metrics with delayed network requests.
+This mode delays all scripts from loading until the hydration promise is resolved.
+
+It does this by hooking into the HTML rendering, removing all script tags and adding them back after the hydration promise is resolved.
+
+This will provide the biggest speed improvements however is the riskiest.
 
 _Pros:_ Provides the biggest blocking time reduction
 
@@ -151,8 +157,9 @@ export default {
 
 ### Mount Mode
 
-Delays hydration once your app is created (all plugins and vendor bundle loaded) and is about to be mounted. This delays
-your layout and page components.
+This mode delays Nuxt while it's mounting. Plugins and some third-party scripts will work.
+
+This delays your layout and page components.
 
 _Pros:_ Safer and still provides good improvements
 
@@ -189,36 +196,20 @@ export default {
 
 #### DelayHydration component
 
-Once you have set the mode, you need to use the component. It's recommended you use the component within
-your layout file.
+Once you have set the mode, you need to use the component. 
 
 ```vue
 <template>
 <div>
-    <my-header />
-    <delay-hydration>
-        <!-- You must have a single child node as the slot -->
-        <div>
-            <main>
-                <nuxt />
-            </main>
-            <my-footer />
-        </div>
-    </delay-hydration>
+  <DelayHydration>
+    <div>
+        <LazyMyExpensiveComponent />
+    </div>
+  </DelayHydration>
 </div>
 </template>
 ```
 
-This component is a wrapper for a pre-configured [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) component.
-
-The behaviour of the component should be controlled by the [advanced configuration](#advanced-configuration), however props 
-are provided for convenience. 
-
-**Props**
-
-_debug_: `boolean:false` Toggle the debug logging
-
-_replayClick_: `boolean:false` Toggle the click replay
 
 ## Guides
 
@@ -233,7 +224,7 @@ To make sure the module is doing what you expect, there is a `debug` mode, which
 
 It might be a good idea to always debug on your local environment, in that instance you could do:
 
-```js
+```ts
 export default {
     delayHydration: {
         debug: process.env.NODE_ENV === 'development',
@@ -250,20 +241,20 @@ It can be unclear at times whether your app has been hydrated or not if it's qui
 
 To make things easier, there is a component `HydrationStatus` which will tell you what's going on. 
 
-```js
+```vue
 <template>
 <div>
-    <my-header />
-    <delay-hydration>
+    <MyHeader />
+    <DelayHydration>
         <div>
             <!-- Show the hydration status, only for debugging -->
-            <hydration-status />
+            <HydrationStatus />
             <main>
                 <nuxt />
             </main>
             <my-footer />
         </div>
-    </delay-hydration>
+    </DelayHydration>
 </div>
 </template>
 ```
@@ -309,21 +300,8 @@ When you load in a heavy component synchronously, the javascript will be bundled
 
 This will decrease all of your performance metrics. It's recommended you use async imports for these components.
 
-[Analyze](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-build#analyze) your components and load the big ones async. If you're using nuxt/components, you can 
-easily prefix them with `Lazy` to do so, otherwise, you can use the following syntax.
+Run `nuxi analyze` to find large components. When loading them, prefix them with `Lazy`.
 
-```js
-<script>
-export default {
-  components: {
-    AdSlider: () => import('./AdSlider.vue'),
-    ArticleContent: () => import('./ArticleContent.vue'),
-    CommentForm: () => import('./CommentForm.vue'),
-    ImageSlider: () => import('./ImageSlider.vue'),
-  },
-};
-</script>
-```
 </details>
 
 ## Advanced Configuration
@@ -354,15 +332,6 @@ For example, if a user clicks a hamburger icon and hydration is required to open
 
 ⚠️ This is experimental, use with caution.
 
-**replayClickMaxEventAge**
-
-- Type: `number` (milliseconds)
-- Default: `1000`
-
-The replay click event will not run if the hydration takes more than the limit specified.
-
-This limit is designed to avoid possible user experience issues.
-
 
 ### Idle Hydration
 
@@ -377,7 +346,7 @@ When waiting for an idle callback, it's possible to define a max amount of time 
 **postIdleTimeout**
 
 - Type: `{ mobile: number, desktop: number }` (milliseconds)
-- Default: `{ mobile: 6000, desktop: 5000, }`
+- Default: `{ mobile: 5000, desktop: 4000, }`
 
 How many to wait (in milliseconds) after the idle callback before we resume the hydration. This extra timeout is required
 to avoid the standard "blocking", we need to provide real idle time to lighthouse.
@@ -394,13 +363,6 @@ _Note: The default will likely be customised in the future based on further benc
 - Default: `false`
 
 Log details in the console on when hydration is blocked and when and why it becomes unblocked.
-
-**forever**
-
-- Type: `boolean`
-- Default: `false`
-
-Run the delay forever, useful for testing your app in a non-hydrated state.
 
 ## Benchmarks
 

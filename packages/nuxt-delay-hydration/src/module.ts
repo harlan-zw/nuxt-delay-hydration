@@ -1,30 +1,88 @@
-import { addComponentsDir, addPluginTemplate, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
-import type { ModuleOptions } from './interfaces'
-import { CONFIG_KEY, MODE_DELAY_APP_INIT, MODE_DELAY_APP_MOUNT, MODE_DELAY_MANUAL, NAME } from './constants'
-import templateUtils from './util/template'
-import logger from './logger'
+import { promises as fsp } from 'fs'
+import { addComponentsDir, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+// @ts-expect-error untyped
+import template from 'lodash.template'
 
-const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
+export type Mode = 'init' | 'mount' | 'manual' | false
+export type EventTypes = 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart' | string
+
+export interface ModuleOptions {
+  /**
+   * Which mode to use for delaying the hydration.
+   */
+  mode: Mode
+  /**
+   * Specify the exact events that should trigger hydration.
+   *
+   * @default 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart'
+   */
+  hydrateOnEvents: EventTypes[]
+  /**
+   * Specify the paths to include delayed hydration on.
+   */
+  include: (string | RegExp)[]
+  /**
+   * Specify the paths to exclude delayed hydration on.
+   */
+  exclude: (string | RegExp)[]
+  /**
+   * When waiting for an idle callback, it's possible to define a max amount of time to wait in milliseconds. This is
+   * useful when there are a lot of network requests happening.
+   *
+   * @default 7000ms
+   */
+  idleCallbackTimeout: number
+  /**
+   * For specific devices we can tinker with how many ms after the idle callback we should wait before we run the
+   * hydration. Mobile should always be higher than desktop, desktop can remain fairly low.
+   */
+  postIdleTimeout: {
+    mobile: number
+    desktop: number
+  }
+  /**
+   * When an interaction event triggered the hydration, you can replay it. For example if a user clicks a hamburger icon
+   * and hydration is required to open the menu, it would replay the click once hydration.
+   */
+  replayClick: boolean
+  /**
+   * Log details in the console on when hydration is blocked and when and why it becomes unblocked.
+   *
+   * @default false
+   */
+  debug: boolean
+}
+
+export const NAME = 'nuxt-delay-hydration'
+export const MODE_DELAY_APP_INIT = 'init'
+export const MODE_DELAY_APP_MOUNT = 'mount'
+export const MODE_DELAY_MANUAL = 'manual'
+
+export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: NAME,
-    configKey: CONFIG_KEY,
+    configKey: 'delayHydration',
+    compatibility: {
+      nuxt: '3.0.0',
+    },
   },
   defaults: {
-    mode: false,
+    mode: MODE_DELAY_APP_MOUNT,
     hydrateOnEvents: [],
+    include: [],
+    exclude: [],
     postIdleTimeout: {
-      mobile: 6000,
-      desktop: 5000,
+      mobile: 5000,
+      desktop: 4000,
     },
     idleCallbackTimeout: 7000,
-    forever: false,
-    debug: false,
+    debug: true,
     replayClick: false,
-    replayClickMaxEventAge: 1000,
-  } as ModuleOptions,
-  async setup(config: ModuleOptions, nuxt) {
-    if (!config.hydrateOnEvents.length) {
-      config.hydrateOnEvents = [
+  },
+  async setup(options, nuxt) {
+    // avoid merging of arrays
+    if (!options.hydrateOnEvents.length) {
+      options.hydrateOnEvents = [
         'mousemove',
         'scroll',
         'keydown',
@@ -34,123 +92,52 @@ const nuxtDelayHydration = defineNuxtModule<ModuleOptions>({
       ]
     }
 
-    const { resolve } = createResolver(import.meta.url)
+    const { resolve, resolvePath } = createResolver(import.meta.url)
+    const runtimeDir = resolve('./runtime')
+    nuxt.options.build.transpile.push(runtimeDir)
 
-    // always register components
-    nuxt.options.build.transpile.push('runtime/components')
+    // always add plugins
     await addComponentsDir({
       path: resolve('runtime/components'),
       extensions: ['vue'],
-      transpile: true,
     })
 
-    if (!config.mode) {
-      logger.info(`\`${NAME}\` mode set to \`${config.mode}\`, disabling module.`)
-      return
-    }
     if (!nuxt.options.ssr) {
-      logger.warn(`\`${NAME}\` will only work for SSR apps, disabling module.`)
+      console.warn(`\`${NAME}\` will only work for SSR apps, disabling module.`)
       return
     }
-    // @ts-expect-error deprecated config
-    if (nuxt.options.vite && !nuxt.options.vite?.ssr) {
-      logger.warn(`\`${NAME}\` only works with vite with SSR enabled, disabling module.`)
+    if (!options.debug && nuxt.options.dev) {
+      console.warn(`\`${NAME}\` only runs in dev with \`debug\` enabled, disabling module.`)
       return
     }
-    if (!config.debug && nuxt.options.dev) {
-      logger.info(`\`${NAME}\` only runs in dev with \`debug\` enabled, disabling module.`)
-      return
-    }
-    if (config.debug && !nuxt.options.dev)
-      logger.warn(`\`${NAME}\` debug enabled in a non-development environment.`)
-    if (nuxt.options.target !== 'static')
-      logger.warn(`\`${NAME}\` is untested in a non-static mode, use with caution.`)
 
-    nuxt.hook('build:before', () => {
-      if (process.env.NODE_ENV !== 'test')
-        logger.info(`\`${NAME}\` enabled with \`${config.mode}\` mode ${config.debug ? '[Debug enabled]' : ''}`)
-      // enable asyncScripts
-      // @ts-expect-error nuxt type issue
-      nuxt.options.render.asyncScripts = true
+    nuxt.options.build.transpile.push(resolve('./app'))
+
+    // Read script from disk and add to options
+    const scripts: Record<string, string> = {}
+    for (const s of ['global', 'replay']) {
+      const scriptPath = await resolvePath(import.meta.url.endsWith('src/module.ts') ? `../dist/${s}` : `./${s}`)
+      const scriptT = await fsp.readFile(scriptPath, 'utf-8')
+      scripts[s] = template(scriptT)({ options })
+    }
+
+    nuxt.hooks.hook('nitro:config', (config) => {
+      config.externals = config.externals || {}
+      config.externals.inline = config.externals.inline || []
+      config.externals.inline.push(runtimeDir)
+      config.virtual = config.virtual || {}
+      config.virtual['#delay-hydration']
+= `export const script = ${JSON.stringify(scripts.global, null, 2)}
+export const replayScript = ${JSON.stringify(scripts.replay, null, 2)}
+export const mode = '${options.mode}'
+export const include = ${JSON.stringify(options.include)}
+export const exclude = ${JSON.stringify(options.exclude)}
+export const debug = ${JSON.stringify(options.debug)}`
+      config.plugins = config.plugins || []
+      config.plugins.push(resolve(runtimeDir, 'nitro-plugin'))
     })
 
-    const delayHydrationPath = 'hydration/hydrationRace.mjs'
-    const replayPointerEventPath = 'hydration/replayPointerEvent.mjs'
-
-    addTemplate({
-      src: resolve('runtime/template/delayHydration.mjs'),
-      fileName: delayHydrationPath,
-      options: config,
-    })
-
-    if (config.replayClick) {
-      addTemplate({
-        src: resolve('runtime/template/replayPointerEvent.mjs'),
-        fileName: replayPointerEventPath,
-        options: config,
-      })
-    }
-
-    if (config.mode === MODE_DELAY_MANUAL) {
-      addPluginTemplate({
-        src: resolve('runtime/plugin/injectDelayHydrationApi.mjs'),
-        fileName: 'hydration/pluginDelayHydration.client.mjs',
-        options: config,
-      })
-    }
-
-    const utils = templateUtils({ publishPath: resolve('../.runtime') })
-
-    if (config.mode === MODE_DELAY_APP_INIT || config.mode === MODE_DELAY_APP_MOUNT) {
-      /**
-       * Hook into the template builder, inject the hydration delayer module.
-       */
-      nuxt.hook('build:templates', ({ templateVars, templatesFiles }) => {
-        if (config.mode === MODE_DELAY_APP_MOUNT) {
-          const template = utils.matchTemplate(templatesFiles, 'client')
-          if (!template)
-            return
-
-          templateVars.delayHydrationPath = delayHydrationPath
-          templateVars.replayPointerEventPath = replayPointerEventPath
-          templateVars.hydrationConfig = config
-          // import statement
-          template.injectFileContents(
-            resolve('runtime/templateInjects/import.mjs'),
-            'import Vue from \'vue\'',
-          )
-          // actual delayer
-          template.injectFileContents(
-            resolve('runtime/templateInjects/delayHydrationRace.mjs'),
-            'async function mountApp (__app) {',
-          )
-          template.publish()
-          return
-        }
-
-        if (config.mode === MODE_DELAY_APP_INIT) {
-          const template = utils.matchTemplate(templatesFiles, 'index')
-          if (!template)
-            return
-
-          templateVars.delayHydrationPath = delayHydrationPath
-          templateVars.replayPointerEventPath = replayPointerEventPath
-          templateVars.hydrationConfig = config
-          // import statement
-          template.injectFileContents(
-            resolve('runtime/templateInjects/import.mjs'),
-            'import Vue from \'vue\'',
-          )
-          // actual delayer
-          template.injectFileContents(
-            resolve('runtime/templateInjects/delayHydrationRace.mjs'),
-            'async function createApp(ssrContext, config = {}) {',
-          )
-          template.publish()
-        }
-      })
-    }
+    if (options.mode === MODE_DELAY_APP_MOUNT)
+      addPlugin(resolve(runtimeDir, 'mount-plugin.client'))
   },
 })
-
-export default nuxtDelayHydration

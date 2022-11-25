@@ -1,4 +1,4 @@
-![nuxt-delay-hydration](https://repository-images.githubusercontent.com/392525648/e8fad899-c221-48ca-bb3e-bf5bde92bfd0)
+![nuxt-delay-hydration](https://repository-images.githubusercontent.com/392525648/2875f133-bb97-4758-87fa-3fe69c3859af)
 
 <p align='center'>
 <a href='https://www.npmjs.com/package/nuxt-delay-hydration'>
@@ -10,18 +10,14 @@
 </a>
 </p>
 
-<p align='center'>Delay Hydration for Nuxt.js! ⚡️<br>
-<sup><em>Improve your Nuxt.js v2 Google Lighthouse score by delaying hydration ⚡️</em></sup>
-</p>
-
 <p align="center">
 <table>
 <tbody>
 <td align="center">
-<img width="2000" height="0" /><br>
-<i>Status:</i> <b>Stable v2 ✅ , bridge ❌ , v3 ❌️</b><br>
+<img width="800" height="0" /><br>
+<i>Status:</i> <b>Stable v2 <a href="https://github.com/harlan-zw/nuxt-delay-hydration/tree/v1">v0</a> ✅ , v3 <a href="https://github.com/harlan-zw/nuxt-delay-hydration">main</a> ✅</b><br>
 <sub>Made possible by my <a href="https://github.com/sponsors/harlan-zw">Sponsor Program 💖</a><br> Follow me <a href="https://twitter.com/harlan_zw">@harlan_zw</a> 🐦</sub><br>
-<img width="2000" height="0" />
+<img width="800" height="0" />
 </td>
 </tbody>
 </table>
@@ -36,14 +32,9 @@
 
 <br>
 
-
 <details>
-  <summary><b>Motivation</b></summary>
+  <summary><b>Why delay hydration?</b></summary>
 <br>
-Hydration is the process of hooking up static HTML with your Nuxt app to provide reactivity, used in SSR and SSG.
-
-This hydration process is expensive, especially with Nuxt 2. Google Lighthouse penalises hydration with a high "Total Blocking Time" and "Time to Interactive".
-
 While this is unavoidable in most apps, for static sites which depend on minimal interactivity, it is possible and safe
 to delay the hydration to avoid this penalty.
 
@@ -54,6 +45,24 @@ In `mount` and `init` mode, this module delays Nuxt core code to squeeze out max
 
 Nuxt Delay Hydration aims to provide optimisations with minimal tinkering, by making certain assumptions on trade-offs.
 This module isn't built to replace vue-lazy-hydration, but as an abstraction layer on top of it.
+</details>
+
+<br>
+
+<details>
+  <summary><b>What is Progressively enhanced</b></summary>
+<br>
+Your scripts should not be required to use your website, this is what we're hinting to Google.
+
+To do that you can ensure:
+- Full HTML served on the initial response
+- Scripts don't trigger a [CLS](https://web.dev/cls/)
+- Scripts shouldn't be required for a user to interact with your site
+- Avoid using scripts to set images, will affect the [LCP](https://web.dev/lcp/)
+
+Please [benchmark](https://unlighthouse.dev/) your app before starting.
+
+This module has been tested on documentation sites, blogs and misc content sites.
 </details>
 
 <br>
@@ -81,39 +90,24 @@ Keep in mind, **this is a hacky solution**. Until Google can recognise which scr
 
 ## Install
 
+If you're using Nuxt 2.x, please follow the docs on the [v0 branch](https://github.com/harlan-zw/nuxt-delay-hydration/tree/v0).
+
 ```bash
-yarn add nuxt-delay-hydration
-# npm i nuxt-delay-hydration
+yarn add -D nuxt-delay-hydration
+# npm i -D nuxt-delay-hydration
+# pnpm add -D nuxt-delay-hydration
 ```
 
-_Requirement: SSR, full-static (SSG) is highly recommended._
-
-<details>
-  <summary><b>Further Requirements</b></summary>
-<br>
-Your scripts should not be required to use your website, this is what we're hinting to Google.
-
-To do that you can ensure:
-- Full HTML served on the initial response
-- Scripts don't trigger a [CLS](https://web.dev/cls/)
-- Scripts shouldn't be required for a user to interact with your site
-- Avoid using scripts to set images, will affect the [LCP](https://web.dev/lcp/)
-
-Please [benchmark](https://unlighthouse.dev/) your app before starting.
-
-This module has been tested on documentation sites, blogs and misc content sites.
-</details>
+_Requirement: Progressively enhanced SSR or SSG Nuxt app._
 
 <br>
 
 ## Usage
 
-Within your `nuxt.config.js` add the following.
-
-```js
-// nuxt.config.js
+```ts
+// nuxt.config.ts
 export default {
-  buildModules: [
+  modules: [
     'nuxt-delay-hydration',
   ],
 }
@@ -220,19 +214,10 @@ your layout file.
 
 This component is a wrapper for a pre-configured [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) component.
 
-If you're using [nuxt/components](https://github.com/nuxt/components) then no import is required. Otherwise, you can import 
-the component as:
-
-```js
-import { DelayHydration } from 'nuxt-delay-hydration/dist/runtime/components/DelayHydration.vue'
-```
-
 The behaviour of the component should be controlled by the [advanced configuration](#advanced-configuration), however props 
 are provided for convenience. 
 
 **Props**
-
-_forever_: `boolean:false` Toggle the hydration delay to last forever
 
 _debug_: `boolean:false` Toggle the debug logging
 
@@ -262,21 +247,6 @@ export default {
 <br>
 
 <details>
-  <summary>Delay hydration forever</summary>
-<br>
-Since the hydration will trigger instantly when you interact with the page, it can be useful
-to manually delay the hydration forever so you can test the functionality of your app in its non-hydrated state.
-
-```js
-export default {
-    delayHydration: {
-        forever: true
-    },
-}
-```
-</details>
-<br>
-<details>
   <summary>Visualising the hydration status</summary>
 <br>
 It can be unclear at times whether your app has been hydrated or not if it's quite static, this can make debugging hard.
@@ -301,12 +271,6 @@ To make things easier, there is a component `HydrationStatus` which will tell yo
 </template>
 ```
 
-If you're using [nuxt/components](https://github.com/nuxt/components) then no import is required. Otherwise, you can import
-the component as:
-
-```js
-import { HydrationStatus } from 'nuxt-delay-hydration/dist/components'
-```
 </details>
 
 ### Performance Auditing

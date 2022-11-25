@@ -23,11 +23,12 @@
 </table>
 </p>
 
+
 ## Features
 
-- ⚡️ Instantly increase your Google Lighthouse score
-- 🔥 Reduce your "Blocking Time" by as much as 100%
-- 🍃 Pre-configured to minimise user experience issues
+- 🔥 Reduce your "Blocking Time" by as much as 100%, instantly increasing your Google Lighthouse score
+- 🚦 Filter it to run only on specific pages
+- 🍃 Minimal config
 - 🔁 (optional) Replay pre-hydration clicks
 
 <br>
@@ -96,6 +97,8 @@ yarn add -D nuxt-delay-hydration
 ```
 
 _Requirement: Progressively enhanced SSR or SSG Nuxt app._
+
+<p>:warn: This module is experimental</p>
 
 <br>
 

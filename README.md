@@ -323,7 +323,7 @@ Using the `include` and `exclude` options, you can specify which routes you'd li
 export default {
   delayHydration: {
     include: [
-      '/**',
+      '/blog/**',
     ],
     exclude: [
       '/admin/**'

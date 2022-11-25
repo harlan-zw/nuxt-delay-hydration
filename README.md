@@ -35,34 +35,31 @@
 <details>
   <summary><b>Why delay hydration?</b></summary>
 <br>
-While this is unavoidable in most apps, for static sites which depend on minimal interactivity, it is possible and safe
-to delay the hydration to avoid this penalty.
 
-The current solution for delaying hydration is [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
-However, it can require a lot of tinkering, may break your HMR and not solve the performance issues. 
+Delaying hydration is a technique hint to Google that our scripts are required for our app to function. 
 
-In `mount` and `init` mode, this module delays Nuxt core code to squeeze out maximum performance, specifically around large payload executions.
+Delaying hydration improves your Google Lighthouse score by reducing your "Blocking Time" metric.
 
-Nuxt Delay Hydration aims to provide optimisations with minimal tinkering, by making certain assumptions on trade-offs.
-This module isn't built to replace vue-lazy-hydration, but as an abstraction layer on top of it.
+Previously you may have used [vue-lazy-hydration](https://github.com/maoberlehner/vue-lazy-hydration) which works well.
+However, it is just a more verbose way of providing hints to Google, like we're doing with this module, just with more steps.
+
 </details>
 
 <br>
 
 <details>
-  <summary><b>What is Progressively enhanced</b></summary>
+  <summary><b>What is a progressively enhanced app?</b></summary>
 <br>
-Your scripts should not be required to use your website, this is what we're hinting to Google.
+
+A progressively enhanced app is one that is designed to work without JavaScript, and then progressively enhanced with JavaScript.
+
+Your scripts should not be required to use your website, this is what we're hinting to Google by delaying the hydration.
 
 To do that you can ensure:
 - Full HTML served on the initial response
 - Scripts don't trigger a [CLS](https://web.dev/cls/)
-- Scripts shouldn't be required for a user to interact with your site
 - Avoid using scripts to set images, will affect the [LCP](https://web.dev/lcp/)
 
-Please [benchmark](https://unlighthouse.dev/) your app before starting.
-
-This module has been tested on documentation sites, blogs and misc content sites.
 </details>
 
 <br>

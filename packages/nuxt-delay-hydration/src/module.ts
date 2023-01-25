@@ -1,6 +1,5 @@
 import { promises as fsp } from 'fs'
-import {addComponentsDir, addPlugin, addTemplate, createResolver, defineNuxtModule} from '@nuxt/kit'
-// @ts-expect-error untyped
+import { addComponentsDir, addPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import template from 'lodash.template'
 
 export type Mode = 'init' | 'mount' | 'manual' | false
@@ -63,7 +62,7 @@ export default defineNuxtModule<ModuleOptions>({
     name: NAME,
     configKey: 'delayHydration',
     compatibility: {
-      nuxt: '3.0.0',
+      nuxt: '3.1.0',
     },
   },
   defaults: {

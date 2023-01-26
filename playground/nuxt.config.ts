@@ -4,11 +4,12 @@ const rootDir = fileURLToPath(new URL('../', import.meta.url))
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  alias: {
-    'nuxt-delay-hydration': `${rootDir}/packages/nuxt-delay-hydration/src/module.ts`,
-  },
+  // not working for some reason
+  // alias: {
+  //   'nuxt-delay-hydration': `${rootDir}/packages/nuxt-delay-hydration/src/module.ts`,
+  // },
   modules: [
-    'nuxt-delay-hydration',
+    `${rootDir}/packages/nuxt-delay-hydration/src/module.ts`,
   ],
   delayHydration: {
     mode: 'mount',

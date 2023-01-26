@@ -5,7 +5,7 @@ const clicked = ref(false)
 <template>
   <div>
     <h1>Delayed</h1>
-    <button :class="{ 'red': clicked }" style="padding: 30px;" @click="clicked = true">
+    <button :class="{ red: clicked }" style="padding: 30px;" @click="clicked = true">
       Big Button
     </button>
     <NuxtLink to="/not-delayed">

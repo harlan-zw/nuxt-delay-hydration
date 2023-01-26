@@ -50,4 +50,3 @@ const hydrationPromise = Promise.race<string | Event>(
 })
 
 return hydrationPromise
-

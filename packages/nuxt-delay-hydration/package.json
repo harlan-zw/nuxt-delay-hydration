@@ -42,7 +42,8 @@
     "build": "nuxt-module-build"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.0.0",
+    "@nuxt/kit": "^3.1.0",
+    "@types/lodash.template": "^4.5.1",
     "lodash.template": "^4.5.0",
     "packrup": "^0.1.0",
     "radix3": "^1.0.0"

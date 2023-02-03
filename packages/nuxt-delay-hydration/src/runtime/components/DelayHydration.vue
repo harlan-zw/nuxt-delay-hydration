@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 
 const shouldHydrate = ref(process.server)
-const hydrationApi = typeof window !== 'undefined' && window._$delayHydration
+// @ts-expect-error untyped
+const hydrationApi: Promise<any> = typeof window !== 'undefined' && window._$delayHydration
 // async setup will wait for promises to be resolved before the render
 if (!shouldHydrate.value && !!hydrationApi)
   await hydrationApi

@@ -49,6 +49,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       if (!filter(nuxtApp.ssrContext.url))
         return
     }
+    // @ts-expect-error untyped
     await window._$delayHydration
   })
 })

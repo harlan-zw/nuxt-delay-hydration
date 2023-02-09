@@ -93,12 +93,14 @@ export default <NitroAppPlugin> function (nitro) {
 
     // insert the hydration API, maybe insert delay script
     htmlContext.bodyAppend.push(`<script>
-const w = window
-w._$delayHydration = (() => {
-  ${script}}
-)();
-${debug ? 'w._$delayHydration.then((e) => { console.log(\'[nuxt-delay-hydration] Hydration event\', e) })' : ''}
-${extraScripts}
+(function() {
+  const w = window;
+  w._$delayHydration = (() => {
+    ${script}}
+  )();
+  ${debug ? 'w._$delayHydration.then((e) => { console.log(\'[nuxt-delay-hydration] Hydration event\', e) })' : ''}
+  ${extraScripts}
+})();
 </script>`)
   })
 }

@@ -39,7 +39,7 @@ function idleListener(): Handler {
   return { c: () => window.cancelIdleCallback(id), p }
 }
 // return a promise which will never resolve if there is no hydration
-const triggers = [idleListener(), eventListeners()];
+const triggers = [idleListener(), eventListeners()]
 const hydrationPromise = Promise.race<string | Event>(
   triggers.map(t => t.p),
 ).finally(() => {

@@ -3,6 +3,22 @@ lockfileVersion: '6.0'
 importers:
 
   .:
+    dependencies:
+      '@nuxt/kit':
+        specifier: ^3.5.1
+        version: 3.5.1(rollup@3.23.0)
+      '@types/lodash.template':
+        specifier: ^4.5.1
+        version: 4.5.1
+      lodash.template:
+        specifier: ^4.5.0
+        version: 4.5.0
+      packrup:
+        specifier: ^0.1.0
+        version: 0.1.0
+      radix3:
+        specifier: ^1.0.1
+        version: 1.0.1
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^0.39.3

@@ -1,11 +1,15 @@
 {
-  "name": "mono-nuxt-delay-hydration",
-  "private": "true",
-  "packageManager": "pnpm@7.1.0",
+  "name": "nuxt-delay-hydration",
+  "version": "1.1.4",
   "description": "Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️",
-  "workspaces": [
-    "packages/*"
-  ],
+  "author": "Harlan Wilton <harlan@harlanzw.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/harlan-zw/nuxt-delay-hydration",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harlan-zw/nuxt-delay-hydration"
+  },
+  "bugs": "https://github.com/harlan-zw/nuxt-delay-hydration/issues",
   "keywords": [
     "nuxt",
     "nuxt-module",
@@ -14,38 +18,49 @@
     "page speed",
     "performance"
   ],
-  "homepage": "https://github.com/harlan-zw/nuxt-delay-hydration",
-  "bugs": "https://github.com/harlan-zw/nuxt-delay-hydration/issues",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/harlan-zw/nuxt-delay-hydration"
+  "exports": {
+    "require": "./dist/module.cjs",
+    "import": "./dist/module.mjs"
   },
-  "author": "Harlan Wilton <harlan@harlanzw.com>",
-  "license": "MIT",
+  "main": "./dist/module.cjs",
+  "types": "./dist/module.d.ts",
+  "build": {
+    "entries": [
+      {
+        "builder": "mkdist",
+        "input": "./src/template/"
+      }
+    ]
+  },
   "scripts": {
-    "dev": "nuxi dev playground",
-    "stub": "pnpm -r --parallel --filter=./packages/** run stub",
-    "build": "nuxi prepare playground && pnpm -r --parallel --filter=./packages/** run build",
-    "lint": "eslint \"{packages,test}/**/*.{ts,vue,json,yml,mjs}\"",
-    "lint:fix": "npm run lint -- --fix",
+    "dev": "nuxi dev .playground",
+    "stub": "nuxt-module-build --stub",
+    "build": "nuxi prepare .playground && nuxt-module-build",
+    "lint": "eslint . --fix",
     "release": "bumpp package.json packages/*/package.json --commit --push --tag",
     "test": "true"
   },
-  "devDependencies": {
-    "@antfu/eslint-config": "^0.35.2",
-    "@nuxt/module-builder": "^0.2.1",
-    "@nuxt/schema": "3.1.2",
-    "@nuxt/test-utils": "3.1.2",
-    "@nuxt/types": "^2.16.0",
-    "@types/fs-extra": "^11.0.1",
-    "@types/node": "^18.13.0",
-    "@vitest/ui": "^0.28.4",
-    "bumpp": "^8.2.1",
-    "eslint": "^8.33.0",
-    "nuxt": "3.1.2",
-    "typescript": "^4.9.5",
-    "upath": "^2.0.1",
-    "vitest": "^0.28.4"
+  "dependencies": {
+    "@nuxt/kit": "^3.5.1",
+    "@types/lodash.template": "^4.5.1",
+    "lodash.template": "^4.5.0",
+    "packrup": "^0.1.0",
+    "radix3": "^1.0.1"
   },
-  "version": "1.1.4"
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.39.3",
+    "@nuxt/module-builder": "^0.3.1",
+    "@nuxt/schema": "^3.5.1",
+    "@nuxt/test-utils": "^3.5.1",
+    "@nuxt/types": "^2.16.3",
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^20.2.3",
+    "@vitest/ui": "^0.31.1",
+    "bumpp": "^9.1.0",
+    "eslint": "^8.41.0",
+    "nuxt": "^3.5.1",
+    "typescript": "^5.0.4",
+    "upath": "^2.0.1",
+    "vitest": "^0.31.1"
+  }
 }

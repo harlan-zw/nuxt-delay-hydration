@@ -111,9 +111,9 @@ export default {
     'nuxt-delay-hydration',
   ],
   delayHydration: {
-    // enables nuxt-delay-hydration in dev mode for testing  
+    // enables nuxt-delay-hydration in dev mode for testing
     debug: process.env.NODE_ENV === 'development'
-  }  
+  }
 }
 ```
 
@@ -203,13 +203,13 @@ Once you have set the mode, you need to use the component.
 
 ```vue
 <template>
-<div>
-  <DelayHydration>
-    <div>
+  <div>
+    <DelayHydration>
+      <div>
         <LazyMyExpensiveComponent />
-    </div>
-  </DelayHydration>
-</div>
+      </div>
+    </DelayHydration>
+  </div>
 </template>
 ```
 
@@ -229,9 +229,9 @@ It might be a good idea to always debug on your local environment, in that insta
 
 ```ts
 export default {
-    delayHydration: {
-        debug: process.env.NODE_ENV === 'development',
-    },
+  delayHydration: {
+    debug: process.env.NODE_ENV === 'development',
+  },
 }
 ```
 </details>
@@ -246,19 +246,19 @@ To make things easier, there is a component `HydrationStatus` which will tell yo
 
 ```vue
 <template>
-<div>
+  <div>
     <MyHeader />
     <DelayHydration>
-        <div>
-            <!-- Show the hydration status, only for debugging -->
-            <HydrationStatus />
-            <main>
-                <nuxt />
-            </main>
-            <my-footer />
-        </div>
+      <div>
+        <!-- Show the hydration status, only for debugging -->
+        <HydrationStatus />
+        <main>
+          <nuxt />
+        </main>
+        <my-footer />
+      </div>
     </DelayHydration>
-</div>
+  </div>
 </template>
 ```
 
@@ -284,9 +284,9 @@ the replay of the click.
 
 ```js
 export default {
-    delayHydration: {
-        replayClick: true
-    },
+  delayHydration: {
+    replayClick: true
+  },
 }
 ```
 

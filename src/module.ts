@@ -1,4 +1,4 @@
-import { promises as fsp } from 'fs'
+import { promises as fsp } from 'node:fs'
 import { addComponentsDir, addPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import template from 'lodash.template'
 

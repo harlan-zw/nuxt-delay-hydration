@@ -16,7 +16,7 @@ export function createFilter(options: CreateFilterOptions = {}): (path: string) 
   const include = options.include || []
   const exclude = options.exclude || []
 
-  return function (path: string): boolean {
+  return function(path: string): boolean {
     for (const v of [{ rules: exclude, result: false }, { rules: include, result: true }]) {
       const regexRules = v.rules.filter(r => r instanceof RegExp) as RegExp[]
       if (regexRules.some(r => r.test(path)))
@@ -42,7 +42,7 @@ export function createFilter(options: CreateFilterOptions = {}): (path: string) 
   }
 }
 
-export default <NitroAppPlugin> function (nitro) {
+export default <NitroAppPlugin>function(nitro) {
   nitro.hooks.hook('render:html', (htmlContext, { event }) => {
     if (include.length || exclude.length) {
       const filter = createFilter({ include, exclude })
@@ -60,7 +60,15 @@ export default <NitroAppPlugin> function (nitro) {
 
       const toLoad: Record<string, any>[] = []
       const ssrContext = htmlContext.bodyAppend.find(b => b.includes('window.__NUXT__'))
-      isPageSSR = ssrContext.includes('serverRendered:true')
+      const NUXT_DATA_RE = /<script type="application\/json" id="__NUXT_DATA__"[^>]*>(.*?)<\/script[^>]*>/g
+      const regexResult = NUXT_DATA_RE.exec(ssrContext)
+      const nuxtData = regexResult && regexResult[1] ? JSON.parse(regexResult[1]) : null
+      if (nuxtData && nuxtData.length >= 2) {
+        const serverRenderedIndex = nuxtData[1].serverRendered
+        isPageSSR = nuxtData[serverRenderedIndex]
+      } else {
+        isPageSSR = ssrContext.includes('serverRendered:true')
+      }
 
       if (!isPageSSR)
         return

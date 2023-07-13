@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -7,12 +11,9 @@ importers:
       '@nuxt/kit':
         specifier: ^3.5.1
         version: 3.5.1(rollup@3.23.0)
-      '@types/lodash.template':
-        specifier: ^4.5.1
-        version: 4.5.1
-      lodash.template:
-        specifier: ^4.5.0
-        version: 4.5.0
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       packrup:
         specifier: ^0.1.0
         version: 0.1.0
@@ -4434,6 +4435,10 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
+
+  /lodash-es@4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
 
   /lodash._reinterpolate@3.0.0:
     resolution: {integrity: sha512-xYHt68QRoYGjeeM/XOE1uJtvXQAgvszfBhjV4yvsQH0u2i9I6cI6c6/eG4Hh3UAOVn0y/xAXwmTzEay49Q//HA==}

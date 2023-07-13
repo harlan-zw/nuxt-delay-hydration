@@ -1,6 +1,6 @@
 import { promises as fsp } from 'node:fs'
 import { addComponentsDir, addPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
-import template from 'lodash.template'
+import { template } from 'lodash-es'
 
 export type Mode = 'init' | 'mount' | 'manual' | false
 export type EventTypes = 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart' | string

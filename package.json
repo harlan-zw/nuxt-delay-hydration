@@ -46,8 +46,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.5.1",
-    "@types/lodash.template": "^4.5.1",
-    "lodash.template": "^4.5.0",
+    "lodash-es": "^4.17.21",
     "packrup": "^0.1.0",
     "radix3": "^1.0.1"
   },

@@ -101,8 +101,6 @@ yarn add -D nuxt-delay-hydration
 
 _Requirement: Progressively enhanced SSR or SSG Nuxt app._
 
-<p>:warn: This module is experimental</p>
-
 <br>
 
 ## Usage

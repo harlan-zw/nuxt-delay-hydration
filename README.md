@@ -23,10 +23,13 @@
 </table>
 </p>
 
+⚠️ This is a "hack" to trick Google Lighhthouse into thinking your site is faster than it otherwise would be.
+- It should only ever be used for progressively enhanced websites.
+- It may not provide any SEO benefit (test it with CrUX data yourself).
 
 ## Features
 
-- 🔥 Reduce your "Blocking Time" by as much as 100%, instantly increasing your Google Lighthouse score
+- 🔥 Reduce your sites "Blocking Time"
 - 🚦 Filter it to run only on specific pages
 - 🍃 Minimal config
 - 🔁 (optional) Replay pre-hydration clicks

@@ -25,7 +25,7 @@
 
 ⚠️ This is a "hack" to trick Google Lighhthouse into thinking your site is faster than it otherwise would be.
 - It should only ever be used for progressively enhanced websites.
-- It may not provide any SEO benefit (test it with CrUX data yourself).
+- It may not provide any real performance or SEO benefit (test it with [CrUX](https://developer.chrome.com/docs/crux/), not Google Lighthouse).
 
 ## Features
 

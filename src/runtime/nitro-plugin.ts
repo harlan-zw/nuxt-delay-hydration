@@ -58,6 +58,9 @@ export default <NitroAppPlugin>function(nitro) {
       const $config = useRuntimeConfig()
       const ASSET_RE = new RegExp(`<script[^>]*src="${$config.app.buildAssetsDir}[^>]+><\\/script>`)
 
+      const LINK_ASSET_RE = new RegExp(`<link rel="modulepreload" as="script" [^>]*href="${$config.app.buildAssetsDir}[^>]+>`, "g");
+      htmlContext.head = htmlContext.head.map((head: string) => head.replaceAll(LINK_ASSET_RE, ""))
+
       const toLoad: Record<string, any>[] = []
       const ssrContext = htmlContext.bodyAppend.find(b => b.includes('window.__NUXT__'))
       const NUXT_DATA_RE = /<script type="application\/json" id="__NUXT_DATA__"[^>]*>(.*?)<\/script[^>]*>/g

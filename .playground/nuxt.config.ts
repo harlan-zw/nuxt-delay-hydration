@@ -1,4 +1,3 @@
-import { defineNuxtConfig } from 'nuxt/config'
 import NuxtDelayHydration from '../src/module'
 
 export default defineNuxtConfig({

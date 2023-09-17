@@ -1,7 +1,7 @@
 {
   "name": "nuxt-delay-hydration",
   "version": "1.2.1",
-  "packageManager": "pnpm@8.5.0",
+  "packageManager": "pnpm@8.7.5",
   "description": "Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️",
   "author": "Harlan Wilton <harlan@harlanzw.com>",
   "license": "MIT",
@@ -20,8 +20,9 @@
     "performance"
   ],
   "exports": {
-    "require": "./dist/module.cjs",
-    "import": "./dist/module.mjs"
+    "types": "./dist/module.d.ts",
+    "import": "./dist/module.mjs",
+    "require": "./dist/module.cjs"
   },
   "main": "./dist/module.cjs",
   "types": "./dist/module.d.ts",
@@ -45,26 +46,26 @@
     "test": "true"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.5.1",
+    "@nuxt/kit": "^3.7.3",
     "lodash-es": "^4.17.21",
     "packrup": "^0.1.0",
-    "radix3": "^1.0.1"
+    "radix3": "^1.1.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.39.3",
-    "@nuxt/module-builder": "^0.3.1",
-    "@nuxt/schema": "^3.5.1",
-    "@nuxt/test-utils": "^3.5.1",
-    "@nuxt/types": "^2.16.3",
-    "@types/fs-extra": "^11.0.1",
-    "@types/lodash-es": "^4.17.7",
-    "@types/node": "^20.2.3",
-    "@vitest/ui": "^0.31.1",
-    "bumpp": "^9.1.0",
-    "eslint": "^8.41.0",
-    "nuxt": "^3.5.1",
-    "typescript": "^5.0.4",
+    "@antfu/eslint-config": "^0.42.0",
+    "@nuxt/module-builder": "^0.5.1",
+    "@nuxt/schema": "^3.7.3",
+    "@nuxt/test-utils": "^3.7.3",
+    "@nuxt/types": "^2.17.1",
+    "@types/fs-extra": "^11.0.2",
+    "@types/lodash-es": "^4.17.9",
+    "@types/node": "^20.6.2",
+    "@vitest/ui": "^0.34.4",
+    "bumpp": "^9.2.0",
+    "eslint": "^8.49.0",
+    "nuxt": "^3.7.3",
+    "typescript": "^5.2.2",
     "upath": "^2.0.1",
-    "vitest": "^0.31.1"
+    "vitest": "^0.34.4"
   }
 }

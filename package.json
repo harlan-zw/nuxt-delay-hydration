@@ -1,7 +1,7 @@
 {
   "name": "nuxt-delay-hydration",
   "type": "module",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "packageManager": "pnpm@8.9.0",
   "description": "Improve your Nuxt.js Google Lighthouse score by delaying hydration ⚡️",
   "author": "Harlan Wilton <harlan@harlanzw.com>",

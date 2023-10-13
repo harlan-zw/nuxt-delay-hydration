@@ -8,7 +8,6 @@
     setTimeout(() =>
       w.requestIdleCallback(
         () => setTimeout(() => e.target?.click(), 500),
-      ),
-    50)
+      ), 50)
   })
 })()

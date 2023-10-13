@@ -1,17 +1,14 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "module": "esnext",
-    "moduleResolution": "node",
     "lib": [
       "esnext",
       "esnext.asynciterable",
       "dom"
     ],
-    "esModuleInterop": true,
-    "sourceMap": true,
-    "strict": true,
     "baseUrl": "..",
+    "module": "esnext",
+    "moduleResolution": "node",
     "paths": {
       "~/*": [
         "./*"
@@ -22,6 +19,9 @@
     },
     "types": [
       "@nuxt/types"
-    ]
+    ],
+    "strict": true,
+    "sourceMap": true,
+    "esModuleInterop": true
   }
 }

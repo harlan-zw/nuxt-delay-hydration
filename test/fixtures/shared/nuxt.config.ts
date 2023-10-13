@@ -1,7 +1,7 @@
 const config = {
   target: 'static',
   head: {
-    // @ts-ignore
+    // @ts-expect-error
     htmlAttrs: {
       lang: 'en',
       dir: 'ltr',
@@ -15,7 +15,7 @@ const config = {
     '@nuxt/typescript-build',
     'nuxt-windicss',
     'nuxt-webpack-optimisations',
-    'nuxt-delay-hydration'
+    'nuxt-delay-hydration',
   ],
   plugins: [
     '../shared/plugins/webVitals.client',
@@ -46,7 +46,7 @@ const config = {
       clientPrefetch: true,
       componentAliases: false,
       componentClientOnly: true
-  },*/
+  }, */
 }
 
 export default config

@@ -1,18 +1,14 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "module": "esnext",
-    "moduleResolution": "node",
     "lib": [
       "esnext",
       "esnext.asynciterable",
       "dom"
     ],
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "strict": true,
     "baseUrl": "..",
+    "module": "esnext",
+    "moduleResolution": "node",
     "paths": {
       "~/*": [
         "./*"
@@ -21,8 +17,12 @@
         "./*"
       ]
     },
+    "resolveJsonModule": true,
     "types": [
       "@nuxt/types"
-    ]
+    ],
+    "strict": true,
+    "sourceMap": true,
+    "esModuleInterop": true
   }
 }

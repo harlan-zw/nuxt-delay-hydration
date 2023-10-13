@@ -4,7 +4,7 @@
  ** Docs: https://next.windicss.org/guide/configuration.html
  */
 import { defineConfig } from 'windicss/helpers'
-import defaultTheme from  'windicss/defaultTheme'
+import defaultTheme from 'windicss/defaultTheme'
 
 export default defineConfig({
   theme: {
@@ -18,8 +18,8 @@ export default defineConfig({
           700: '#003a70',
         },
         yellow: {
-          500: '#ffcb05'
-        }
+          500: '#ffcb05',
+        },
       },
     },
   },

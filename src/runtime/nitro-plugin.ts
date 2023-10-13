@@ -16,7 +16,7 @@ export function createFilter(options: CreateFilterOptions = {}): (path: string) 
   const include = options.include || []
   const exclude = options.exclude || []
 
-  return function(path: string): boolean {
+  return function (path: string): boolean {
     for (const v of [{ rules: exclude, result: false }, { rules: include, result: true }]) {
       const regexRules = v.rules.filter(r => r instanceof RegExp) as RegExp[]
       if (regexRules.some(r => r.test(path)))
@@ -42,7 +42,7 @@ export function createFilter(options: CreateFilterOptions = {}): (path: string) 
   }
 }
 
-export default <NitroAppPlugin>function(nitro) {
+export default <NitroAppPlugin> function (nitro) {
   nitro.hooks.hook('render:html', (htmlContext, { event }) => {
     if (include.length || exclude.length) {
       const filter = createFilter({ include, exclude })
@@ -58,8 +58,8 @@ export default <NitroAppPlugin>function(nitro) {
       const $config = useRuntimeConfig()
       const ASSET_RE = new RegExp(`<script[^>]*src="${$config.app.buildAssetsDir}[^>]+><\\/script>`)
 
-      const LINK_ASSET_RE = new RegExp(`<link rel="modulepreload" as="script" [^>]*href="${$config.app.buildAssetsDir}[^>]+>`, "g");
-      htmlContext.head = htmlContext.head.map((head: string) => head.replaceAll(LINK_ASSET_RE, ""))
+      const LINK_ASSET_RE = new RegExp(`<link rel="modulepreload" as="script" [^>]*href="${$config.app.buildAssetsDir}[^>]+>`, 'g')
+      htmlContext.head = htmlContext.head.map((head: string) => head.replaceAll(LINK_ASSET_RE, ''))
 
       const toLoad: Record<string, any>[] = []
       const ssrContext = htmlContext.bodyAppend.find(b => b.includes('window.__NUXT__'))
@@ -69,7 +69,8 @@ export default <NitroAppPlugin>function(nitro) {
       if (nuxtData && nuxtData.length >= 2) {
         const serverRenderedIndex = nuxtData[1].serverRendered
         isPageSSR = nuxtData[serverRenderedIndex]
-      } else {
+      }
+      else {
         isPageSSR = ssrContext.includes('serverRendered:true')
       }
 

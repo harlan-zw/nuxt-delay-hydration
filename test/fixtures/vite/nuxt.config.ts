@@ -1,4 +1,4 @@
-import defu from "defu";
+import defu from 'defu'
 
 const config = defu.arrayFn({
   delayHydration: {
@@ -6,12 +6,11 @@ const config = defu.arrayFn({
     debug: true,
   },
   buildModules: [
-    'nuxt-vite'
+    'nuxt-vite',
   ],
   vite: {
-    ssr: true
-  }
+    ssr: true,
+  },
 }, require('../shared/nuxt.config').default)
 
 export default config
-

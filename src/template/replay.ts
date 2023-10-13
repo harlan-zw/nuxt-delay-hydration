@@ -1,6 +1,6 @@
 (() => {
   w._$delayHydration.then((e: Event) => {
-    if (!(e instanceof PointerEvent) && !(e instanceof MouseEvent) && !(e instanceof TouchEvent))
+    if (!(e instanceof PointerEvent) && !(e instanceof MouseEvent) && !(window.TouchEvent && e instanceof TouchEvent))
       return
 
     if (e instanceof MouseEvent && e.type !== 'click')

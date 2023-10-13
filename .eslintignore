@@ -1,8 +1,0 @@
-node_modules
-dist
-*.snap
-test
-coverage
-inspo
-.runtime
-src/runtime/*

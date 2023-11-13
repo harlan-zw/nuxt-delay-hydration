@@ -226,7 +226,7 @@ You can configure the module on a per-page basis using route rules.
 export default defineNuxtConfig({
   routeRules: {
     // delay the home page
-    '/': { delayHydration:  'mount' },
+    '/': { delayHydration: 'mount' },
     // disable the module for the admin
     '/admin/': { delayHydration: false }
   }

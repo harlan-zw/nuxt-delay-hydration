@@ -105,8 +105,6 @@ export default defineNuxtModule<ModuleOptions>({
       return
     }
 
-    nuxt.options.build.transpile.push(resolve('./app'))
-
     // Read script from disk and add to options
     const scripts: Record<string, string> = {}
     for (const s of ['global', 'replay']) {

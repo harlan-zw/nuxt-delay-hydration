@@ -69,7 +69,7 @@ export default defineNuxtModule<ModuleOptions>({
     mode: MODE_DELAY_APP_MOUNT,
     hydrateOnEvents: [],
     include: [],
-    exclude: [],
+    exclude: ['/_nuxt/**', '/api/**'],
     postIdleTimeout: {
       mobile: 5000,
       desktop: 4000,

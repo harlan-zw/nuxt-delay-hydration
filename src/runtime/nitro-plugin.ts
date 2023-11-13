@@ -34,7 +34,6 @@ export default defineNitroPlugin((nitro) => {
       return
 
     let extraScripts = ''
-    let isPageSSR = true
     if (currentMode === 'init') {
       const ASSET_RE = new RegExp(`<script[^>]*src="${config.app.buildAssetsDir}[^>]+><\\/script>`)
 
@@ -42,18 +41,7 @@ export default defineNitroPlugin((nitro) => {
       htmlContext.head = htmlContext.head.map((head: string) => head.replaceAll(LINK_ASSET_RE, ''))
 
       const toLoad: Record<string, any>[] = []
-      const ssrContext = htmlContext.bodyAppend.find(b => b.includes('window.__NUXT__'))
-      const NUXT_DATA_RE = /<script type="application\/json" id="__NUXT_DATA__"[^>]*>(.*?)<\/script[^>]*>/g
-      const regexResult = NUXT_DATA_RE.exec(ssrContext)
-      const nuxtData = regexResult && regexResult[1] ? JSON.parse(regexResult[1]) : null
-      if (nuxtData && nuxtData.length >= 2) {
-        const serverRenderedIndex = nuxtData[1].serverRendered
-        isPageSSR = nuxtData[serverRenderedIndex]
-      }
-      else {
-        isPageSSR = ssrContext.includes('serverRendered:true')
-      }
-
+      const isPageSSR = htmlContext.bodyAppend.some((b: string) => b.includes('$snuxt-delay-hydration-mode'))
       if (!isPageSSR)
         return
 

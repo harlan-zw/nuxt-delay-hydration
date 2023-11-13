@@ -90,7 +90,7 @@ Keep in mind, **this is a hacky solution**. Until Google can recognise progressi
 
 ## Install
 
-If you're using Nuxt 2.x, please follow the docs on the [v0 branch](https://github.com/harlan-zw/nuxt-delay-hydration/tree/v0).
+If you're using Nuxt 2.x, please follow the docs on the [v0 branch](https://github.com/harlan-zw/nuxt-delay-hydration/tree/v0). ⚠️ Nuxt 2 is deprecated and won't receive support.
 
 ```bash
 yarn add -D nuxt-delay-hydration

@@ -10,7 +10,7 @@ const clicked = ref(false)
     <button :class="{ red: clicked }" style="padding: 30px;" @click="clicked = true">
       Big Button
     </button>
-    <NuxtLink to="/not-delayed">
+    <NuxtLink to="/disabled">
       not-delayed
     </NuxtLink>
     <div>

@@ -10,8 +10,8 @@ const config = defu.arrayFn({
     async routes() {
       const countriesData = () => import('./countries.json').then(m => m.default || m)
       const countries = (await countriesData())
-      // @ts-expect-error
-      return countries.map((country, index) => {
+      // @ts-expect-error untyped
+      return countries.map((country) => {
         return {
           route: `/${country.name.common.toLowerCase().replace(' ', '-')}`,
           payload: {

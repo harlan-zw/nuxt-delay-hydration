@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Vue from 'vue'
 <% if (fetch.client) { %>import fetch from 'unfetch'<% } %>
 <% if (features.middleware) { %>import middleware from './middleware.js'<% } %>

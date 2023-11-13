@@ -133,18 +133,14 @@ export const debug = ${JSON.stringify(options.debug)}`
       filename: 'delay-hydration.mjs',
       getContents: () => exports,
     })
-    nuxt.options.alias['#delay-hydration'] = dst.dst
+    nuxt.options.alias['#nuxt-delay-hydration/api'] = dst.dst
 
     // add alias for nitro
     nuxt.hooks.hook('nitro:config', (config) => {
-      config.externals = config.externals || {}
-      config.externals.inline = config.externals.inline || []
-      config.externals.inline.push(runtimeDir)
       config.virtual = config.virtual || {}
-      config.virtual['#delay-hydration'] = exports
-      config.plugins = config.plugins || []
-      config.plugins.push(resolve(runtimeDir, 'nitro-plugin'))
+      config.virtual['#nuxt-delay-hydration/api'] = exports
     })
+    addServerPlugin(resolve(runtimeDir, 'nitro-plugin'))
 
     if (options.mode === MODE_DELAY_APP_MOUNT)
       addPlugin(resolve(runtimeDir, 'mount-plugin.client'))

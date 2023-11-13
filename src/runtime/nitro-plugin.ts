@@ -1,60 +1,22 @@
 import type { NitroAppPlugin } from 'nitropack'
 import { packString } from 'packrup'
-import { createRouter, toRouteMatcher } from 'radix3'
+import { MODE_DELAY_APP_INIT, MODE_DELAY_MANUAL } from '../module'
+import { createFilter } from './util'
 import { useRuntimeConfig } from '#imports'
-import { debug, exclude, include, mode, replayScript, script } from '#delay-hydration'
+import { debug, exclude, include, mode, replayScript, script } from '#nuxt-delay-hydration/api'
 
 const SCRIPT_REGEX = /<script(.*?)>/gm
 
-export interface CreateFilterOptions {
-  include?: (string | RegExp)[]
-  exclude?: (string | RegExp)[]
-  strictTrailingSlash?: boolean
-}
-
-export function createFilter(options: CreateFilterOptions = {}): (path: string) => boolean {
-  const include = options.include || []
-  const exclude = options.exclude || []
-
-  return function (path: string): boolean {
-    for (const v of [{ rules: exclude, result: false }, { rules: include, result: true }]) {
-      const regexRules = v.rules.filter(r => r instanceof RegExp) as RegExp[]
-      if (regexRules.some(r => r.test(path)))
-        return v.result
-
-      const stringRules = v.rules.filter(r => typeof r === 'string') as string[]
-      if (stringRules.length > 0) {
-        const routes = {}
-        for (const r of stringRules) {
-          // quick scan of literal string matches
-          if (r === path)
-            return v.result
-
-          // need to flip the array data for radix3 format, true value is arbitrary
-          routes[r] = true
-        }
-        const routeRulesMatcher = toRouteMatcher(createRouter({ routes, ...options }))
-        if (routeRulesMatcher.matchAll(path).length > 0)
-          return Boolean(v.result)
-      }
-    }
-    return include.length === 0
-  }
-}
-
 export default <NitroAppPlugin> function (nitro) {
+  const filter = createFilter({ include, exclude })
   nitro.hooks.hook('render:html', (htmlContext, { event }) => {
-    if (include.length || exclude.length) {
-      const filter = createFilter({ include, exclude })
-      // allow opt-out
-      if (!filter(event.req.url))
-        return
-    }
+    // allow opt-out
+    if (!filter(event.path))
+      return
 
-    const isDelayingInit = mode === 'init'
     let extraScripts = ''
     let isPageSSR = true
-    if (isDelayingInit) {
+    if (mode === MODE_DELAY_APP_INIT) {
       const $config = useRuntimeConfig()
       const ASSET_RE = new RegExp(`<script[^>]*src="${$config.app.buildAssetsDir}[^>]+><\\/script>`)
 
@@ -100,7 +62,7 @@ export default <NitroAppPlugin> function (nitro) {
   })
 })`
     }
-    if (replayScript)
+    if (mode !== MODE_DELAY_MANUAL && replayScript)
       extraScripts += `;${replayScript}`
 
     // insert the hydration API, maybe insert delay script

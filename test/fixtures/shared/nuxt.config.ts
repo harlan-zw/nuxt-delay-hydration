@@ -1,7 +1,6 @@
 const config = {
   target: 'static',
   head: {
-    // @ts-expect-error
     htmlAttrs: {
       lang: 'en',
       dir: 'ltr',

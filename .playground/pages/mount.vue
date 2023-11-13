@@ -2,7 +2,7 @@
 import { defineRouteRules } from '#imports'
 
 defineRouteRules({
-  delayHydration: 'manual',
+  delayHydration: 'mount',
 })
 </script>
 

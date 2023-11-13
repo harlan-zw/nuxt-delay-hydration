@@ -30,8 +30,7 @@
 ## Features
 
 - 🔥 Reduce your sites "Blocking Time"
-- 🚦 Filter it to run only on specific pages
-- 🍃 Minimal config
+- 🚦 Per-page level configuration using route rules
 - 🔁 (optional) Replay pre-hydration clicks
 
 <br>
@@ -217,6 +216,24 @@ Once you have set the mode, you need to use the component.
 
 ## Guides
 
+### Per-Page Configuration
+
+You can configure the module on a per-page basis using route rules.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  routeRules: {
+    // delay the home page
+    '/': { delayHydration:  'mount' },
+    // disable the module for the admin
+    '/admin/': { delayHydration: false }
+  }
+})
+```
+
+You can also define them are your page-level using [defineRouteRules](https://nuxt.com/docs/api/utils/define-route-rules).
+
 ### Debugging
 
 <details>
@@ -229,11 +246,11 @@ To make sure the module is doing what you expect, there is a `debug` mode, which
 It might be a good idea to always debug on your local environment, in that instance you could do:
 
 ```ts
-export default {
+export default defineNuxtConfig({
   delayHydration: {
     debug: process.env.NODE_ENV === 'development',
   },
-}
+})
 ```
 </details>
 <br>
@@ -284,11 +301,11 @@ However, there are use cases where you need to use Javascript and responding to 
 the replay of the click.
 
 ```js
-export default {
+export default defineNuxtConfig({
   delayHydration: {
     replayClick: true
   },
-}
+})
 ```
 
 This is an experimental configuration, you should test this option yourself before implementing it into your production app.
@@ -317,11 +334,13 @@ tinker with this advanced configuration.
 
 ### Filtering routes
 
+Note: It's recommended to use route rules instead of these filtering options.
+
 Using the `include` and `exclude` options, you can specify which routes you'd like to delay hydration on.
 
 ```ts
 // nuxt.config.ts
-export default {
+export default defineNuxtConfig({
   delayHydration: {
     include: [
       '/blog/**',
@@ -330,7 +349,7 @@ export default {
       '/admin/**'
     ],
   },
-}
+})
 ```
 
 You can provide a glob pattern similar to route rules or a regex.

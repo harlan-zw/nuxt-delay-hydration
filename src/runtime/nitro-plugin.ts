@@ -1,26 +1,44 @@
-import type { NitroAppPlugin } from 'nitropack'
 import { packString } from 'packrup'
-import { MODE_DELAY_APP_INIT, MODE_DELAY_MANUAL } from '../module'
+import { defineNitroPlugin } from 'nitropack/dist/runtime/plugin'
+import { createRouter as createRadixRouter, toRouteMatcher } from 'radix3'
+import { withoutBase } from 'ufo'
+import defu from 'defu'
+import type { NitroRouteRules } from 'nitropack'
 import { createFilter } from './util'
-import { useRuntimeConfig } from '#imports'
 import { debug, exclude, include, mode, replayScript, script } from '#nuxt-delay-hydration/api'
+import { useRuntimeConfig } from '#imports'
 
 const SCRIPT_REGEX = /<script(.*?)>/gm
 
-export default <NitroAppPlugin> function (nitro) {
+export default defineNitroPlugin((nitro) => {
   const filter = createFilter({ include, exclude })
+  const config = useRuntimeConfig()
+  const _routeRulesMatcher = toRouteMatcher(
+    createRadixRouter({ routes: config.nitro?.routeRules }),
+  )
   nitro.hooks.hook('render:html', (htmlContext, { event }) => {
     // allow opt-out
     if (!filter(event.path))
       return
 
+    const routeRules = defu({}, ..._routeRulesMatcher.matchAll(
+      withoutBase(event.path.split('?')[0], useRuntimeConfig().app.baseURL),
+    ).reverse()) as NitroRouteRules
+
+    let currentMode = mode
+    if (typeof routeRules.delayHydration !== 'undefined')
+      currentMode = routeRules.delayHydration
+
+    // opt-out
+    if (!currentMode)
+      return
+
     let extraScripts = ''
     let isPageSSR = true
-    if (mode === MODE_DELAY_APP_INIT) {
-      const $config = useRuntimeConfig()
-      const ASSET_RE = new RegExp(`<script[^>]*src="${$config.app.buildAssetsDir}[^>]+><\\/script>`)
+    if (currentMode === 'init') {
+      const ASSET_RE = new RegExp(`<script[^>]*src="${config.app.buildAssetsDir}[^>]+><\\/script>`)
 
-      const LINK_ASSET_RE = new RegExp(`<link rel="modulepreload" as="script" [^>]*href="${$config.app.buildAssetsDir}[^>]+>`, 'g')
+      const LINK_ASSET_RE = new RegExp(`<link rel="modulepreload" as="script" [^>]*href="${config.app.buildAssetsDir}[^>]+>`, 'g')
       htmlContext.head = htmlContext.head.map((head: string) => head.replaceAll(LINK_ASSET_RE, ''))
 
       const toLoad: Record<string, any>[] = []
@@ -62,7 +80,7 @@ export default <NitroAppPlugin> function (nitro) {
   })
 })`
     }
-    if (mode !== MODE_DELAY_MANUAL && replayScript)
+    if (replayScript)
       extraScripts += `;${replayScript}`
 
     // insert the hydration API, maybe insert delay script
@@ -77,4 +95,4 @@ export default <NitroAppPlugin> function (nitro) {
 })();
 </script>`)
   })
-}
+})

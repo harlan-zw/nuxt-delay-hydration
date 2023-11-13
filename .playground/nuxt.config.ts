@@ -5,12 +5,15 @@ export default defineNuxtConfig({
     NuxtDelayHydration,
   ],
   delayHydration: {
-    mode: 'mount',
+    mode: false,
     exclude: ['/not-delayed'],
   },
   app: {
     head: {
       title: 'default title',
     },
+  },
+  experimental: {
+    inlineRouteRules: true,
   },
 })

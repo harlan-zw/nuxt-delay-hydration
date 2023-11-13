@@ -1,9 +1,8 @@
 import { promises as fsp } from 'node:fs'
 import { addComponentsDir, addPlugin, addServerPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { template } from 'lodash-es'
-
-export type Mode = 'init' | 'mount' | 'manual' | false
-export type EventTypes = 'mousemove' | 'scroll' | 'wheel' | 'keydown' | 'click' | 'touchstart' | string
+import type { EventTypes, Mode } from './runtime/types'
+import { extendTypes } from './kit'
 
 export interface ModuleOptions {
   /**
@@ -52,21 +51,16 @@ export interface ModuleOptions {
   debug: boolean
 }
 
-export const NAME = 'nuxt-delay-hydration'
-export const MODE_DELAY_APP_INIT = 'init'
-export const MODE_DELAY_APP_MOUNT = 'mount'
-export const MODE_DELAY_MANUAL = 'manual'
-
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: NAME,
+    name: 'nuxt-delay-hydration',
     configKey: 'delayHydration',
     compatibility: {
       nuxt: '^3.5.0',
     },
   },
   defaults: {
-    mode: MODE_DELAY_APP_MOUNT,
+    mode: 'mount',
     hydrateOnEvents: [],
     include: [],
     exclude: ['/_nuxt/**', '/api/**'],
@@ -103,11 +97,11 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     if (!nuxt.options.ssr) {
-      console.warn(`\`${NAME}\` will only work for SSR apps, disabling module.`)
+      console.warn(`\`'nuxt-delay-hydration'\` will only work for SSR apps, disabling module.`)
       return
     }
     if (!options.debug && nuxt.options.dev) {
-      console.warn(`\`${NAME}\` only runs in dev with \`debug\` enabled, disabling module.`)
+      console.warn(`\`'nuxt-delay-hydration'\` only runs in dev with \`debug\` enabled, disabling module.`)
       return
     }
 
@@ -123,7 +117,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     const exports = `export const script = ${JSON.stringify(scripts.global, null, 2)}
 export const replayScript = ${JSON.stringify(scripts.replay, null, 2)}
-export const mode = '${options.mode}'
+export const mode = ${JSON.stringify(options.mode)}
 export const include = ${JSON.stringify(options.include)}
 export const exclude = ${JSON.stringify(options.exclude)}
 export const debug = ${JSON.stringify(options.debug)}`
@@ -142,7 +136,27 @@ export const debug = ${JSON.stringify(options.debug)}`
     })
     addServerPlugin(resolve(runtimeDir, 'nitro-plugin'))
 
-    if (options.mode === MODE_DELAY_APP_MOUNT)
-      addPlugin(resolve(runtimeDir, 'mount-plugin.client'))
+    addPlugin(resolve(runtimeDir, 'nuxt-plugin'))
+
+    extendTypes('nuxt-delay-hydration', async ({ typesPath }) => {
+      return `
+declare module 'nitropack' {
+  interface NitroRouteRules {
+    delayHydration?: import('${typesPath}').Mode
+  }
+  interface NitroRouteConfig {
+    delayHydration?: import('${typesPath}').Mode
+  }
+}
+declare module '#nuxt-delay-hydration/api' {
+  export const debug: boolean
+  export const script: string
+  export const mode: Mode
+  export const include: string[]
+  export const exclude: string[]
+  export const replayScript: string
+}
+`
+    })
   },
 })

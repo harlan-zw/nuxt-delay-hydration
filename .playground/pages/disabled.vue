@@ -2,17 +2,15 @@
 import { defineRouteRules } from '#imports'
 
 defineRouteRules({
-  delayHydration: 'manual',
+  delayHydration: false,
 })
 </script>
 
 <template>
   <div>
+    <h1>Not Delayed</h1>
     <div>
       <HydrationStatus />
     </div>
-    <DelayHydration>
-      <HydrationStatus />
-    </DelayHydration>
   </div>
 </template>

@@ -1,5 +1,5 @@
 import { promises as fsp } from 'node:fs'
-import { addComponentsDir, addPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponentsDir, addPlugin, addServerPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { template } from 'lodash-es'
 
 export type Mode = 'init' | 'mount' | 'manual' | false
@@ -98,7 +98,7 @@ export default defineNuxtModule<ModuleOptions>({
     // always add plugins
     await addComponentsDir({
       path: resolve('runtime/components'),
-      extensions: ['vue'],
+      extensions: ['vue', 'ts'],
       transpile: true,
     })
 

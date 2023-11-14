@@ -1,5 +1,12 @@
 import { promises as fsp } from 'node:fs'
-import { addComponentsDir, addPlugin, addServerPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
+import {
+  addComponent,
+  addPlugin,
+  addServerPlugin,
+  addTemplate,
+  createResolver,
+  defineNuxtModule,
+} from '@nuxt/kit'
 import { template } from 'lodash-es'
 import type { EventTypes, Mode } from './runtime/types'
 import { extendTypes } from './kit'
@@ -90,10 +97,13 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.build.transpile.push(runtimeDir)
 
     // always add plugins
-    await addComponentsDir({
-      path: resolve('runtime/components'),
-      extensions: ['vue', 'ts'],
-      transpile: true,
+    await addComponent({
+      name: 'DelayHydration',
+      filePath: resolve('runtime/components/DelayHydration.ts'),
+    })
+    await addComponent({
+      name: 'HydrationStatus',
+      filePath: resolve('runtime/components/HydrationStatus.vue'),
     })
 
     if (!nuxt.options.ssr) {

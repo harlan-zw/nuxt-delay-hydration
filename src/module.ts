@@ -99,11 +99,11 @@ export default defineNuxtModule<ModuleOptions>({
     // always add plugins
     await addComponent({
       name: 'DelayHydration',
-      filePath: resolve('runtime/components/DelayHydration.ts'),
+      filePath: resolve('runtime/components/DelayHydration'),
     })
     await addComponent({
       name: 'HydrationStatus',
-      filePath: resolve('runtime/components/HydrationStatus.vue'),
+      filePath: resolve('runtime/components/HydrationStatus'),
     })
 
     if (!nuxt.options.ssr) {

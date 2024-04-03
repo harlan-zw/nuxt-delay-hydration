@@ -94,8 +94,6 @@ If you're using Nuxt 2.x, please follow the docs on the [v0 branch](https://gith
 
 ```bash
 npx nuxi@latest module add delay-hydration
-# npx nuxi@latest module add delay-hydration
-# npx nuxi@latest module add delay-hydration
 ```
 
 _Requirement: Progressively enhanced SSR or SSG Nuxt app._

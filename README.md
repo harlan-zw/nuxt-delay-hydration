@@ -83,7 +83,7 @@ Keep in mind, **this is a hacky solution**. Until Google can recognise which scr
 
 ```bash
 yarn add nuxt-delay-hydration
-# npm i nuxt-delay-hydration
+# npm i nuxt-delay-hydration@0.4.7
 ```
 
 _Requirement: SSR, full-static (SSG) is highly recommended._

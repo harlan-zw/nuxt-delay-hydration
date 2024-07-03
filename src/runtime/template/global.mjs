@@ -1,15 +1,11 @@
-interface Handler { c: () => void; p: Promise<string | Event> }
-
-// not supported
 if (!('requestIdleCallback' in w) || !('requestAnimationFrame' in w))
   return new Promise(resolve => resolve('not supported'))
-function eventListeners(): Handler {
+function eventListeners() {
   const c = new AbortController()
-  const p = new Promise<Event>((resolve) => {
-    const hydrateOnEvents = '<%= options.hydrateOnEvents %>'.split(',') as (keyof WindowEventMap)[]
-    function handler(e: Event) {
+  const p = new Promise((resolve) => {
+    const hydrateOnEvents = '<%= options.hydrateOnEvents %>'.split(',')
+    function handler(e) {
       hydrateOnEvents.forEach(e => w.removeEventListener(e, handler))
-      // hydrate on animation frame
       requestAnimationFrame(() => resolve(e))
     }
     hydrateOnEvents.forEach((e) => {
@@ -25,9 +21,9 @@ function eventListeners(): Handler {
   return { c: () => c.abort(), p }
 }
 
-function idleListener(): Handler {
-  let id: number
-  const p = new Promise<string>((resolve) => {
+function idleListener() {
+  let id
+  const p = new Promise((resolve) => {
     const isMobile = w.innerWidth < 640
     const timeout = isMobile ? Number.parseInt('<%= options.postIdleTimeout.mobile %>') : Number.parseInt('<%= options.postIdleTimeout.desktop %>')
     const timeoutDelay = () => setTimeout(
@@ -38,9 +34,8 @@ function idleListener(): Handler {
   })
   return { c: () => window.cancelIdleCallback(id), p }
 }
-// return a promise which will never resolve if there is no hydration
 const triggers = [idleListener(), eventListeners()]
-const hydrationPromise = Promise.race<string | Event>(
+const hydrationPromise = Promise.race(
   triggers.map(t => t.p),
 ).finally(() => {
   triggers.forEach(t => t.c())

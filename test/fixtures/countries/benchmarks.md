@@ -18,4 +18,3 @@
 - blocking: 0ms
 - tti: 2.4s
 - fcp: 2.4s
-

@@ -118,7 +118,7 @@ export default defineNuxtModule<ModuleOptions>({
     // Read script from disk and add to options
     const scripts: Record<string, string> = {}
     for (const s of ['global', 'replay']) {
-      const scriptPath = await resolvePath(import.meta.url.endsWith('src/module.ts') ? `../dist/${s}` : `./${s}`)
+      const scriptPath = await resolvePath(`./runtime/template/${s}`)
       const scriptT = await fsp.readFile(scriptPath, 'utf-8')
       scripts[s] = template(scriptT)({ options })
     }

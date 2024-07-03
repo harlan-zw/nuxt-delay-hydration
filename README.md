@@ -39,7 +39,7 @@
   <summary><b>Why delay hydration?</b></summary>
 <br>
 
-Delaying hydration is a technique to hint to Google that our scripts are not required for our app to function. 
+Delaying hydration is a technique to hint to Google that our scripts are not required for our app to function.
 
 By delaying hydration we improve the Google Lighthouse score by reducing your "Blocking Time" metric.
 
@@ -177,16 +177,14 @@ export default {
 }
 ```
 
-
 ### Manual Mode
 
 Using the manual mode, you manually specify what part of your app you'd like to delay. Useful for when you need some part of the
 page to always hydrate immediately, such as a navigation drawer.
 
-_Pros:_ Safest way to optimise 
+_Pros:_ Safest way to optimise
 
 _Cons:_ Speed improvement based on usage
-
 
 ```js
 export default {
@@ -198,7 +196,7 @@ export default {
 
 #### DelayHydration component
 
-Once you have set the mode, you need to use the component. 
+Once you have set the mode, you need to use the component.
 
 ```vue
 <template>
@@ -211,7 +209,6 @@ Once you have set the mode, you need to use the component.
   </div>
 </template>
 ```
-
 
 ## Guides
 
@@ -238,7 +235,7 @@ You can also define them are your page-level using [defineRouteRules](https://nu
 <details>
   <summary>Debug mode</summary>
 <br>
-It's recommended that you do thorough testing on your app with the module before deploying it into production. 
+It's recommended that you do thorough testing on your app with the module before deploying it into production.
 
 To make sure the module is doing what you expect, there is a `debug` mode, which when enabled will log behaviour in the console.
 
@@ -259,7 +256,7 @@ export default defineNuxtConfig({
 <br>
 It can be unclear at times whether your app has been hydrated or not if it's quite static, this can make debugging hard.
 
-To make things easier, there is a component `HydrationStatus` which will tell you what's going on. 
+To make things easier, there is a component `HydrationStatus` which will tell you what's going on.
 
 ```vue
 <template>
@@ -294,7 +291,7 @@ One of the issues with delaying hydration is that a user interaction event can o
 to a user having to click on something multiple times for it to do what they expect. Think of a hamburger that is triggered using Javascript, if your
 app isn't hydrated then clicking it won't do anything.
 
-The best fix for this is to write your [HTML in a way that doesn't need Javascript](https://css-tricks.com/the-checkbox-hack/) to be interactive. 
+The best fix for this is to write your [HTML in a way that doesn't need Javascript](https://css-tricks.com/the-checkbox-hack/) to be interactive.
 
 However, there are use cases where you need to use Javascript and responding to the first click is important. In those instances, you can enable
 the replay of the click.
@@ -311,7 +308,6 @@ This is an experimental configuration, you should test this option yourself befo
 </details>
 
 ### Further Optimisations
-
 
 <details>
   <summary>Load heavy components async</summary>
@@ -368,12 +364,11 @@ possible user experience issues.
 - Type: `boolean`
 - Default: `false`
 
-If the trigger for hydration was a click, you can replay it. Replaying it will re-execute the event when it is presumed your app is hydrated. 
+If the trigger for hydration was a click, you can replay it. Replaying it will re-execute the event when it is presumed your app is hydrated.
 
 For example, if a user clicks a hamburger icon and hydration is required to open the menu, it would replay the click once hydrated.
 
 ⚠️ This is experimental, use with caution.
-
 
 ### Idle Hydration
 
@@ -419,7 +414,7 @@ Live examples
 
 ## Credits
 
-- [Markus Oberlehner](https://github.com/maoberlehner). Pioneer of the lazy hydration in Vue 
+- [Markus Oberlehner](https://github.com/maoberlehner). Pioneer of the lazy hydration in Vue
 
 ## Sponsors
 
@@ -432,4 +427,3 @@ Live examples
 ## License
 
 MIT License © 2022 - Present [Harlan Wilton](https://github.com/harlan-zw)
-

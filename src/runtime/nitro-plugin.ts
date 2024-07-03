@@ -8,7 +8,7 @@ import { createFilter } from './util'
 import { debug, exclude, include, mode, replayScript, script } from '#nuxt-delay-hydration/api'
 import { useRuntimeConfig } from '#imports'
 
-const SCRIPT_REGEX = /<script(.*?)>/gm
+const SCRIPT_REGEX = /<script(.*?)>/g
 
 export default defineNitroPlugin((nitro) => {
   const filter = createFilter({ include, exclude })
@@ -81,6 +81,6 @@ export default defineNitroPlugin((nitro) => {
   ${debug ? 'w._$delayHydration.then((e) => { console.log(\'[nuxt-delay-hydration] Hydration event\', e) })' : ''}
   ${extraScripts}
 })();
-</script>`)
+</script>`.replace(/\s+/g, ' ').replace(/[\n\r]/g, ''))
   })
 })

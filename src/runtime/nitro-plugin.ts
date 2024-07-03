@@ -1,9 +1,5 @@
 import { packString } from 'packrup'
 import { defineNitroPlugin } from 'nitropack/dist/runtime/plugin'
-import { createRouter as createRadixRouter, toRouteMatcher } from 'radix3'
-import { withoutBase } from 'ufo'
-import defu from 'defu'
-import type { NitroRouteRules } from 'nitropack'
 import { createFilter } from './util'
 import { debug, exclude, include, mode, replayScript, script } from '#nuxt-delay-hydration/api'
 import { useRuntimeConfig } from '#imports'
@@ -13,21 +9,15 @@ const SCRIPT_REGEX = /<script(.*?)>/g
 export default defineNitroPlugin((nitro) => {
   const filter = createFilter({ include, exclude })
   const config = useRuntimeConfig()
-  const _routeRulesMatcher = toRouteMatcher(
-    createRadixRouter({ routes: config.nitro?.routeRules }),
-  )
-  nitro.hooks.hook('render:html', (htmlContext, { event }) => {
+  nitro.hooks.hook('render:html', (htmlContext, ctx) => {
+    const event = ctx.event
     // allow opt-out
     if (!filter(event.path))
       return
 
-    const routeRules = defu({}, ..._routeRulesMatcher.matchAll(
-      withoutBase(event.path.split('?')[0], useRuntimeConfig().app.baseURL),
-    ).reverse()) as NitroRouteRules
-
     let currentMode = mode
-    if (typeof routeRules.delayHydration !== 'undefined')
-      currentMode = routeRules.delayHydration
+    if (typeof ctx.event.context._nitro?.routeRules?.delayHydration !== 'undefined')
+      currentMode = ctx.event.context._nitro?.routeRules?.delayHydration
 
     // opt-out
     if (!currentMode)
@@ -81,6 +71,6 @@ export default defineNitroPlugin((nitro) => {
   ${debug ? 'w._$delayHydration.then((e) => { console.log(\'[nuxt-delay-hydration] Hydration event\', e) })' : ''}
   ${extraScripts}
 })();
-</script>`.replace(/\s+/g, ' ').replace(/[\n\r]/g, ''))
+</script>`)
   })
 })

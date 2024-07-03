@@ -1,24 +1,13 @@
-import { createRouter as createRadixRouter, toRouteMatcher } from 'radix3'
-import defu from 'defu'
-import { withoutBase } from 'ufo'
-import type { NitroRouteRules } from 'nitropack'
 import { createFilter } from './util'
 import type { HydrationMode } from './types'
 import { exclude, include, mode } from '#nuxt-delay-hydration/api'
-import { defineNuxtPlugin, useRequestEvent, useRuntimeConfig, useState } from '#imports'
+import { defineNuxtPlugin, useRequestEvent, useState } from '#imports'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const hydrationMode = useState<HydrationMode>('nuxt-delay-hydration-mode', () => mode)
   if (import.meta.server) {
     const event = useRequestEvent()
-    const config = useRuntimeConfig()
-    const _routeRulesMatcher = toRouteMatcher(
-      createRadixRouter({ routes: config.nitro?.routeRules }),
-    )
-    const routeRules = defu({}, ..._routeRulesMatcher.matchAll(
-      withoutBase(event.path.split('?')[0], useRuntimeConfig().app.baseURL),
-    ).reverse()) as NitroRouteRules
-    if (routeRules.delayHydration)
+    if (event?.context?._nitro?.routeRules?.delayHydration)
       hydrationMode.value = routeRules.delayHydration
   }
   if (import.meta.client) {

@@ -63,7 +63,7 @@ export default defineNuxtModule<ModuleOptions>({
     name: 'nuxt-delay-hydration',
     configKey: 'delayHydration',
     compatibility: {
-      nuxt: '^3.5.0',
+      nuxt: '>=3.5.0',
     },
   },
   defaults: {

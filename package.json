@@ -32,7 +32,7 @@
   ],
   "scripts": {
     "dev": "nuxi dev .playground",
-    "stub": "nuxt-module-build build --stub",
+    "stub": "npx terser src/template/global.mjs -o src/runtime/template/global.mjs && npx terser src/template/replay.mjs -o src/runtime/template/replay.mjs && nuxt-module-build build --stub",
     "build": "nuxi prepare .playground && nuxt-module-build build",
     "lint": "eslint . --fix",
     "release": "bumpp package.json packages/*/package.json --commit --push --tag",

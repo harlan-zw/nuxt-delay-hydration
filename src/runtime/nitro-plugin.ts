@@ -50,11 +50,11 @@ export default defineNitroPlugin((nitro) => {
           return false
         },
       )
-      extraScripts = `_$delayHydration.then(e => {
+      extraScripts = `;window._$delayHydration.then(e => {
   ;(${JSON.stringify(toLoad)}).forEach(s => {
-    const script = document.createElement('script')
-    Object.entries(s).forEach(([k, v]) => script.setAttribute(k, v))
-    document.body.appendChild(script)
+    const script = document.createElement('script');
+    Object.entries(s).forEach(([k, v]) => script.setAttribute(k, v));
+    document.body.appendChild(script);
   })
 })`
     }
@@ -62,12 +62,16 @@ export default defineNitroPlugin((nitro) => {
       extraScripts += `;${replayScript}`
 
     // insert the hydration API, maybe insert delay script
-    htmlContext.bodyAppend.push(`<script>
+    let html = `<script>
 (function() {
   const w = window; w._$delayHydration = (function() { if (!('requestIdleCallback' in w) || !('requestAnimationFrame' in w)) { return new Promise(resolve => resolve('not supported')) } ${script} return hydrationPromise; })();
   ${debug ? 'w._$delayHydration.then((e) => { console.log(\'[nuxt-delay-hydration] Hydration event\', e) })' : ''}
   ${extraScripts}
 })();
-</script>`.replace(/\s+/g, ' ').replace(/[\n\r]/g, ''))
+</script>`
+    if (!import.meta.dev) {
+      html = html.replace(/\s+/g, ' ').replace(/[\n\r]/g, '')
+    }
+    htmlContext.bodyAppend.push(html)
   })
 })

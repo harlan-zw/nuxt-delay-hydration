@@ -1,14 +1,14 @@
 import { createFilter } from './util'
-import type { HydrationMode } from './types'
+import type { Mode } from './types'
 import { exclude, include, mode } from '#nuxt-delay-hydration/api'
 import { defineNuxtPlugin, useRequestEvent, useState } from '#imports'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const hydrationMode = useState<HydrationMode>('nuxt-delay-hydration-mode', () => mode)
+  const hydrationMode = useState<Mode>('nuxt-delay-hydration-mode', () => mode)
   if (import.meta.server) {
     const event = useRequestEvent()
     if (event?.context?._nitro?.routeRules?.delayHydration)
-      hydrationMode.value = routeRules.delayHydration
+      hydrationMode.value = event.context._nitro.routeRules.delayHydration
   }
   if (import.meta.client) {
     if (hydrationMode.value === 'mount') {

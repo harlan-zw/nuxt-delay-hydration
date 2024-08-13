@@ -1,7 +1,8 @@
 import { createFilter } from './util'
 import type { Mode } from './types'
 import { exclude, include, mode } from '#nuxt-delay-hydration/api'
-import { defineNuxtPlugin, useRequestEvent, useState } from '#imports'
+import { useRequestEvent, useState } from '#imports'
+import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const hydrationMode = useState<Mode>('nuxt-delay-hydration-mode', () => mode)

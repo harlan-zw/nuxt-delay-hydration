@@ -123,7 +123,7 @@ export default defineNuxtModule<ModuleOptions>({
       scripts[s] = template(scriptT)({ options })
     }
 
-  const replayClickScript =  options.replayClick ? scripts.replay : false
+    const replayClickScript = options.replayClick ? scripts.replay : false
 
     const exports = `export const script = ${JSON.stringify(scripts.global, null, 2)}
 export const replayScript = ${JSON.stringify(replayClickScript, null, 2)}

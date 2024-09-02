@@ -1,11 +1,13 @@
-import { defineAsyncComponent } from 'vue'
+import { Comment, Fragment, defineAsyncComponent, h } from 'vue'
 
 export default defineAsyncComponent({
   loader() {
     const hydrationApi = import.meta.client ? window._$delayHydration || Promise.resolve() : Promise.resolve()
     return new Promise((resolve) => {
       hydrationApi.then(() => {
-        resolve((props, { slots }) => slots.default?.(props))
+        resolve((props, { slots }) => {
+          return h(Fragment, [h(Comment, 'nuxt-delay-hydration-component'), slots.default?.(props)])
+        })
       })
     })
   },

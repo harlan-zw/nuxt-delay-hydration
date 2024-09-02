@@ -23,6 +23,13 @@ export default defineNitroPlugin((nitro) => {
     if (!currentMode)
       return
 
+    if (currentMode === 'manual') {
+      // we only insert the script if the page is using it
+      if (!htmlContext.body.some(h => h.includes('<!--[--><!--nuxt-delay-hydration-component--><!--[-->'))) {
+        return
+      }
+    }
+
     let extraScripts = ''
     if (currentMode === 'init') {
       const ASSET_RE = new RegExp(`<script[^>]*src="${config.app.buildAssetsDir}[^>]+><\\/script>`)

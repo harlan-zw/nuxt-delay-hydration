@@ -40,23 +40,23 @@
     "test": "true"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.13.0",
+    "@nuxt/kit": "^3.13.1",
     "lodash-es": "^4.17.21",
     "packrup": "^0.1.2",
     "radix3": "^1.1.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.0.0",
+    "@antfu/eslint-config": "^3.3.2",
     "@nuxt/module-builder": "^0.8.3",
-    "@nuxt/schema": "^3.13.0",
+    "@nuxt/schema": "^3.13.1",
     "@nuxt/test-utils": "^3.14.1",
     "@nuxt/types": "^2.18.1",
     "@types/fs-extra": "^11.0.4",
     "@types/lodash-es": "^4.17.12",
     "@vitest/ui": "^2.0.5",
     "bumpp": "^9.5.2",
-    "eslint": "^9.9.1",
-    "nuxt": "^3.13.0",
+    "eslint": "^9.10.0",
+    "nuxt": "^3.13.1",
     "typescript": "^5.5.4",
     "upath": "^2.0.1",
     "vitest": "^2.0.5"

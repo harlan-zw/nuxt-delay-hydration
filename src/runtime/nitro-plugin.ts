@@ -1,8 +1,8 @@
-import { packString } from 'packrup'
-import { defineNitroPlugin } from 'nitropack/dist/runtime/plugin'
-import { createFilter } from './util'
-import { debug, exclude, include, mode, replayScript, script } from '#nuxt-delay-hydration/api'
 import { useRuntimeConfig } from '#imports'
+import { debug, exclude, include, mode, replayScript, script } from '#nuxt-delay-hydration/api'
+import { defineNitroPlugin } from 'nitropack/dist/runtime/plugin'
+import { packString } from 'packrup'
+import { createFilter } from './util'
 
 const SCRIPT_REGEX = /<script(.*?)>/g
 

@@ -8,8 +8,8 @@ import {
   defineNuxtModule,
 } from '@nuxt/kit'
 import { template } from 'lodash-es'
-import type { EventTypes, Mode } from './runtime/types'
 import { extendTypes } from './kit'
+import type { EventTypes, Mode } from './runtime/types'
 
 export interface ModuleOptions {
   /**

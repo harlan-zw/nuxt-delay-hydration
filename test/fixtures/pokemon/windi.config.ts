@@ -3,8 +3,8 @@
  **
  ** Docs: https://next.windicss.org/guide/configuration.html
  */
-import { defineConfig } from 'windicss/helpers'
 import defaultTheme from 'windicss/defaultTheme'
+import { defineConfig } from 'windicss/helpers'
 
 export default defineConfig({
   theme: {

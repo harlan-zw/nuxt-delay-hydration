@@ -1,5 +1,5 @@
-import type { Plugin } from '@nuxt/types'
 import { getCLS, getFCP, getFID, getLCP } from 'web-vitals'
+import type { Plugin } from '@nuxt/types'
 import type { ReportHandler } from 'web-vitals/dist/modules/types'
 
 const webVitalsPlugin: Plugin = (ctx) => {

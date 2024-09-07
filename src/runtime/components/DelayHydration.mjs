@@ -1,4 +1,4 @@
-import { Comment, Fragment, defineAsyncComponent, h } from 'vue'
+import { Comment, defineAsyncComponent, Fragment, h } from 'vue'
 
 export default defineAsyncComponent({
   loader() {
